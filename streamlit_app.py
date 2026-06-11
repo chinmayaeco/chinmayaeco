@@ -42,46 +42,7 @@ load_css()
 # IMPORTS
 # ─────────────────────────────────────────────────────────────────────────────
 
-from modules.parser import parse_resume, extract_keywords, parse_resume_file
-from modules.scorer import score_resume
-from modules.jd_matcher import match_resume_to_jd, extract_skills_from_text
-from modules.bullet_improver import improve_multiple_bullets, analyze_bullet, ACTION_VERBS_BY_DOMAIN
-from modules.resume_builder import (
-    init_resume_state, get_resume_data, set_resume_data, reset_resume,
-    load_sample_resume, generate_summary, render_personal_form,
-    render_summary_form, render_skills_form, populate_from_parsed,
-    EDUCATION_TEMPLATE, EXPERIENCE_TEMPLATE, PROJECT_TEMPLATE,
-    CERTIFICATION_TEMPLATE, PUBLICATION_TEMPLATE, EMPTY_RESUME
-)
-from modules.templates import render_resume_html, get_template_names, get_template_info, TEMPLATES
-from modules.export_utils import export_pdf, export_docx, export_txt, get_export_filename
-from modules.report_generator import generate_improvement_report
-from modules.ui_components import (
-    render_score_gauge, render_score_donut, render_section_scores_chart,
-    render_score_card, render_red_flag, render_red_flags_list,
-    render_keyword_chips, render_quick_action_card, render_suggestion,
-    render_progress_bar, render_jd_match_chart, score_color, score_label,
-    render_stat_row, render_section_header, render_info_banner, render_feature_badge
-)
-from modules.sample_data import (
-    SAMPLE_FRESHER_RESUME, SAMPLE_EXPERIENCED_RESUME, SAMPLE_ACADEMIC_CV,
-    SAMPLE_JD_DATA_ANALYST, SAMPLE_JD_BUSINESS_ANALYST, SAMPLE_JD_PROFESSOR,
-    DEMO_BUILDER_DATA
-)
-from modules.role_profiles import ROLE_PROFILES, get_all_roles, get_role_profile
-from modules.privacy import PRIVACY_CONTENT
-from modules.spell_checker import check_spelling_in_sections, get_spell_check_summary, is_available as spell_available
-from modules.grammar_checker import get_grammar_score, get_role_writing_tips, check_grammar
-from modules.version_history import (
-    init_version_history, save_version, get_versions, load_version,
-    delete_version, clear_all_versions, export_all_versions_json,
-    export_single_version_json, import_versions_json, get_version_count
-)
-from modules.analytics import (
-    compute_text_analytics, compute_section_analytics,
-    chart_word_frequency, chart_bullet_quality,
-    chart_readability_gauge, chart_section_coverage
-)
+
 
 # ─────────────────────────────────────────────────────────────────────────────
 # SESSION STATE INIT
