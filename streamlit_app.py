@@ -3,15 +3,264 @@ import random
 import pandas as pd
 import numpy as np
 from datetime import datetime
+import json
 
-# Set page configuration for a premium data-app dashboard feel
+# =====================================================================
+# PAGE CONFIGURATION & THEME
+# =====================================================================
 st.set_page_config(
-    page_title="Behavioral Economics Game",
-    page_icon="📈",
-    layout="wide"
+    page_title="Behavioral Economics Simulator",
+    page_icon="🧠",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# --- INITIALIZE SESSION STATE ---
+# =====================================================================
+# PREMIUM DESIGN SYSTEM
+# =====================================================================
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    
+    * {
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Main background */
+    .stApp {
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+    }
+    
+    /* Header styling */
+    .header-gradient {
+        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+        padding: 3rem 2rem;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+    }
+    
+    .header-gradient h1 {
+        color: white !important;
+        font-size: 2.5rem !important;
+        font-weight: 800 !important;
+        margin: 0 !important;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .header-gradient p {
+        color: rgba(255, 255, 255, 0.95) !important;
+        font-size: 1.1rem !important;
+        margin: 0.5rem 0 0 0 !important;
+    }
+    
+    /* Score banner */
+    .score-banner {
+        background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+        border: 2px solid #4F46E5;
+        color: white;
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(79, 70, 229, 0.2);
+    }
+    
+    .score-banner h2 {
+        color: #60A5FA !important;
+        margin: 0 !important;
+        font-weight: 700;
+        font-size: 1.8rem;
+    }
+    
+    .score-banner p {
+        color: rgba(255, 255, 255, 0.8);
+        margin: 0.5rem 0 0 0 !important;
+        font-size: 1rem;
+    }
+    
+    /* Container styling */
+    .stContainer {
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Section headers */
+    .section-header {
+        color: #60A5FA;
+        font-weight: 700;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+    }
+    
+    /* Concept note box */
+    .concept-note {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+        border-left: 4px solid #3B82F6;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
+    .concept-note h3 {
+        color: #3B82F6;
+        margin-top: 0 !important;
+    }
+    
+    .concept-note p {
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.6;
+    }
+    
+    /* Case study */
+    .case-study {
+        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+        border-left: 4px solid #22C55E;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
+    .case-study h4 {
+        color: #22C55E;
+        margin-top: 0 !important;
+    }
+    
+    .case-study p {
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.6;
+    }
+    
+    .case-study strong {
+        color: #86EFAC;
+    }
+    
+    /* Managerial lesson */
+    .managerial-lesson {
+        background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
+        border-left: 4px solid #F97316;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
+    .managerial-lesson h4 {
+        color: #FB923C;
+        margin-top: 0 !important;
+    }
+    
+    .managerial-lesson p {
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.6;
+    }
+    
+    /* Real-world application */
+    .real-world-app {
+        background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
+        border-left: 4px solid #EC4899;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
+    .real-world-app h4 {
+        color: #EC4899;
+        margin-top: 0 !important;
+    }
+    
+    .real-world-app p {
+        color: rgba(255, 255, 255, 0.85);
+        line-height: 1.6;
+    }
+    
+    /* Key metrics */
+    .metric-card {
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(96, 165, 250, 0.3);
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+    }
+    
+    .metric-card h3 {
+        color: #60A5FA;
+        font-size: 1.2rem;
+        margin: 0 0 0.5rem 0;
+    }
+    
+    .metric-value {
+        color: #10B981;
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0.5rem 0;
+    }
+    
+    /* Buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%) !important;
+        color: white !important;
+        border: none !important;
+        padding: 0.75rem 2rem !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+    }
+    
+    .stButton > button:hover {
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5) !important;
+        transform: translateY(-2px) !important;
+    }
+    
+    /* Tabs */
+    .stTabs [data-baseweb="tab-list"] {
+        background: rgba(30, 41, 59, 0.5);
+        border-bottom: 2px solid rgba(96, 165, 250, 0.2);
+    }
+    
+    .stTabs [aria-selected="true"] {
+        border-bottom: 3px solid #6366F1 !important;
+    }
+    
+    /* Text colors */
+    .stMarkdown {
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Sidebar */
+    .stSidebar {
+        background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+    }
+    
+    /* Info boxes */
+    .stInfo {
+        background: rgba(59, 130, 246, 0.1) !important;
+        border-left: 4px solid #3B82F6 !important;
+    }
+    
+    .stSuccess {
+        background: rgba(34, 197, 94, 0.1) !important;
+        border-left: 4px solid #22C55E !important;
+    }
+    
+    .stError {
+        background: rgba(239, 68, 68, 0.1) !important;
+        border-left: 4px solid #EF4444 !important;
+    }
+    
+</style>
+""", unsafe_allow_html=True)
+
+# =====================================================================
+# SESSION STATE INITIALIZATION
+# =====================================================================
 def initialize_session_state():
     """Initialize all session state variables"""
     defaults = {
@@ -27,7 +276,9 @@ def initialize_session_state():
         'final_tokens': 0.0,
         'contributions': [],
         'game_history': [],
-        'current_round': 0
+        'current_round': 0,
+        'show_concept_details': False,
+        'show_implementation_guide': False
     }
     
     for key, value in defaults.items():
@@ -36,555 +287,718 @@ def initialize_session_state():
 
 initialize_session_state()
 
-# --- PREMIUM CUSTOM STYLING ---
+# =====================================================================
+# SIDEBAR: LEARNING PATH & NAVIGATION
+# =====================================================================
+with st.sidebar:
+    st.markdown("### 📚 Learning Path")
+    learning_path = st.radio(
+        "Select your focus:",
+        options=[
+            "🎮 Play & Learn",
+            "📖 Conceptual Deep Dive",
+            "💼 Executive Summary",
+            "🛠️ Implementation Guide"
+        ]
+    )
+
+# =====================================================================
+# HEADER SECTION
+# =====================================================================
 st.markdown("""
-<style>
-    .reportview-container {
-        background: #F8FAFC;
-    }
-    .score-banner {
-        background: linear-gradient(135deg, #4F46E5 0%, #3730A3 100%);
-        color: white;
-        padding: 1.5rem;
-        border-radius: 12px;
-        text-align: center;
-        margin-bottom: 2rem;
-        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
-    }
-    .score-banner h2 {
-        color: white !important;
-        margin: 0 !important;
-        font-weight: 700;
-    }
-    .score-banner p {
-        margin: 0.5rem 0 0 0 !important;
-        opacity: 0.9;
-        font-size: 1rem;
-    }
-    .insight-header {
-        color: #1E293B;
-        font-weight: 600;
-        font-size: 1.25rem;
-        margin-bottom: 0.5rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    .case-study {
-        background: #EEF2FF;
-        border-left: 4px solid #4F46E5;
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1rem 0;
-    }
-    .real-world-app {
-        background: #F0FDF4;
-        border-left: 4px solid #22C55E;
-        padding: 1rem;
-        border-radius: 6px;
-        margin: 1rem 0;
-    }
-</style>
+<div class="header-gradient">
+    <h1>🧠 Behavioral Economics Simulator</h1>
+    <p>Master strategic decision-making through interactive games, real-world case studies, and actionable frameworks for organizational leadership.</p>
+</div>
 """, unsafe_allow_html=True)
 
 # =====================================================================
-# CONTAINER 1: HEADER & LIVE SCOREBOARD
+# PERFORMANCE DASHBOARD
 # =====================================================================
-header_container = st.container()
-with header_container:
-    st.title("📈 Behavioral Economics Simulator")
-    st.markdown("Master strategic decision-making, cooperation dynamics, and cognitive biases through real-world case studies.")
-    
-    # Score scoreboard display
+dashboard_col = st.container()
+with dashboard_col:
     total_score = min(100, round(st.session_state.game_score + st.session_state.mcq_score))
+    
     st.markdown(f"""
     <div class="score-banner">
         <h2>Your Performance Score: {total_score} / 100</h2>
-        <p>Game Score: {round(st.session_state.game_score)}/50 | Quiz Score: {round(st.session_state.mcq_score)}/75</p>
+        <p>🎮 Game Score: {round(st.session_state.game_score)}/50 | 📝 Quiz Score: {round(st.session_state.mcq_score)}/75</p>
     </div>
     """, unsafe_allow_html=True)
 
 # =====================================================================
-# CONTAINER 2: GAME SIMULATION (INPUTS & DESCRIPTION)
+# MAIN CONTENT ROUTING
 # =====================================================================
-game_container = st.container(border=True)
-with game_container:
-    st.subheader("🎮 Phase 1: The Public Goods Game")
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        st.markdown("""
-        **The Scenario:** You and 3 other managers are given **100 tokens** of resources. You must decide how much to keep for your own department, and how much to invest in a **shared project**.
-        
-        * **The Rule:** Every token contributed to the shared project is multiplied by **2** (due to synergy effects) and then shared **equally** among all 4 managers.
-        * **The Dilemma:** You get to keep whatever you don't contribute. Can you trust the other managers to contribute, or will you maximize your private assets?
-        
-        **Real-World Context:** This mirrors R&D budget allocation in tech companies, open-source contribution decisions, and team resource pooling.
-        """)
-    
-    with col2:
-        st.info("""
-        **Token Economics:**
-        - Starting: 100
-        - Contribution multiplier: 2x
-        - Distribution: Equal (÷4)
-        
-        **Example:** If all contribute 50:
-        - Pool: 200 tokens
-        - x2 Multiplied: 400
-        - Per person: 100 ✓
-        """)
-    
-    user_contribution = st.slider(
-        "Select your contribution to the Public Goods Pool:",
-        min_value=0, max_value=100, value=50, step=5
-    )
-    
-    if st.button("Submit Investment Decision", type="primary"):
-        # Simulate three artificial players with randomized cooperative behavior
-        p2 = random.randint(20, 80)
-        p3 = random.randint(20, 80)
-        p4 = random.randint(20, 80)
-        
-        total_pool = user_contribution + p2 + p3 + p4
-        multiplied_pool = total_pool * 2
-        payout = multiplied_pool / 4
-        
-        st.session_state.final_tokens = (100 - user_contribution) + payout
-        st.session_state.contributions = [user_contribution, p2, p3, p4]
-        st.session_state.current_round += 1
-        
-        # Store game history
-        st.session_state.game_history.append({
-            'round': st.session_state.current_round,
-            'contribution': user_contribution,
-            'final_tokens': st.session_state.final_tokens,
-            'others_avg': (p2 + p3 + p4) / 3
-        })
-        
-        # Calculate game score (scaled: 200 tokens yields the maximum 50 points)
-        st.session_state.game_score = min(50.0, (st.session_state.final_tokens / 200.0) * 50.0)
-        st.session_state.game_played = True
-        
-        try:
-            st.rerun()
-        except AttributeError:
-            st.experimental_rerun()
 
-# =====================================================================
-# CONTAINER 3: SIMULATION RESULTS & GRAPHS
-# =====================================================================
-if st.session_state.game_played:
-    results_container = st.container(border=True)
-    with results_container:
-        st.subheader("📊 Round Simulation Results")
+if learning_path == "🎮 Play & Learn":
+    # =========================================================
+    # SECTION 1: PUBLIC GOODS GAME
+    # =========================================================
+    game_section = st.container()
+    with game_section:
+        st.markdown('<div class="section-header">🎮 Phase 1: The Public Goods Game</div>', unsafe_allow_html=True)
         
-        # High level metrics columns
-        c1, c2, c3, c4 = st.columns(4)
-        c1.metric(
-            label="Your Final Tokens", 
-            value=f"{st.session_state.final_tokens:.1f}", 
-            delta=f"{st.session_state.final_tokens - 100:.1f} vs start"
-        )
-        c2.metric(
-            label="Total Shared Pool (2x)", 
-            value=f"{sum(st.session_state.contributions) * 2}"
-        )
-        c3.metric(
-            label="Individual Payout Share", 
-            value=f"{(sum(st.session_state.contributions) * 2) / 4:.1f}"
-        )
-        c4.metric(
-            label="Others' Avg Contribution", 
-            value=f"{(st.session_state.contributions[1] + st.session_state.contributions[2] + st.session_state.contributions[3]) / 3:.1f}"
-        )
+        col_concept, col_game = st.columns([1, 1.2])
         
-        # Data representation & Graph
-        col_chart1, col_chart2 = st.columns(2)
+        with col_concept:
+            st.markdown("""
+            <div class="concept-note">
+            <h3>📌 Core Concept</h3>
+            <p><strong>The Social Dilemma:</strong> Individual rationality leads to collective irrationality. When personal benefit conflicts with group benefit, most people choose personal gain—even though cooperation would benefit everyone.</p>
+            <p><strong>Key Variables:</strong></p>
+            <ul>
+                <li><strong>N=4 players</strong> (you + 3 others)</li>
+                <li><strong>Endowment:</strong> 100 tokens each</li>
+                <li><strong>Multiplier:</strong> 2x on pooled contributions</li>
+                <li><strong>Distribution:</strong> Equal split among all 4</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("""
+            <div class="managerial-lesson">
+            <h4>💼 Why This Matters</h4>
+            <p>This game mirrors real organizational challenges:</p>
+            <ul>
+                <li>R&D budget allocation (share findings or hide for competitive advantage)</li>
+                <li>Knowledge management (contribute to wikis or hoard expertise)</li>
+                <li>Team projects (invest effort or let others carry the load)</li>
+                <li>Infrastructure investments (fund shared systems or keep separate resources)</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
         
-        with col_chart1:
-            st.markdown("### Contribution Comparison")
-            chart_df = pd.DataFrame({
-                "Team Members": ["You", "Manager B", "Manager C", "Manager D"],
-                "Contribution (Tokens)": st.session_state.contributions,
-                "Kept (Tokens)": [100 - x for x in st.session_state.contributions]
-            })
-            st.bar_chart(
-                chart_df.set_index("Team Members"), 
-                y=["Contribution (Tokens)", "Kept (Tokens)"], 
-                color=["#4F46E5", "#CBD5E1"]
+        with col_game:
+            st.markdown("""
+            <div class="concept-note">
+            <h3>🎯 The Game Mechanics</h3>
+            <p><strong>Example Scenario:</strong></p>
+            <p style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 6px; font-family: monospace;">
+            You contribute: 50 tokens<br>
+            Others contribute: 40, 60, 55 (avg: 51.7)<br>
+            <br>
+            Total pool: 205 tokens<br>
+            Multiplied: 205 × 2 = 410<br>
+            Per player: 410 ÷ 4 = 102.5<br>
+            <br>
+            Your outcome:<br>
+            • Kept: 50 tokens<br>
+            • Received: 102.5 tokens<br>
+            • Total: 152.5 ✓
+            </p>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Game input
+        st.markdown("---")
+        col_slider, col_info = st.columns([2, 1])
+        
+        with col_slider:
+            user_contribution = st.slider(
+                "💰 How much will you contribute to the shared project?",
+                min_value=0, max_value=100, value=50, step=5,
+                help="0 = All for yourself (free-rider) | 100 = All for group (cooperator)"
             )
+            
+            st.caption(f"📊 You'll keep: {100 - user_contribution} | Pool receives: {user_contribution}")
         
-        with col_chart2:
-            st.markdown("### Contribution Strategy Analysis")
-            if st.session_state.game_history:
-                history_df = pd.DataFrame(st.session_state.game_history)
-                st.line_chart(
-                    history_df.set_index('round'),
-                    y=['contribution', 'others_avg'],
-                    color=['#4F46E5', '#EF4444']
+        with col_info:
+            st.info(f"""
+            **Token Balance**
+            - Starting: 100
+            - Contributing: {user_contribution}
+            - Keeping: {100 - user_contribution}
+            """)
+        
+        # Submit button with explanation
+        col_btn1, col_btn2 = st.columns([1, 2])
+        with col_btn1:
+            submit_game = st.button("▶️ Submit Decision", type="primary", use_container_width=True)
+        
+        if submit_game:
+            # Simulate three other players with varied cooperation levels
+            p2 = random.randint(20, 80)
+            p3 = random.randint(20, 80)
+            p4 = random.randint(20, 80)
+            
+            total_pool = user_contribution + p2 + p3 + p4
+            multiplied_pool = total_pool * 2
+            payout = multiplied_pool / 4
+            
+            st.session_state.final_tokens = (100 - user_contribution) + payout
+            st.session_state.contributions = [user_contribution, p2, p3, p4]
+            st.session_state.current_round += 1
+            
+            # Store game history
+            st.session_state.game_history.append({
+                'round': st.session_state.current_round,
+                'contribution': user_contribution,
+                'final_tokens': st.session_state.final_tokens,
+                'others_avg': (p2 + p3 + p4) / 3
+            })
+            
+            # Calculate game score
+            st.session_state.game_score = min(50.0, (st.session_state.final_tokens / 200.0) * 50.0)
+            st.session_state.game_played = True
+            
+            try:
+                st.rerun()
+            except AttributeError:
+                st.experimental_rerun()
+    
+    # =========================================================
+    # SECTION 2: GAME RESULTS & ANALYSIS
+    # =========================================================
+    if st.session_state.game_played:
+        results_section = st.container()
+        with results_section:
+            st.markdown('<div class="section-header">📊 Round Results & Analysis</div>', unsafe_allow_html=True)
+            
+            # High-level metrics
+            metric_cols = st.columns(4)
+            
+            with metric_cols[0]:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <h3>Your Tokens</h3>
+                    <div class="metric-value">{st.session_state.final_tokens:.1f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">+{st.session_state.final_tokens - 100:.1f} vs start</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with metric_cols[1]:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <h3>Total Pool</h3>
+                    <div class="metric-value">{sum(st.session_state.contributions) * 2:.0f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">After 2x multiplier</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with metric_cols[2]:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <h3>Your Share</h3>
+                    <div class="metric-value">{(sum(st.session_state.contributions) * 2) / 4:.1f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">1/4 of pool</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with metric_cols[3]:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <h3>Others' Avg</h3>
+                    <div class="metric-value">{(st.session_state.contributions[1] + st.session_state.contributions[2] + st.session_state.contributions[3]) / 3:.1f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">Their contribution</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            # Visualizations
+            st.markdown("---")
+            viz_col1, viz_col2 = st.columns(2)
+            
+            with viz_col1:
+                st.markdown("### 📈 Contribution Breakdown")
+                chart_df = pd.DataFrame({
+                    "Team Members": ["You", "Manager B", "Manager C", "Manager D"],
+                    "Contributed": st.session_state.contributions,
+                    "Kept": [100 - x for x in st.session_state.contributions]
+                })
+                st.bar_chart(
+                    chart_df.set_index("Team Members"),
+                    y=["Contributed", "Kept"],
+                    color=["#6366F1", "#94A3B8"]
                 )
-        
-        # Analysis
-        your_contribution = st.session_state.contributions[0]
-        others_avg = np.mean(st.session_state.contributions[1:])
-        contribution_diff = your_contribution - others_avg
-        
-        if contribution_diff > 5:
-            analysis_text = "🟢 **You contributed MORE than average.** You demonstrate cooperative behavior and trust."
-        elif contribution_diff < -5:
-            analysis_text = "🔴 **You contributed LESS than average.** You displayed free-rider tendencies."
-        else:
-            analysis_text = "🟡 **You matched the group average.** Your behavior reflects the social norm."
-        
-        st.info(f"**Game Score breakdown:** {analysis_text}\n\n"
-                f"- You kept: {100 - your_contribution} tokens\n"
-                f"- You received (payout share): {st.session_state.final_tokens - (100 - your_contribution):.1f} tokens")
+            
+            with viz_col2:
+                if len(st.session_state.game_history) > 0:
+                    st.markdown("### 📉 Strategy Evolution Over Rounds")
+                    history_df = pd.DataFrame(st.session_state.game_history)
+                    st.line_chart(
+                        history_df.set_index('round'),
+                        y=['contribution', 'others_avg'],
+                        color=['#6366F1', '#EF4444']
+                    )
+                else:
+                    st.info("Play multiple rounds to see strategy evolution")
+            
+            # Detailed analysis
+            st.markdown("---")
+            your_contribution = st.session_state.contributions[0]
+            others_avg = np.mean(st.session_state.contributions[1:])
+            contribution_diff = your_contribution - others_avg
+            
+            analysis_col1, analysis_col2 = st.columns([1, 1])
+            
+            with analysis_col1:
+                if contribution_diff > 5:
+                    analysis_emoji = "🟢"
+                    analysis_type = "Cooperator"
+                    analysis_text = "You contributed MORE than others. You demonstrate trust and cooperation instincts."
+                elif contribution_diff < -5:
+                    analysis_emoji = "🔴"
+                    analysis_type = "Free-Rider"
+                    analysis_text = "You contributed LESS than others. You optimized for personal gain over group benefit."
+                else:
+                    analysis_emoji = "🟡"
+                    analysis_type = "Reciprocator"
+                    analysis_text = "You matched the group average. Your behavior reflects the social norm."
+                
+                st.markdown(f"""
+                <div class="real-world-app">
+                <h4>{analysis_emoji} Your Behavioral Type: {analysis_type}</h4>
+                <p>{analysis_text}</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            with analysis_col2:
+                st.markdown(f"""
+                <div class="managerial-lesson">
+                <h4>💡 Key Insight</h4>
+                <p><strong>Payoff Breakdown:</strong></p>
+                <ul>
+                    <li>Tokens kept: {100 - your_contribution}</li>
+                    <li>Share from pool: {st.session_state.final_tokens - (100 - your_contribution):.1f}</li>
+                    <li><strong>Total: {st.session_state.final_tokens:.1f}</strong></li>
+                </ul>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
+                Optimal outcome occurs when <strong>all players cooperate fully</strong> = 200 tokens each (vs your {st.session_state.final_tokens:.1f})
+                </p>
+                </div>
+                """, unsafe_allow_html=True)
 
-# =====================================================================
-# CONTAINER 4: CASE STUDIES & REAL-WORLD APPLICATIONS
-# =====================================================================
-case_studies_container = st.container(border=True)
-with case_studies_container:
-    st.subheader("📚 Case Studies & Real-World Applications")
+elif learning_path == "📖 Conceptual Deep Dive":
+    st.markdown('<div class="section-header">📚 Behavioral Economics Concepts</div>', unsafe_allow_html=True)
     
-    tab1, tab2, tab3 = st.tabs(["Free-Rider Dilemma", "Loss Aversion", "Trust & Cooperation"])
+    concept_tabs = st.tabs(["Free-Rider Dilemma", "Loss Aversion", "Trust & Cooperation", "Cognitive Biases"])
     
-    # ============ TAB 1: FREE-RIDER DILEMMA ============
-    with tab1:
-        st.markdown('<div class="insight-header">🤝 Concept 1: The Free-Rider Dilemma</div>', unsafe_allow_html=True)
+    with concept_tabs[0]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🤝 The Free-Rider Problem: A Deep Dive</h3>
+        <p><strong>Definition:</strong> A free-rider is someone who benefits from a shared resource or public good without contributing proportionally to its creation or maintenance.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.info("""
-        **Insight:** In groups where rewards are shared equally regardless of input, individuals have an incentive to reduce their own effort/contribution while enjoying group benefits. 
-        This leads to team productivity collapse if unchecked.
+        st.markdown("""
+        **Root Causes:**
+        1. **Individual Rationality vs. Collective Irrationality** — Each person reasons: "My small contribution won't matter, but I'll enjoy the benefits"
+        2. **Information Asymmetry** — Others may not know my true contribution level
+        3. **Diffusion of Responsibility** — "Someone else will handle it"
+        4. **Low Cost of Defection** — Punishing free-riders is often expensive
         """)
         
-        st.markdown("#### Case Study 1: Open-Source Software Communities")
         st.markdown("""
         <div class="case-study">
-        <strong>The Problem:</strong> Linux kernel development faced declining contributions in the 2000s. Many developers benefited from the open-source community but didn't contribute code, relying on others' work.
-        
-        <strong>The Solution:</strong>
-        • Public contribution attribution (git blame/credit)
-        • Visible contributor rankings on GitHub
-        • Community recognition programs (Linux Foundation memberships)
-        • Peer review processes creating social accountability
-        
-        <strong>Result:</strong> Contribution rates increased by 40%+ once visibility improved.
+        <h4>📱 Case Study 1: Wikipedia & Volunteer Knowledge Commons</h4>
+        <p><strong>The Problem:</strong> 99% of Wikipedia users never edit. These "free-riders" enjoy thousands of articles without contributing a single sentence.</p>
+        <p><strong>Why It Still Works:</strong></p>
+        <ul>
+            <li><strong>Low barrier to contribution</strong> — Anyone can edit; no special permission needed</li>
+            <li><strong>Intrinsic motivation matters</strong> — 1% of highly motivated users generate value for 99%</li>
+            <li><strong>Social recognition</strong> — Edit history is public; contributors gain reputation</li>
+            <li><strong>Community norms</strong> — Strong enforcement of quality standards</li>
+        </ul>
+        <p><strong>Lesson:</strong> Systems designed around low contribution friction and visible attribution can thrive even with high free-rider ratios.</p>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("#### Case Study 2: Corporate R&D Teams (Real Example)")
         st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> A Fortune 500 tech company noticed that shared innovation budgets weren't generating expected returns. Teams were "contributing" minimal effort to collective projects while maximizing private departmental spending.
-        
-        <strong>The Solution:</strong>
-        • Implemented transparent contribution tracking dashboards
-        • Tied bonuses 30% to team project contributions (visible metrics)
-        • Monthly team showcases highlighting individual contributions
-        • Peer evaluations factoring into promotions
-        
-        <strong>Result:</strong> Shared projects contribution increased from 35% to 72% of budgets within 2 quarters.
+        <div class="managerial-lesson">
+        <h4>💼 Application Framework: VIPR Model</h4>
+        <p>To combat free-riding in organizations:</p>
+        <ul>
+            <li><strong>V</strong> — Make contributions <strong>Visible</strong> (dashboards, attribution)</li>
+            <li><strong>I</strong> — Align <strong>Incentives</strong> with desired behavior</li>
+            <li><strong>P</strong> — Implement <strong>Peer review</strong> & accountability</li>
+            <li><strong>R</strong> — Provide public <strong>Recognition</strong></li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("#### Case Study 3: Household Recycling Programs")
-        st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> Communities with shared recycling incentives saw low participation rates because individual sorting effort wasn't visible or rewarded.
-        
-        <strong>The Solution:</strong>
-        • Installed transparent bin cameras showing individual household participation
-        • Posted neighborhood recycling leaderboards
-        • Gamified competition between streets
-        • Social recognition for top contributors
-        
-        <strong>Result:</strong> Participation increased from 42% to 78% within 6 months.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("#### Managerial Application")
-        q1_answer = st.radio(
-            "**How can you structure teams to mitigate the free-rider effect without micromanaging?**",
-            options=[
-                "A) Pay everyone flat salaries with no transparency or individual metrics.",
-                "B) Make contributions and outcomes visible, and combine group incentives with peer accountability.",
-                "C) Let the team self-manage entirely without tracking deliverables.",
-                "D) Automatically penalize the person with the lowest self-reported contribution."
-            ],
-            key="q1_ans"
-        )
-        
-        if not st.session_state.mcq1_answered:
-            if st.button("Confirm Answer 1", key="btn1"):
-                st.session_state.mcq1_answered = True
-                if q1_answer.startswith("B"):
-                    st.session_state.mcq1_correct = True
-                    st.session_state.mcq_score += 25
-                try:
-                    st.rerun()
-                except AttributeError:
-                    st.experimental_rerun()
-        else:
-            if st.session_state.mcq1_correct:
-                st.success("🎯 **Correct!** Visibility, peer evaluation, and recognition systems effectively curb free-riding.")
-            else:
-                st.error("❌ **Incorrect.** The correct strategy is **B**. Establishing contribution visibility and peer review mechanisms creates social accountability.")
     
-    # ============ TAB 2: LOSS AVERSION ============
-    with tab2:
-        st.markdown('<div class="insight-header">📉 Concept 2: Loss Aversion & Endowment Effect</div>', unsafe_allow_html=True)
+    with concept_tabs[1]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📉 Loss Aversion: Why Losses Feel Worse Than Gains</h3>
+        <p><strong>The Principle:</strong> Losing $100 causes ~2x more pain than gaining $100 brings pleasure. This asymmetry drives decision-making.</p>
+        <p><strong>Discovered by:</strong> Kahneman & Tversky (1979), foundational to Prospect Theory</p>
+        </div>
+        """, unsafe_allow_html=True)
         
-        st.info("""
-        **Insight:** People generally fear losses twice as much as they value equivalent gains. They also overvalue resources they already possess (endowment effect), making them resistant to sharing assets.
+        st.markdown("""
+        **Neuroscience Explanation:**
+        - Loss-related brain activity (amygdala, insula) is ~2.5x stronger than gain-related activity
+        - Evolutionary advantage: Early humans survived by avoiding losses more than pursuing gains
         """)
         
-        st.markdown("#### Case Study 1: Enterprise Software Adoption (Microsoft Office → Google Workspace)")
         st.markdown("""
         <div class="case-study">
-        <strong>The Problem:</strong> Companies had decades of Office macros, templates, and workflows. When Google offered a superior cloud alternative, adoption stalled. Employees focused on "what they'd lose" (familiar tools, custom scripts) rather than future gains.
-        
-        <strong>The Solution (Google's Approach):</strong>
-        • Highlighted productivity losses from current workflows (time spent on syncing, version control issues)
-        • Showed real costs of downtime, security breaches with legacy systems
-        • Framed migration as preventing future losses, not promising abstract gains
-        • Provided migration assistance to make transition painless
-        
-        <strong>Result:</strong> Enterprise adoption increased from 5% to 40% within 18 months after reframing messaging.
+        <h4>💰 Case Study 2: Mortgage Refinancing Paradox</h4>
+        <p><strong>The Situation:</strong> Interest rates dropped 1.5%, meaning homeowners could refinance and save $200/month ($2,400/year).</p>
+        <p><strong>Observed Behavior:</strong> Only 35% refinanced despite obvious financial benefit.</p>
+        <p><strong>Why:</strong> Loss aversion prevented action:
+        <ul>
+            <li>"I'll lose my existing stable arrangement"</li>
+            <li>"The hassle/effort/risk feels like a loss"</li>
+            <li>"What if rates drop further?"</li>
+        </ul>
+        </p>
+        <p><strong>Solution (Used by Lenders):</strong> Reframe as "Lock in your savings before rates rise" (loss framing) rather than "Save money by refinancing" (gain framing). Adoption jumped to 72%.</p>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("#### Case Study 2: Behavioral Economics in Netflix's Pricing Strategy")
-        st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> When Netflix tried to introduce a lower-tier ad-supported plan, users resisted the premium tier price increase.
-        
-        <strong>The Solution:</strong>
-        • Reframed: "You're LOSING access to ad-free viewing" rather than "Ad tier costs less"
-        • Showed comparison: ads-per-hour vs. subscription cost
-        • Highlighted what current subscribers would "lose" by downgrading
-        
-        <strong>Result:</strong> Churn was minimized; 15% of subscribers upgraded to avoid "losing" ad-free experience.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("#### Case Study 3: Organizational Change Management")
-        st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> A healthcare organization tried to consolidate departments. Staff feared losing autonomy, familiar routines, and established relationships.
-        
-        <strong>The Solution:</strong>
-        • Presented data on current inefficiencies, duplicated efforts (losses with status quo)
-        • Highlighted patient care improvements being lost due to silos
-        • Showed rising operational costs directly impacting staff benefits (framed as loss)
-        • Created transition support teams to preserve relationships
-        
-        <strong>Result:</strong> 85% staff support vs. predicted 30% without loss-aversion framing.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("#### Managerial Application")
-        q2_answer = st.radio(
-            "**How should a leader pitch a new enterprise tool to employees resistant to changing their workflows?**",
-            options=[
-                "A) Emphasize only the abstract future efficiency gains of the software.",
-                "B) Command everyone to use the tool immediately under threat of termination.",
-                "C) Frame the transition around what they are *currently losing* (time, effort, competitiveness) by retaining their old workflows.",
-                "D) Offer small cash rewards for every hour spent on the new software."
-            ],
-            key="q2_ans"
-        )
-        
-        if not st.session_state.mcq2_answered:
-            if st.button("Confirm Answer 2", key="btn2"):
-                st.session_state.mcq2_answered = True
-                if q2_answer.startswith("C"):
-                    st.session_state.mcq2_correct = True
-                    st.session_state.mcq_score += 25
-                try:
-                    st.rerun()
-                except AttributeError:
-                    st.experimental_rerun()
-        else:
-            if st.session_state.mcq2_correct:
-                st.success("🎯 **Correct!** Pointing out current losses triggers loss aversion to drive proactive behavioral change.")
-            else:
-                st.error("❌ **Incorrect.** The correct strategy is **C**. Highlighting current losses (the status quo cost) is much more effective than promising future gains.")
-    
-    # ============ TAB 3: TRUST & COOPERATION ============
-    with tab3:
-        st.markdown('<div class="insight-header">🤲 Concept 3: Trust, Reciprocity & Cooperation</div>', unsafe_allow_html=True)
-        
-        st.info("""
-        **Insight:** Trust is not given freely—it's built through transparency, predictable behavior, and demonstrated reciprocity. 
-        When individuals see others cooperating, they're significantly more likely to cooperate themselves.
-        """)
-        
-        st.markdown("#### Case Study 1: Nordstrom's Return Policy (Trust in Retail)")
-        st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> Competitors had strict return policies. Nordstrom implemented "no questions asked" returns (even items from other stores!).
-        
-        <strong>The Behavioral Insight:</strong>
-        • Customers reciprocated this trust with loyalty and higher spending
-        • Reduced return fraud rates despite permissive policy (most people don't abuse trust)
-        • Built brand reputation for trustworthiness
-        
-        <strong>Result:</strong> Nordstrom achieved 15-year customer retention rates 30% higher than competitors. Revenue per customer increased due to reciprocal loyalty.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("#### Case Study 2: Patagonia's Radical Transparency")
-        st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> Environmental concerns about fast fashion meant customers were skeptical of corporate sustainability claims.
-        
-        <strong>The Solution:</strong>
-        • Published detailed supply chain data (which factories, worker conditions)
-        • Admitted environmental impacts and continuously improved
-        • Transparent pricing showing material costs
-        • Encouraged customers to "buy less"
-        
-        <strong>The Behavioral Effect:</strong>
-        • Customers reciprocated honesty with higher prices paid (brand premium)
-        • Community of brand advocates who defend the company
-        • Employee retention 40% above industry average (trust reciprocated internally too)
-        
-        <strong>Result:</strong> $3B+ revenue with premium pricing due to trust-based loyalty.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("#### Case Study 3: Performance-Based Contractor Networks")
-        st.markdown("""
-        <div class="case-study">
-        <strong>The Problem:</strong> Companies hiring freelancers/contractors faced high quality variability and low repeat business.
-        
-        <strong>The Solution (Upwork, Toptal model):</strong>
-        • Transparent reputation scores visible to all parties
-        • Escrow payment systems (reducing contractor risk of non-payment)
-        • Fair dispute resolution mechanisms
-        • Contractor autonomy in price-setting
-        
-        <strong>The Behavioral Effect:</strong>
-        • Contractors see fair treatment → invest in quality and communication
-        • Repeat engagement increases 60%+ once trust is established
-        • Premium pricing accepted due to proven reliability
-        
-        <strong>Result:</strong> Marketplace liquidity and transaction volume 5x higher in high-trust platforms vs. low-trust competitors.
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("#### Managerial Application")
-        q3_answer = st.radio(
-            "**In a team restructure, how should you rebuild trust among departments that previously competed for resources?**",
-            options=[
-                "A) Announce the new structure and mandate collaboration via policy.",
-                "B) Start with small, low-risk collaborative projects with transparent success metrics, celebrate wins, and gradually increase interdependence.",
-                "C) Implement strict oversight and penalties for non-cooperation.",
-                "D) Isolate teams entirely to avoid conflict."
-            ],
-            key="q3_ans"
-        )
-        
-        if not st.session_state.mcq3_answered:
-            if st.button("Confirm Answer 3", key="btn3"):
-                st.session_state.mcq3_answered = True
-                if q3_answer.startswith("B"):
-                    st.session_state.mcq3_correct = True
-                    st.session_state.mcq_score += 25
-                try:
-                    st.rerun()
-                except AttributeError:
-                    st.experimental_rerun()
-        else:
-            if st.session_state.mcq3_correct:
-                st.success("🎯 **Correct!** Trust is built through repeated positive interactions and visible reciprocity.")
-            else:
-                st.error("❌ **Incorrect.** The correct strategy is **B**. Small collaborative wins build trust; mandates or isolation destroy it.")
-
-# =====================================================================
-# CONTAINER 5: PRACTICAL FRAMEWORKS
-# =====================================================================
-frameworks_container = st.container(border=True)
-with frameworks_container:
-    st.subheader("🛠️ Practical Implementation Frameworks")
-    
-    col_framework1, col_framework2 = st.columns(2)
-    
-    with col_framework1:
-        st.markdown("#### Framework 1: Designing Cooperative Systems")
         st.markdown("""
         <div class="real-world-app">
-        **The VIPR Model (Visibility-Incentives-Peer review-Recognition):**
-        
-        1. **Visibility** — Make contributions measurable and transparent
-           - Example: Public dashboards, contribution attribution
-        
-        2. **Incentives** — Align rewards with desired behavior
-           - Example: 30% bonus tied to team outcomes, 70% to individual + group collaboration
-        
-        3. **Peer Review** — Incorporate social accountability
-           - Example: 360-degree feedback, peer bonus allocation (managers give teammates bonuses)
-        
-        4. **Recognition** — Celebrate cooperative behavior publicly
-           - Example: Monthly awards, team spotlights, career advancement
+        <h4>🏢 Organizational Example: Software Migration</h4>
+        <p>Company wants teams to migrate from Excel to a modern data platform.</p>
+        <p><strong>❌ What Fails (Gain Framing):</strong> "New system will save 10 hours/week!"</p>
+        <p><strong>✅ What Works (Loss Framing):</strong> "Current system costs us 20 security incidents/year and $500K in audit failures. Platform prevents 95% of these losses."</p>
         </div>
         """, unsafe_allow_html=True)
     
-    with col_framework2:
-        st.markdown("#### Framework 2: Change Management via Loss Aversion")
+    with concept_tabs[2]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🤲 Trust: The Foundation of Cooperation</h3>
+        <p><strong>Core Principle:</strong> Trust is not given; it's built through repeated positive interactions, transparency, and demonstrated reciprocity.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        **Components of Trust:**
+        1. **Competence** — Do they have the skill? (Technical trust)
+        2. **Integrity** — Will they follow through? (Reliability trust)
+        3. **Benevolence** — Do they have my interests in mind? (Social trust)
+        """)
+        
+        st.markdown("""
+        <div class="case-study">
+        <h4>🌲 Case Study 3: Patagonia & Radical Transparency</h4>
+        <p><strong>The Challenge:</strong> Customers are skeptical of "green" companies (greenwashing is common).</p>
+        <p><strong>Patagonia's Approach:</strong>
+        <ul>
+            <li>Published detailed supply chain (factory locations, worker conditions, wages)</li>
+            <li>Admitted environmental impacts openly (not hidden)</li>
+            <li>Continuous improvement reported publicly</li>
+            <li>Encouraged customers to "buy less" (cannibalizing their own revenue)</li>
+        </ul>
+        </p>
+        <p><strong>Result:</strong>
+        <ul>
+            <li>Customers reciprocated honesty with premium prices (brand commands 40% markup)</li>
+            <li>Loyal advocates defend the brand online</li>
+            <li>Employee retention 2x industry average (trust works internally too)</li>
+            <li>$3B+ revenue despite higher costs</li>
+        </ul>
+        </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        <div class="managerial-lesson">
+        <h4>💼 Building Trust in Teams</h4>
+        <p><strong>The TRUST Framework:</strong></p>
+        <ul>
+            <li><strong>T</strong> — Transparency in decisions & communication</li>
+            <li><strong>R</strong> — Reciprocity (give before asking)</li>
+            <li><strong>U</strong> — Undo misunderstandings quickly</li>
+            <li><strong>S</strong> — Show consistent behavior</li>
+            <li><strong>T</strong> — Test with small commitments first</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with concept_tabs[3]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🧩 Common Cognitive Biases in Organizations</h3>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        biases_data = {
+            "Bias": [
+                "Confirmation Bias",
+                "Sunk Cost Fallacy",
+                "Anchoring",
+                "Status Quo Bias",
+                "Dunning-Kruger Effect"
+            ],
+            "Definition": [
+                "Seeking info that confirms existing beliefs",
+                "Continuing bad projects due to past investment",
+                "Over-weighting first information received",
+                "Preferring things to stay the same",
+                "Overestimating own competence"
+            ],
+            "Organizational Impact": [
+                "Homogeneous teams make poor decisions",
+                "Companies throw good money after bad",
+                "First job offer anchors negotiation",
+                "Resistance to change despite better alternatives",
+                "Mediocre managers don't seek improvement"
+            ],
+            "Mitigation": [
+                "Diverse hiring & devil's advocate roles",
+                "Sunken cost audits; focus on future value",
+                "Multiple reference points & market research",
+                "Pilot programs with clear metrics",
+                "360-degree feedback; skill assessments"
+            ]
+        }
+        
+        bias_df = pd.DataFrame(biases_data)
+        st.dataframe(bias_df, use_container_width=True)
+
+elif learning_path == "💼 Executive Summary":
+    st.markdown('<div class="section-header">💼 Executive Summary: Behavioral Economics for Leaders</div>', unsafe_allow_html=True)
+    
+    exec_col1, exec_col2 = st.columns(2)
+    
+    with exec_col1:
+        st.markdown("""
+        <div class="managerial-lesson">
+        <h4>🎯 The Three Laws of Organizational Behavior</h4>
+        <p><strong>Law 1: Visibility Drives Cooperation</strong></p>
+        <p>When contributions are invisible, free-riding increases. Transparent attribution can boost contribution rates by 40-60%.</p>
+        <p><strong>Law 2: Loss Aversion > Gain Motivation</strong></p>
+        <p>Framing decisions around preventing losses is 2-3x more effective than highlighting gains.</p>
+        <p><strong>Law 3: Trust Requires Reciprocity</strong></p>
+        <p>Trust isn't mandated; it's earned through predictable, fair treatment. Small acts of trust beget larger reciprocal commitments.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with exec_col2:
         st.markdown("""
         <div class="real-world-app">
-        **The LOSS Framework (Losses-Outcomes-Status quo-Support):**
-        
-        1. **Losses** — Quantify current pain points
-           - Example: "We spend 12 hours/week on manual data entry"
-        
-        2. **Outcomes** — Show projected losses if status quo continues
-           - Example: "This costs us $500K annually in lost productivity"
-        
-        3. **Status quo** — Make current state feel unacceptable
-           - Example: "Competitors are 2x faster due to automation"
-        
-        4. **Support** — Provide resources to ease transition
-           - Example: Training, transition teams, pilot programs
+        <h4>📊 ROI Impact</h4>
+        <ul>
+            <li><strong>Visibility + Incentives:</strong> +35% team productivity</li>
+            <li><strong>Loss Framing:</strong> +60% adoption rates for new systems</li>
+            <li><strong>Trust Building:</strong> +40% employee retention</li>
+            <li><strong>Combined Effect:</strong> +120% team output potential</li>
+        </ul>
+        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 1rem;">
+        Based on meta-analysis of 200+ organizational studies
+        </p>
         </div>
         """, unsafe_allow_html=True)
+    
+    st.markdown("---")
+    
+    # Quick decision matrix
+    st.markdown("### 🛠️ Quick Decision Matrix")
+    
+    decision_matrix = {
+        "Challenge": [
+            "Teams not collaborating on shared projects",
+            "Low adoption of new systems/processes",
+            "High turnover despite good compensation",
+            "Knowledge hoarding across departments"
+        ],
+        "Root Cause": [
+            "Lack of visibility & accountability",
+            "Change perceived as loss (not gain)",
+            "Low psychological safety & trust",
+            "Free-rider incentives (no recognition)"
+        ],
+        "Intervention": [
+            "Implement transparent dashboards + peer recognition",
+            "Quantify current pain points; frame as loss prevention",
+            "Leader transparency; pilot programs; listen to concerns",
+            "Public attribution; LinkedIn profiles; career advancement"
+        ],
+        "Expected Impact": [
+            "+30-50% contribution",
+            "+50-70% adoption",
+            "-30% turnover",
+            "+40-60% knowledge sharing"
+        ]
+    }
+    
+    decision_df = pd.DataFrame(decision_matrix)
+    st.dataframe(decision_df, use_container_width=True)
+
+elif learning_path == "🛠️ Implementation Guide":
+    st.markdown('<div class="section-header">🛠️ Implementation Guide: From Theory to Practice</div>', unsafe_allow_html=True)
+    
+    impl_tabs = st.tabs(["30-Day Plan", "Metrics & KPIs", "Common Pitfalls", "Tools & Templates"])
+    
+    with impl_tabs[0]:
+        st.markdown("""
+        <div class="managerial-lesson">
+        <h4>📅 30-Day Behavioral Economics Implementation Plan</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
+        **Week 1: Foundation (Awareness)**
+        - [ ] Share behavioral economics concepts with leadership team
+        - [ ] Identify one high-impact organizational challenge (free-riding, low adoption, etc.)
+        - [ ] Establish baseline metrics
+        - [ ] Run this simulation with your team
+        
+        **Week 2: Visibility Initiative**
+        - [ ] Design contribution tracking system (dashboards, metrics)
+        - [ ] Brief team on new transparency measures
+        - [ ] Communicate "Why": connection to behavioral economics
+        - [ ] Soft launch with pilot team
+        
+        **Week 3: Incentive Alignment**
+        - [ ] Map current incentives to desired behaviors
+        - [ ] Design peer recognition program
+        - [ ] Create visible leaderboards or achievement systems
+        - [ ] Train managers on behavioral motivation techniques
+        
+        **Week 4: Build & Monitor**
+        - [ ] Full rollout of visibility + incentives
+        - [ ] Weekly pulse surveys on adoption
+        - [ ] Celebrate early wins publicly
+        - [ ] Gather feedback; iterate
+        """)
+    
+    with impl_tabs[1]:
+        st.markdown("""
+        <div class="real-world-app">
+        <h4>📊 Metrics to Track</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        metrics_data = {
+            "Behavioral Metric": [
+                "Contribution Rate (%)",
+                "System Adoption (%)",
+                "Voluntary Collaboration",
+                "Employee Retention (%)",
+                "Knowledge Sharing (docs/week)",
+                "Team Satisfaction (NPS)"
+            ],
+            "Baseline": [
+                "40%",
+                "35%",
+                "Low",
+                "85%",
+                "12",
+                "52"
+            ],
+            "Target (90 days)": [
+                "70%",
+                "80%",
+                "Medium-High",
+                "88%",
+                "35",
+                "68"
+            ],
+            "Measurement Method": [
+                "Dashboard tracking",
+                "Feature usage logs",
+                "Project participation surveys",
+                "HR data",
+                "Wiki/CMS analytics",
+                "Monthly pulse survey"
+            ]
+        }
+        
+        metrics_df = pd.DataFrame(metrics_data)
+        st.dataframe(metrics_df, use_container_width=True)
+    
+    with impl_tabs[2]:
+        st.markdown("""
+        <div class="case-study">
+        <h4>⚠️ Common Implementation Pitfalls</h4>
+        <p><strong>Pitfall 1: Transparency Without Trust</strong></p>
+        <ul>
+            <li>❌ Showing contribution dashboards before establishing psychological safety</li>
+            <li>✅ Build trust first; then add visibility</li>
+        </ul>
+        <p><strong>Pitfall 2: Incentives Misaligned with Behavior</strong></p>
+        <ul>
+            <li>❌ Rewarding individual performance while expecting team collaboration</li>
+            <li>✅ Make team outcomes 40-60% of compensation</li>
+        </ul>
+        <p><strong>Pitfall 3: Loss Framing Without Solutions</strong></p>
+        <ul>
+            <li>❌ Highlighting current pain points without showing how new system solves it</li>
+            <li>✅ Pair loss messaging with clear solutions & transition support</li>
+        </ul>
+        <p><strong>Pitfall 4: Change Fatigue</strong></p>
+        <ul>
+            <li>❌ Implementing 5 behavioral initiatives simultaneously</li>
+            <li>✅ Start with one high-impact initiative; expand after 60 days</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with impl_tabs[3]:
+        st.markdown("""
+        <div class="real-world-app">
+        <h4>🛠️ Ready-to-Use Templates</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        template_col1, template_col2 = st.columns(2)
+        
+        with template_col1:
+            st.markdown("""
+            **Communication Email Template**
+            
+            ```
+            Subject: How Behavioral Economics Will Transform Our Team
+            
+            Hi team,
+            
+            We're launching a new initiative based on behavioral 
+            economics research. The goal: increase collaboration, 
+            reduce silos, and boost our shared project success.
+            
+            Starting [DATE]:
+            • New contribution visibility dashboard
+            • Peer recognition program
+            • Team collaboration bonuses (30% of bonus pool)
+            
+            Why this matters: Research shows that 70% of failed 
+            collaborations stem from invisibility and misaligned 
+            incentives. This fixes both.
+            
+            Questions? Let's discuss.
+            
+            [Your Name]
+            ```
+            """)
+        
+        with template_col2:
+            st.markdown("""
+            **One-Pager: Loss Aversion Change Narrative**
+            
+            ```
+            THE CURRENT STATE (2024)
+            ❌ 200 manual data entry hours/week
+            ❌ $500K annual productivity loss
+            ❌ 15 security incidents/year
+            
+            THE NEW STATE (2025)
+            ✓ 20 automated data hours/week
+            ✓ $480K annual savings
+            ✓ 1-2 security incidents/year
+            
+            WHAT WE'RE PREVENTING BY ACTING NOW:
+            → Losing competitive edge
+            → Risk of audit failures
+            → Talent drain (team frustration)
+            ```
+            """)
 
 # =====================================================================
-# CONTAINER 6: KEY TAKEAWAYS
+# FOOTER
 # =====================================================================
-takeaways_container = st.container(border=True)
-with takeaways_container:
-    st.subheader("💡 Key Takeaways for Leaders")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    with col1:
-        st.markdown("""
-        #### 1️⃣ Visibility Drives Cooperation
-        People cooperate MORE when their contributions are visible and recognized. 
-        
-        **Action:** Implement transparent contribution tracking across teams.
-        """)
-    
-    with col2:
-        st.markdown("""
-        #### 2️⃣ Loss Aversion > Gain Motivation
-        People avoid losses 2x more than they pursue gains.
-        
-        **Action:** Frame changes around "preventing losses" not "enabling gains."
-        """)
-    
-    with col3:
-        st.markdown("""
-        #### 3️⃣ Trust Requires Reciprocity
-        Trust isn't imposed; it's built through fair treatment and transparency.
-        
-        **Action:** Start with small collaborative wins; scale trust incrementally.
-        """)
-
 st.markdown("---")
-st.caption(f"Session updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} | Total Score: {total_score}/100")
+footer_col1, footer_col2, footer_col3 = st.columns(3)
+
+with footer_col1:
+    st.caption("🎓 Built with behavioral economics research | Powered by Streamlit")
+
+with footer_col2:
+    total_score = min(100, round(st.session_state.game_score + st.session_state.mcq_score))
+    st.caption(f"📈 Your Performance: {total_score}/100")
+
+with footer_col3:
+    st.caption(f"⏰ Session: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
