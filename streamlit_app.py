@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # =====================================================================
-# PREMIUM DESIGN SYSTEM
+# PREMIUM DESIGN SYSTEM (Same as previous)
 # =====================================================================
 st.markdown("""
 <style>
@@ -137,10 +137,6 @@ st.markdown("""
         line-height: 1.6;
     }
     
-    .case-study strong {
-        color: #86EFAC;
-    }
-    
     /* Managerial lesson */
     .managerial-lesson {
         background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
@@ -253,7 +249,12 @@ def initialize_session_state():
         'costs': 0.0,
         'demand': 0,
         'game_history': [],
-        'current_round': 0
+        'current_round': 0,
+        'q1_answered': False, 'q1_correct': False,
+        'q2_answered': False, 'q2_correct': False,
+        'q3_answered': False, 'q3_correct': False,
+        'q4_answered': False, 'q4_correct': False,
+        'quiz_submitted': False
     }
     
     for key, value in defaults.items():
@@ -272,6 +273,7 @@ with st.sidebar:
         options=[
             "🎮 Play & Learn",
             "📖 Conceptual Deep Dive",
+            "📝 Knowledge Check",
             "💼 Executive Summary",
             "🛠️ Implementation Guide"
         ]
@@ -306,9 +308,6 @@ with dashboard_col:
 # =====================================================================
 
 if learning_path == "🎮 Play & Learn":
-    # =========================================================
-    # SECTION 1: THE MARKET SIMULATION GAME
-    # =========================================================
     game_section = st.container()
     with game_section:
         st.markdown('<div class="section-header">🎮 Phase 1: The Product Launch Simulation</div>', unsafe_allow_html=True)
@@ -344,7 +343,6 @@ if learning_path == "🎮 Play & Learn":
             </div>
             """, unsafe_allow_html=True)
             
-            # Game inputs
             budget_allocation = st.slider(
                 "⚖️ Budget Trade-off (Total: $100k)",
                 min_value=0, max_value=100, value=50, step=10,
@@ -366,19 +364,13 @@ if learning_path == "🎮 Play & Learn":
                 submit_game = st.button("▶️ Run Market Model", type="primary", use_container_width=True)
             
             if submit_game:
-                # Economic Model: Demand Calculation
-                # Base demand driven by marketing
                 base_demand = 1000 + (marketing_budget / 20)
-                # Price sensitivity reduced by R&D (better product)
                 price_sensitivity = 20 - (rd_budget / 10000)
-                
-                # Calculate actual demand (cannot be negative)
                 calculated_demand = max(0, int(base_demand - (price_sensitivity * price)))
                 
-                # Financials
                 revenue = calculated_demand * price
-                fixed_costs = 100000 # The budget
-                variable_costs = calculated_demand * 15 # $15 to make each unit
+                fixed_costs = 100000
+                variable_costs = calculated_demand * 15
                 total_costs = fixed_costs + variable_costs
                 profit = revenue - total_costs
                 
@@ -388,7 +380,6 @@ if learning_path == "🎮 Play & Learn":
                 st.session_state.demand = calculated_demand
                 st.session_state.current_round += 1
                 
-                # Store history
                 st.session_state.game_history.append({
                     'round': st.session_state.current_round,
                     'price': price,
@@ -397,21 +388,16 @@ if learning_path == "🎮 Play & Learn":
                     'demand': calculated_demand
                 })
                 
-                # Calculate game score based on hitting a good profit threshold (e.g., > $50k gets max points)
                 normalized_score = max(0, min(50, (profit / 80000) * 50))
                 st.session_state.game_score = normalized_score
                 st.session_state.game_played = True
                 
                 st.rerun()
-    
-    # =========================================================
-    # SECTION 2: GAME RESULTS & ANALYSIS
-    # =========================================================
+
     if st.session_state.game_played:
         results_section = st.container()
         with results_section:
             st.markdown('<div class="section-header">📊 Market Results & Economic Analysis</div>', unsafe_allow_html=True)
-            
             metric_cols = st.columns(4)
             
             with metric_cols[0]:
@@ -451,7 +437,6 @@ if learning_path == "🎮 Play & Learn":
                 </div>
                 """, unsafe_allow_html=True)
             
-            # Visualizations
             st.markdown("---")
             viz_col1, viz_col2 = st.columns(2)
             
@@ -468,31 +453,20 @@ if learning_path == "🎮 Play & Learn":
                 st.markdown("""
                 <div class="real-world-app">
                 <h4>🔍 Economic Deconstruction</h4>
-                <p><strong>Trade-offs:</strong> Your budget allocation forced a choice between building brand awareness (Marketing) and reducing price sensitivity (R&D). This is <em>Opportunity Cost</em> in action.</p>
-                <p><strong>Prices & Markets:</strong> If your profit is low, you likely hit the elastic part of the demand curve, where a high price collapsed your unit sales, or you priced too low to cover your fixed costs.</p>
-                <p><strong>Theories & Models:</strong> The backend of this game relies on a simplified linear demand curve model. It ignores competitor responses (Ceteris Paribus assumption).</p>
+                <p><strong>Trade-offs:</strong> Your budget allocation forced a choice between building brand awareness and reducing price sensitivity. This is <em>Opportunity Cost</em>.</p>
+                <p><strong>Prices & Markets:</strong> If profit is low, you likely hit the elastic part of the demand curve where high prices collapsed sales, or you priced too low to cover fixed costs.</p>
                 </div>
                 """, unsafe_allow_html=True)
 
 elif learning_path == "📖 Conceptual Deep Dive":
     st.markdown('<div class="section-header">📚 Managerial Economics Concepts</div>', unsafe_allow_html=True)
-    
     concept_tabs = st.tabs(["Trade-offs & Opportunity Cost", "Prices & Markets", "Theories & Models", "Positive vs. Normative"])
     
     with concept_tabs[0]:
         st.markdown("""
         <div class="concept-note">
         <h3>⚖️ Trade-offs & Opportunity Cost</h3>
-        <p><strong>Definition:</strong> Scarcity dictates that resources (time, money, labor) are limited. Choosing one path inherently means sacrificing another. The value of the next best alternative given up is the <strong>Opportunity Cost</strong>.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="case-study">
-        <h4>🏢 Case Study: Capital Allocation in Big Tech</h4>
-        <p><strong>The Situation:</strong> A tech company has $5B in surplus cash.</p>
-        <p><strong>The Trade-off:</strong> They can either issue a special dividend to shareholders OR invest in a new AI research division.</p>
-        <p><strong>The Lesson:</strong> If they choose the dividend, the opportunity cost is the potential future monopoly profits from the AI division. Managers must calculate the Expected Value of both paths to ensure resources flow to their most productive use.</p>
+        <p><strong>Definition:</strong> Scarcity dictates that resources are limited. Choosing one path inherently means sacrificing another. The value of the next best alternative given up is the <strong>Opportunity Cost</strong>.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -504,36 +478,11 @@ elif learning_path == "📖 Conceptual Deep Dive":
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("""
-        <div class="case-study">
-        <h4>🚕 Case Study: Uber's Surge Pricing</h4>
-        <p><strong>The Mechanism:</strong> When demand for rides spikes (e.g., after a concert), standard prices lead to a shortage (Quantity Demanded > Quantity Supplied).</p>
-        <p><strong>The Solution:</strong> Uber's algorithm dynamically raises the price. This accomplishes two market functions simultaneously:</p>
-        <ul>
-            <li><strong>Suppresses Demand:</strong> Price-sensitive riders wait or take the bus.</li>
-            <li><strong>Incentivizes Supply:</strong> Off-duty drivers log on to capture the premium.</li>
-        </ul>
-        <p><strong>The Lesson:</strong> Dynamic pricing forces the market back into equilibrium rapidly.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
     with concept_tabs[2]:
         st.markdown("""
         <div class="concept-note">
         <h3>📐 Theories and Models</h3>
-        <p><strong>Definition:</strong> Economic models are deliberate simplifications of a complex reality. They strip away "noise" to focus on the core variables driving behavior (e.g., assuming <em>Ceteris Paribus</em> - all other things being equal).</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="managerial-lesson">
-        <h4>💼 Why Managers Use Simplified Models</h4>
-        <p>A map that is perfectly true to scale is useless because it's as big as the territory it represents. Models work the same way.</p>
-        <ul>
-            <li><strong>Demand Forecasting Models:</strong> Isolate price and income, ignoring weather or minor fads.</li>
-            <li><strong>Cost-Volume-Profit (CVP) Analysis:</strong> Assumes linear costs to easily calculate break-even points.</li>
-        </ul>
-        <p><em>Rule of thumb for leaders: "All models are wrong, but some are useful." (George Box)</em></p>
+        <p><strong>Definition:</strong> Economic models are deliberate simplifications of a complex reality. They strip away "noise" to focus on the core variables driving behavior.</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -545,24 +494,124 @@ elif learning_path == "📖 Conceptual Deep Dive":
         <p><strong>Normative Economics:</strong> Subjective and value-based. "What ought to be." Rooted in ethics or policy goals.</p>
         </div>
         """, unsafe_allow_html=True)
+
+elif learning_path == "📝 Knowledge Check":
+    st.markdown('<div class="section-header">📝 Check Your Managerial Acumen</div>', unsafe_allow_html=True)
+    st.markdown("Test your understanding of the four core themes. Each correct answer adds **12.5 points** to your total score.")
+    
+    with st.form("quiz_form"):
+        # Theme 1: Trade-offs
+        st.markdown("### 1. Trade-offs & Opportunity Cost")
+        q1 = st.radio(
+            "If a manager chooses to spend $50,000 on new software instead of a marketing campaign that would have reliably generated $60,000 in revenue, what is the opportunity cost of the software?",
+            options=[
+                "A) $50,000",
+                "B) $60,000 in lost revenue",
+                "C) $10,000",
+                "D) The cost of training employees on the new software"
+            ],
+            index=None
+        )
         
-        st.markdown("""
-        <div class="real-world-app">
-        <h4>📊 Spotting the Difference in the Boardroom</h4>
-        <p><strong>Scenario: Minimum Wage Increases</strong></p>
-        <ul>
-            <li><strong>Manager A (Positive):</strong> "If the minimum wage rises to $15/hr, our payroll costs will increase by 12%, and we will need to automate 3 cashier roles to maintain our current margin." <em>(Testable forecasting)</em></li>
-            <li><strong>Manager B (Normative):</strong> "We should voluntarily raise our starting wage to $15/hr because it's the fair thing to do for our community, even if it hurts short-term profits." <em>(Moral judgment)</em></li>
-        </ul>
-        <p><strong>Managerial Application:</strong> Effective leaders use Positive economics to understand reality, and Normative economics to set the organization's mission and values.</p>
-        </div>
-        """, unsafe_allow_html=True)
+        # Theme 2: Prices and Markets
+        st.markdown("---")
+        st.markdown("### 2. Prices and Markets")
+        q2 = st.radio(
+            "When a rideshare app implements 'surge pricing' during a rainstorm, which market mechanisms are primarily at work to restore equilibrium?",
+            options=[
+                "A) It suppresses driver supply and increases rider demand.",
+                "B) It relies on normative economics to make the market fair.",
+                "C) It suppresses rider demand and incentivizes driver supply.",
+                "D) It sets a government-mandated price floor."
+            ],
+            index=None
+        )
+        
+        # Theme 3: Theories and Models
+        st.markdown("---")
+        st.markdown("### 3. Theories and Models")
+        q3 = st.radio(
+            "Why do economic models frequently rely on the assumption of 'Ceteris Paribus' (all other things being equal)?",
+            options=[
+                "A) Because real-world markets never change.",
+                "B) To isolate the effect of a single variable by holding other disruptive factors constant.",
+                "C) To calculate accounting profit rather than economic profit.",
+                "D) It proves that normative economic statements are factually correct."
+            ],
+            index=None
+        )
+        
+        # Theme 4: Positive vs. Normative
+        st.markdown("---")
+        st.markdown("### 4. Positive vs. Normative Economics")
+        q4 = st.radio(
+            "Which of the following boardroom statements is an example of Positive Economics?",
+            options=[
+                "A) 'We ought to prioritize green energy to protect the environment.'",
+                "B) 'It is unfair that our competitors are paying minimum wage.'",
+                "C) 'The government must step in and regulate tech monopolies.'",
+                "D) 'Increasing our product price by 10% will likely reduce unit sales by 15%.'"
+            ],
+            index=None
+        )
+        
+        submit_quiz = st.form_submit_button("Submit Answers", type="primary")
+        
+        if submit_quiz:
+            score = 0.0
+            
+            # Check Q1
+            if q1 == "B) $60,000 in lost revenue":
+                score += 12.5
+                st.session_state.q1_correct = True
+            else:
+                st.session_state.q1_correct = False
+                
+            # Check Q2
+            if q2 == "C) It suppresses rider demand and incentivizes driver supply.":
+                score += 12.5
+                st.session_state.q2_correct = True
+            else:
+                st.session_state.q2_correct = False
+                
+            # Check Q3
+            if q3 == "B) To isolate the effect of a single variable by holding other disruptive factors constant.":
+                score += 12.5
+                st.session_state.q3_correct = True
+            else:
+                st.session_state.q3_correct = False
+                
+            # Check Q4
+            if q4 == "D) 'Increasing our product price by 10% will likely reduce unit sales by 15%.'":
+                score += 12.5
+                st.session_state.q4_correct = True
+            else:
+                st.session_state.q4_correct = False
+                
+            st.session_state.quiz_score = score
+            st.session_state.quiz_submitted = True
+            st.rerun()
+
+    # Show Results after submission
+    if st.session_state.quiz_submitted:
+        st.markdown("---")
+        st.markdown(f"### 🎉 Quiz Results: {st.session_state.quiz_score}/50 points")
+        
+        if not st.session_state.q1_correct:
+            st.error("**Q1 Incorrect:** The opportunity cost is the value of the next best alternative given up, which was the $60,000 in revenue.")
+        if not st.session_state.q2_correct:
+            st.error("**Q2 Incorrect:** Surge pricing raises prices to suppress excess rider demand while incentivizing more drivers to log on and supply rides.")
+        if not st.session_state.q3_correct:
+            st.error("**Q3 Incorrect:** Ceteris Paribus is used in models to strip away noise and see exactly how one variable (like price) affects another (like demand) in isolation.")
+        if not st.session_state.q4_correct:
+            st.error("**Q4 Incorrect:** Positive economics is about testable, objective facts (e.g., forecasting sales volume drops based on price hikes).")
+            
+        if st.session_state.quiz_score == 50:
+            st.success("Perfect score! You have a strong grasp of foundational managerial economics.")
 
 elif learning_path == "💼 Executive Summary":
     st.markdown('<div class="section-header">💼 Executive Summary: The Economic Leader</div>', unsafe_allow_html=True)
-    
     exec_col1, exec_col2 = st.columns(2)
-    
     with exec_col1:
         st.markdown("""
         <div class="managerial-lesson">
@@ -570,75 +619,23 @@ elif learning_path == "💼 Executive Summary":
         <p><strong>1. Embrace Opportunity Cost</strong></p>
         <p>Never look at an investment in isolation. Always ask: "What are we giving up to do this?"</p>
         <p><strong>2. Respect Market Signals</strong></p>
-        <p>Prices are not just math; they are communication. If your inventory is sitting, the market is signaling your price is too high for the perceived value.</p>
-        <p><strong>3. Use Models Safely</strong></p>
-        <p>Rely on economic models for directional guidance, but know their blind spots. Understand the assumptions (Ceteris Paribus) baked into your data.</p>
-        <p><strong>4. Separate Facts from Values</strong></p>
-        <p>Clearly distinguish between positive statements (data) and normative statements (strategy/ethics) during executive debates to avoid endless circular arguments.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with exec_col2:
-        st.markdown("""
-        <div class="real-world-app">
-        <h4>📊 Strategic Impact Matrix</h4>
-        <p>Integrating these concepts yields tangible corporate results:</p>
-        <ul>
-            <li><strong>Opportunity Cost Analysis:</strong> Eliminates "pet projects" and optimizes capital ROI (+15-20% CapEx efficiency).</li>
-            <li><strong>Dynamic Pricing Models:</strong> Captures consumer surplus, directly lifting gross margins.</li>
-            <li><strong>Positive Fact-Finding:</strong> Reduces executive bias in forecasting.</li>
-        </ul>
+        <p>Prices are not just math; they are communication.</p>
         </div>
         """, unsafe_allow_html=True)
 
 elif learning_path == "🛠️ Implementation Guide":
     st.markdown('<div class="section-header">🛠️ Implementation Guide: Economic Thinking in Practice</div>', unsafe_allow_html=True)
-    
-    impl_tabs = st.tabs(["Decision Frameworks", "Meeting Interventions", "Common Pitfalls"])
-    
-    with impl_tabs[0]:
-        st.markdown("""
-        <div class="managerial-lesson">
-        <h4>📅 The Marginal Analysis Framework</h4>
-        <p>How to apply economic thinking to your next major project:</p>
-        <ul>
-            <li><strong>Step 1: Ignore Sunk Costs.</strong> Look only at future costs and future revenues.</li>
-            <li><strong>Step 2: Calculate Marginal Revenue (MR).</strong> How much *extra* revenue will this one specific unit/project bring?</li>
-            <li><strong>Step 3: Calculate Marginal Cost (MC).</strong> How much *extra* cost will this incur?</li>
-            <li><strong>Step 4: The Golden Rule.</strong> As long as MR > MC, expand operations. Stop exactly where MR = MC.</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with impl_tabs[1]:
-        st.markdown("""
-        <div class="real-world-app">
-        <h4>🗣️ Intervening in Meetings</h4>
-        <p>Use these phrases to steer your team toward sound economic thinking:</p>
-        <ul>
-            <li><strong>To surface Trade-offs:</strong> "I love this initiative. If we commit $50k to it, which of our current projects are we pausing to free up that budget?"</li>
-            <li><strong>To check Models:</strong> "This revenue forecast looks great. What are the two biggest assumptions we are making, and what happens if they are wrong?"</li>
-            <li><strong>To clarify Positive vs Normative:</strong> "Let's pause. Are we arguing about what the data *is* (positive), or are we disagreeing on what our goal *should* be (normative)?"</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with impl_tabs[2]:
-        st.markdown("""
-        <div class="case-study">
-        <h4>⚠️ Common Pitfalls to Avoid</h4>
-        <p><strong>Pitfall 1: Ignoring the Secondary Effects</strong></p>
-        <ul>
-            <li>❌ "Cutting our price by 10% will increase our sales volume." (Forgetting competitors will likely cut their prices too).</li>
-            <li>✅ Build game theory into your models.</li>
-        </ul>
-        <p><strong>Pitfall 2: Confusing Accounting Profit with Economic Profit</strong></p>
-        <ul>
-            <li>❌ Celebrating a $100k profit on a project that tied up $2M in capital for a year.</li>
-            <li>✅ Always subtract the Opportunity Cost of capital (e.g., 5% risk-free rate) to find true Economic Profit.</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("""
+    <div class="managerial-lesson">
+    <h4>📅 The Marginal Analysis Framework</h4>
+    <ul>
+        <li><strong>Step 1: Ignore Sunk Costs.</strong> Look only at future costs and future revenues.</li>
+        <li><strong>Step 2: Calculate Marginal Revenue (MR).</strong></li>
+        <li><strong>Step 3: Calculate Marginal Cost (MC).</strong></li>
+        <li><strong>Step 4: The Golden Rule.</strong> As long as MR > MC, expand operations.</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
 
 # =====================================================================
 # FOOTER
