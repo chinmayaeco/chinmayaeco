@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # =====================================================================
-# PREMIUM DESIGN SYSTEM (Same as previous)
+# PREMIUM DESIGN SYSTEM (UPDATED WITH RADIO TEXT FIX)
 # =====================================================================
 st.markdown("""
 <style>
@@ -79,7 +79,7 @@ st.markdown("""
     }
     
     /* Container styling */
-    .stContainer {
+    .stContainer, .stForm {
         background: rgba(30, 41, 59, 0.8);
         border: 1px solid rgba(148, 163, 184, 0.2);
         border-radius: 12px;
@@ -100,80 +100,35 @@ st.markdown("""
     }
     
     /* Concept note box */
+    .concept-note, .case-study, .managerial-lesson, .real-world-app {
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin: 1.5rem 0;
+    }
+    
     .concept-note {
         background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
         border-left: 4px solid #3B82F6;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 1.5rem 0;
     }
+    .concept-note h3 { color: #3B82F6; margin-top: 0 !important; }
     
-    .concept-note h3 {
-        color: #3B82F6;
-        margin-top: 0 !important;
-    }
-    
-    .concept-note p {
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1.6;
-    }
-    
-    /* Case study */
     .case-study {
         background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
         border-left: 4px solid #22C55E;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 1.5rem 0;
     }
+    .case-study h4 { color: #22C55E; margin-top: 0 !important; }
     
-    .case-study h4 {
-        color: #22C55E;
-        margin-top: 0 !important;
-    }
-    
-    .case-study p {
-        color: rgba(255, 255, 255, 0.85);
-        line-height: 1.6;
-    }
-    
-    /* Managerial lesson */
     .managerial-lesson {
         background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
         border-left: 4px solid #F97316;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 1.5rem 0;
     }
+    .managerial-lesson h4 { color: #FB923C; margin-top: 0 !important; }
     
-    .managerial-lesson h4 {
-        color: #FB923C;
-        margin-top: 0 !important;
-    }
-    
-    .managerial-lesson p {
-        color: rgba(255, 255, 255, 0.85);
-        line-height: 1.6;
-    }
-    
-    /* Real-world application */
     .real-world-app {
         background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
         border-left: 4px solid #EC4899;
-        padding: 1.5rem;
-        border-radius: 8px;
-        margin: 1.5rem 0;
     }
-    
-    .real-world-app h4 {
-        color: #EC4899;
-        margin-top: 0 !important;
-    }
-    
-    .real-world-app p {
-        color: rgba(255, 255, 255, 0.85);
-        line-height: 1.6;
-    }
+    .real-world-app h4 { color: #EC4899; margin-top: 0 !important; }
     
     /* Key metrics */
     .metric-card {
@@ -198,7 +153,7 @@ st.markdown("""
     }
     
     /* Buttons */
-    .stButton > button {
+    .stButton > button, .stFormSubmitButton > button {
         background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%) !important;
         color: white !important;
         border: none !important;
@@ -209,7 +164,7 @@ st.markdown("""
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
     }
     
-    .stButton > button:hover {
+    .stButton > button:hover, .stFormSubmitButton > button:hover {
         box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5) !important;
         transform: translateY(-2px) !important;
     }
@@ -224,9 +179,15 @@ st.markdown("""
         border-bottom: 3px solid #2563EB !important;
     }
     
-    /* Text colors */
-    .stMarkdown {
-        color: rgba(255, 255, 255, 0.9);
+    /* --- FIX: Text colors for dark mode & MCQs --- */
+    .stMarkdown, p, li {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+    
+    /* Forces radio buttons, labels, and form text to be white */
+    .stRadio p, .stRadio label, div[role="radiogroup"] p {
+        color: rgba(255, 255, 255, 0.95) !important;
+        font-size: 1.05rem;
     }
     
     /* Sidebar */
