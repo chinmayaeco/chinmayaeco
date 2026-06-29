@@ -3,14 +3,13 @@ import random
 import pandas as pd
 import numpy as np
 from datetime import datetime
-import json
 
 # =====================================================================
 # PAGE CONFIGURATION & THEME
 # =====================================================================
 st.set_page_config(
-    page_title="Behavioral Economics Simulator",
-    page_icon="🧠",
+    page_title="Managerial Economics Simulator",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -33,11 +32,11 @@ st.markdown("""
     
     /* Header styling */
     .header-gradient {
-        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 50%, #DB2777 100%);
         padding: 3rem 2rem;
         border-radius: 16px;
         margin-bottom: 2rem;
-        box-shadow: 0 20px 40px rgba(99, 102, 241, 0.15);
+        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
     }
     
     .header-gradient h1 {
@@ -57,13 +56,13 @@ st.markdown("""
     /* Score banner */
     .score-banner {
         background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
-        border: 2px solid #4F46E5;
+        border: 2px solid #3B82F6;
         color: white;
         padding: 2rem;
         border-radius: 12px;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(79, 70, 229, 0.2);
+        box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
     }
     
     .score-banner h2 {
@@ -204,18 +203,18 @@ st.markdown("""
     
     /* Buttons */
     .stButton > button {
-        background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%) !important;
+        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%) !important;
         color: white !important;
         border: none !important;
         padding: 0.75rem 2rem !important;
         border-radius: 8px !important;
         font-weight: 600 !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
     }
     
     .stButton > button:hover {
-        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5) !important;
+        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5) !important;
         transform: translateY(-2px) !important;
     }
     
@@ -226,7 +225,7 @@ st.markdown("""
     }
     
     .stTabs [aria-selected="true"] {
-        border-bottom: 3px solid #6366F1 !important;
+        border-bottom: 3px solid #2563EB !important;
     }
     
     /* Text colors */
@@ -238,23 +237,6 @@ st.markdown("""
     .stSidebar {
         background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
     }
-    
-    /* Info boxes */
-    .stInfo {
-        background: rgba(59, 130, 246, 0.1) !important;
-        border-left: 4px solid #3B82F6 !important;
-    }
-    
-    .stSuccess {
-        background: rgba(34, 197, 94, 0.1) !important;
-        border-left: 4px solid #22C55E !important;
-    }
-    
-    .stError {
-        background: rgba(239, 68, 68, 0.1) !important;
-        border-left: 4px solid #EF4444 !important;
-    }
-    
 </style>
 """, unsafe_allow_html=True)
 
@@ -262,23 +244,16 @@ st.markdown("""
 # SESSION STATE INITIALIZATION
 # =====================================================================
 def initialize_session_state():
-    """Initialize all session state variables"""
     defaults = {
         'game_played': False,
         'game_score': 0.0,
-        'mcq_score': 0.0,
-        'mcq1_answered': False,
-        'mcq1_correct': False,
-        'mcq2_answered': False,
-        'mcq2_correct': False,
-        'mcq3_answered': False,
-        'mcq3_correct': False,
-        'final_tokens': 0.0,
-        'contributions': [],
+        'quiz_score': 0.0,
+        'profit': 0.0,
+        'revenue': 0.0,
+        'costs': 0.0,
+        'demand': 0,
         'game_history': [],
-        'current_round': 0,
-        'show_concept_details': False,
-        'show_implementation_guide': False
+        'current_round': 0
     }
     
     for key, value in defaults.items():
@@ -307,8 +282,8 @@ with st.sidebar:
 # =====================================================================
 st.markdown("""
 <div class="header-gradient">
-    <h1>🧠 Behavioral Economics Simulator</h1>
-    <p>Master strategic decision-making through interactive games, real-world case studies, and actionable frameworks for organizational leadership.</p>
+    <h1>📈 Managerial Economics Simulator</h1>
+    <p>Master strategic decision-making through resource trade-offs, market pricing dynamics, and applied economic models.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -317,12 +292,12 @@ st.markdown("""
 # =====================================================================
 dashboard_col = st.container()
 with dashboard_col:
-    total_score = min(100, round(st.session_state.game_score + st.session_state.mcq_score))
+    total_score = min(100, round(st.session_state.game_score + st.session_state.quiz_score))
     
     st.markdown(f"""
     <div class="score-banner">
-        <h2>Your Performance Score: {total_score} / 100</h2>
-        <p>🎮 Game Score: {round(st.session_state.game_score)}/50 | 📝 Quiz Score: {round(st.session_state.mcq_score)}/75</p>
+        <h2>Your Managerial Acumen Score: {total_score} / 100</h2>
+        <p>🎮 Simulation Score: {round(st.session_state.game_score)}/50 | 📝 Quiz Score: {round(st.session_state.quiz_score)}/50</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -332,119 +307,102 @@ with dashboard_col:
 
 if learning_path == "🎮 Play & Learn":
     # =========================================================
-    # SECTION 1: PUBLIC GOODS GAME
+    # SECTION 1: THE MARKET SIMULATION GAME
     # =========================================================
     game_section = st.container()
     with game_section:
-        st.markdown('<div class="section-header">🎮 Phase 1: The Public Goods Game</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-header">🎮 Phase 1: The Product Launch Simulation</div>', unsafe_allow_html=True)
         
         col_concept, col_game = st.columns([1, 1.2])
         
         with col_concept:
             st.markdown("""
             <div class="concept-note">
-            <h3>📌 Core Concept</h3>
-            <p><strong>The Social Dilemma:</strong> Individual rationality leads to collective irrationality. When personal benefit conflicts with group benefit, most people choose personal gain—even though cooperation would benefit everyone.</p>
-            <p><strong>Key Variables:</strong></p>
+            <h3>📌 The Manager's Dilemma</h3>
+            <p><strong>Scenario:</strong> You are launching a new smart gadget. You face two core economic decisions based on standard <strong>Theories and Models</strong>.</p>
             <ul>
-                <li><strong>N=4 players</strong> (you + 3 others)</li>
-                <li><strong>Endowment:</strong> 100 tokens each</li>
-                <li><strong>Multiplier:</strong> 2x on pooled contributions</li>
-                <li><strong>Distribution:</strong> Equal split among all 4</li>
+                <li><strong>1. Trade-offs (Resource Allocation):</strong> You have a $100k budget. Every dollar spent on Marketing (increases base demand) is a dollar taken away from R&D (justifies a higher price). This is your <em>Opportunity Cost</em>.</li>
+                <li><strong>2. Prices and Markets:</strong> Set your product price. According to the law of demand, higher prices yield lower unit sales, but higher margins.</li>
             </ul>
             </div>
             """, unsafe_allow_html=True)
             
             st.markdown("""
             <div class="managerial-lesson">
-            <h4>💼 Why This Matters</h4>
-            <p>This game mirrors real organizational challenges:</p>
-            <ul>
-                <li>R&D budget allocation (share findings or hide for competitive advantage)</li>
-                <li>Knowledge management (contribute to wikis or hoard expertise)</li>
-                <li>Team projects (invest effort or let others carry the load)</li>
-                <li>Infrastructure investments (fund shared systems or keep separate resources)</li>
-            </ul>
+            <h4>💡 Positive vs. Normative Decisions</h4>
+            <p><strong>Positive Economics:</strong> "If we price at $50, our model predicts 2,000 units sold." (Fact-based, testable)</p>
+            <p><strong>Normative Economics:</strong> "We <em>should</em> price lower so more students can afford our gadget." (Value-based, opinion)</p>
+            <p><em>In this simulation, optimize purely for Profit (Positive).</em></p>
             </div>
             """, unsafe_allow_html=True)
         
         with col_game:
             st.markdown("""
             <div class="concept-note">
-            <h3>🎯 The Game Mechanics</h3>
-            <p><strong>Example Scenario:</strong></p>
-            <p style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 6px; font-family: monospace;">
-            You contribute: 50 tokens<br>
-            Others contribute: 40, 60, 55 (avg: 51.7)<br>
-            <br>
-            Total pool: 205 tokens<br>
-            Multiplied: 205 × 2 = 410<br>
-            Per player: 410 ÷ 4 = 102.5<br>
-            <br>
-            Your outcome:<br>
-            • Kept: 50 tokens<br>
-            • Received: 102.5 tokens<br>
-            • Total: 152.5 ✓
-            </p>
+            <h3>🎯 Your Decision Board</h3>
+            <p>Allocate your resources and set your price to maximize profit.</p>
             </div>
             """, unsafe_allow_html=True)
-        
-        # Game input
-        st.markdown("---")
-        col_slider, col_info = st.columns([2, 1])
-        
-        with col_slider:
-            user_contribution = st.slider(
-                "💰 How much will you contribute to the shared project?",
-                min_value=0, max_value=100, value=50, step=5,
-                help="0 = All for yourself (free-rider) | 100 = All for group (cooperator)"
+            
+            # Game inputs
+            budget_allocation = st.slider(
+                "⚖️ Budget Trade-off (Total: $100k)",
+                min_value=0, max_value=100, value=50, step=10,
+                help="0 = 100% R&D | 100 = 100% Marketing"
             )
             
-            st.caption(f"📊 You'll keep: {100 - user_contribution} | Pool receives: {user_contribution}")
-        
-        with col_info:
-            st.info(f"""
-            **Token Balance**
-            - Starting: 100
-            - Contributing: {user_contribution}
-            - Keeping: {100 - user_contribution}
-            """)
-        
-        # Submit button with explanation
-        col_btn1, col_btn2 = st.columns([1, 2])
-        with col_btn1:
-            submit_game = st.button("▶️ Submit Decision", type="primary", use_container_width=True)
-        
-        if submit_game:
-            # Simulate three other players with varied cooperation levels
-            p2 = random.randint(20, 80)
-            p3 = random.randint(20, 80)
-            p4 = random.randint(20, 80)
+            marketing_budget = budget_allocation * 1000
+            rd_budget = (100 - budget_allocation) * 1000
             
-            total_pool = user_contribution + p2 + p3 + p4
-            multiplied_pool = total_pool * 2
-            payout = multiplied_pool / 4
+            st.caption(f"📊 Allocation: ${marketing_budget:,} Marketing | ${rd_budget:,} R&D")
             
-            st.session_state.final_tokens = (100 - user_contribution) + payout
-            st.session_state.contributions = [user_contribution, p2, p3, p4]
-            st.session_state.current_round += 1
+            price = st.slider(
+                "🏷️ Set Product Price",
+                min_value=10, max_value=150, value=50, step=5
+            )
             
-            # Store game history
-            st.session_state.game_history.append({
-                'round': st.session_state.current_round,
-                'contribution': user_contribution,
-                'final_tokens': st.session_state.final_tokens,
-                'others_avg': (p2 + p3 + p4) / 3
-            })
+            col_btn1, col_btn2 = st.columns([1, 2])
+            with col_btn1:
+                submit_game = st.button("▶️ Run Market Model", type="primary", use_container_width=True)
             
-            # Calculate game score
-            st.session_state.game_score = min(50.0, (st.session_state.final_tokens / 200.0) * 50.0)
-            st.session_state.game_played = True
-            
-            try:
+            if submit_game:
+                # Economic Model: Demand Calculation
+                # Base demand driven by marketing
+                base_demand = 1000 + (marketing_budget / 20)
+                # Price sensitivity reduced by R&D (better product)
+                price_sensitivity = 20 - (rd_budget / 10000)
+                
+                # Calculate actual demand (cannot be negative)
+                calculated_demand = max(0, int(base_demand - (price_sensitivity * price)))
+                
+                # Financials
+                revenue = calculated_demand * price
+                fixed_costs = 100000 # The budget
+                variable_costs = calculated_demand * 15 # $15 to make each unit
+                total_costs = fixed_costs + variable_costs
+                profit = revenue - total_costs
+                
+                st.session_state.profit = profit
+                st.session_state.revenue = revenue
+                st.session_state.costs = total_costs
+                st.session_state.demand = calculated_demand
+                st.session_state.current_round += 1
+                
+                # Store history
+                st.session_state.game_history.append({
+                    'round': st.session_state.current_round,
+                    'price': price,
+                    'marketing': budget_allocation,
+                    'profit': profit,
+                    'demand': calculated_demand
+                })
+                
+                # Calculate game score based on hitting a good profit threshold (e.g., > $50k gets max points)
+                normalized_score = max(0, min(50, (profit / 80000) * 50))
+                st.session_state.game_score = normalized_score
+                st.session_state.game_played = True
+                
                 st.rerun()
-            except AttributeError:
-                st.experimental_rerun()
     
     # =========================================================
     # SECTION 2: GAME RESULTS & ANALYSIS
@@ -452,44 +410,44 @@ if learning_path == "🎮 Play & Learn":
     if st.session_state.game_played:
         results_section = st.container()
         with results_section:
-            st.markdown('<div class="section-header">📊 Round Results & Analysis</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-header">📊 Market Results & Economic Analysis</div>', unsafe_allow_html=True)
             
-            # High-level metrics
             metric_cols = st.columns(4)
             
             with metric_cols[0]:
+                profit_color = "#10B981" if st.session_state.profit > 0 else "#EF4444"
                 st.markdown(f"""
                 <div class="metric-card">
-                    <h3>Your Tokens</h3>
-                    <div class="metric-value">{st.session_state.final_tokens:.1f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">+{st.session_state.final_tokens - 100:.1f} vs start</p>
+                    <h3>Net Profit</h3>
+                    <div class="metric-value" style="color: {profit_color};">${st.session_state.profit:,.0f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">The Ultimate Metric</p>
                 </div>
                 """, unsafe_allow_html=True)
             
             with metric_cols[1]:
                 st.markdown(f"""
                 <div class="metric-card">
-                    <h3>Total Pool</h3>
-                    <div class="metric-value">{sum(st.session_state.contributions) * 2:.0f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">After 2x multiplier</p>
+                    <h3>Units Sold (Demand)</h3>
+                    <div class="metric-value">{st.session_state.demand:,}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">Market Clearance</p>
                 </div>
                 """, unsafe_allow_html=True)
-            
+                
             with metric_cols[2]:
                 st.markdown(f"""
                 <div class="metric-card">
-                    <h3>Your Share</h3>
-                    <div class="metric-value">{(sum(st.session_state.contributions) * 2) / 4:.1f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">1/4 of pool</p>
+                    <h3>Total Revenue</h3>
+                    <div class="metric-value">${st.session_state.revenue:,.0f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">Price × Quantity</p>
                 </div>
                 """, unsafe_allow_html=True)
-            
+                
             with metric_cols[3]:
                 st.markdown(f"""
                 <div class="metric-card">
-                    <h3>Others' Avg</h3>
-                    <div class="metric-value">{(st.session_state.contributions[1] + st.session_state.contributions[2] + st.session_state.contributions[3]) / 3:.1f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">Their contribution</p>
+                    <h3>Total Costs</h3>
+                    <div class="metric-value">${st.session_state.costs:,.0f}</div>
+                    <p style="color: #60A5FA; font-size: 0.9rem;">Fixed + Variable</p>
                 </div>
                 """, unsafe_allow_html=True)
             
@@ -498,494 +456,189 @@ if learning_path == "🎮 Play & Learn":
             viz_col1, viz_col2 = st.columns(2)
             
             with viz_col1:
-                st.markdown("### 📈 Contribution Breakdown")
-                chart_df = pd.DataFrame({
-                    "Team Members": ["You", "Manager B", "Manager C", "Manager D"],
-                    "Contributed": st.session_state.contributions,
-                    "Kept": [100 - x for x in st.session_state.contributions]
-                })
-                st.bar_chart(
-                    chart_df.set_index("Team Members"),
-                    y=["Contributed", "Kept"],
-                    color=["#6366F1", "#94A3B8"]
-                )
-            
-            with viz_col2:
                 if len(st.session_state.game_history) > 0:
-                    st.markdown("### 📉 Strategy Evolution Over Rounds")
+                    st.markdown("### 📈 Profit Trajectory Over Rounds")
                     history_df = pd.DataFrame(st.session_state.game_history)
                     st.line_chart(
-                        history_df.set_index('round'),
-                        y=['contribution', 'others_avg'],
-                        color=['#6366F1', '#EF4444']
+                        history_df.set_index('round')['profit'],
+                        color="#10B981"
                     )
-                else:
-                    st.info("Play multiple rounds to see strategy evolution")
             
-            # Detailed analysis
-            st.markdown("---")
-            your_contribution = st.session_state.contributions[0]
-            others_avg = np.mean(st.session_state.contributions[1:])
-            contribution_diff = your_contribution - others_avg
-            
-            analysis_col1, analysis_col2 = st.columns([1, 1])
-            
-            with analysis_col1:
-                if contribution_diff > 5:
-                    analysis_emoji = "🟢"
-                    analysis_type = "Cooperator"
-                    analysis_text = "You contributed MORE than others. You demonstrate trust and cooperation instincts."
-                elif contribution_diff < -5:
-                    analysis_emoji = "🔴"
-                    analysis_type = "Free-Rider"
-                    analysis_text = "You contributed LESS than others. You optimized for personal gain over group benefit."
-                else:
-                    analysis_emoji = "🟡"
-                    analysis_type = "Reciprocator"
-                    analysis_text = "You matched the group average. Your behavior reflects the social norm."
-                
-                st.markdown(f"""
+            with viz_col2:
+                st.markdown("""
                 <div class="real-world-app">
-                <h4>{analysis_emoji} Your Behavioral Type: {analysis_type}</h4>
-                <p>{analysis_text}</p>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            with analysis_col2:
-                st.markdown(f"""
-                <div class="managerial-lesson">
-                <h4>💡 Key Insight</h4>
-                <p><strong>Payoff Breakdown:</strong></p>
-                <ul>
-                    <li>Tokens kept: {100 - your_contribution}</li>
-                    <li>Share from pool: {st.session_state.final_tokens - (100 - your_contribution):.1f}</li>
-                    <li><strong>Total: {st.session_state.final_tokens:.1f}</strong></li>
-                </ul>
-                <p style="margin-top: 1rem; font-size: 0.9rem; color: rgba(255,255,255,0.7);">
-                Optimal outcome occurs when <strong>all players cooperate fully</strong> = 200 tokens each (vs your {st.session_state.final_tokens:.1f})
-                </p>
+                <h4>🔍 Economic Deconstruction</h4>
+                <p><strong>Trade-offs:</strong> Your budget allocation forced a choice between building brand awareness (Marketing) and reducing price sensitivity (R&D). This is <em>Opportunity Cost</em> in action.</p>
+                <p><strong>Prices & Markets:</strong> If your profit is low, you likely hit the elastic part of the demand curve, where a high price collapsed your unit sales, or you priced too low to cover your fixed costs.</p>
+                <p><strong>Theories & Models:</strong> The backend of this game relies on a simplified linear demand curve model. It ignores competitor responses (Ceteris Paribus assumption).</p>
                 </div>
                 """, unsafe_allow_html=True)
 
 elif learning_path == "📖 Conceptual Deep Dive":
-    st.markdown('<div class="section-header">📚 Behavioral Economics Concepts</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">📚 Managerial Economics Concepts</div>', unsafe_allow_html=True)
     
-    concept_tabs = st.tabs(["Free-Rider Dilemma", "Loss Aversion", "Trust & Cooperation", "Cognitive Biases"])
+    concept_tabs = st.tabs(["Trade-offs & Opportunity Cost", "Prices & Markets", "Theories & Models", "Positive vs. Normative"])
     
     with concept_tabs[0]:
         st.markdown("""
         <div class="concept-note">
-        <h3>🤝 The Free-Rider Problem: A Deep Dive</h3>
-        <p><strong>Definition:</strong> A free-rider is someone who benefits from a shared resource or public good without contributing proportionally to its creation or maintenance.</p>
+        <h3>⚖️ Trade-offs & Opportunity Cost</h3>
+        <p><strong>Definition:</strong> Scarcity dictates that resources (time, money, labor) are limited. Choosing one path inherently means sacrificing another. The value of the next best alternative given up is the <strong>Opportunity Cost</strong>.</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
-        **Root Causes:**
-        1. **Individual Rationality vs. Collective Irrationality** — Each person reasons: "My small contribution won't matter, but I'll enjoy the benefits"
-        2. **Information Asymmetry** — Others may not know my true contribution level
-        3. **Diffusion of Responsibility** — "Someone else will handle it"
-        4. **Low Cost of Defection** — Punishing free-riders is often expensive
-        """)
+        <div class="case-study">
+        <h4>🏢 Case Study: Capital Allocation in Big Tech</h4>
+        <p><strong>The Situation:</strong> A tech company has $5B in surplus cash.</p>
+        <p><strong>The Trade-off:</strong> They can either issue a special dividend to shareholders OR invest in a new AI research division.</p>
+        <p><strong>The Lesson:</strong> If they choose the dividend, the opportunity cost is the potential future monopoly profits from the AI division. Managers must calculate the Expected Value of both paths to ensure resources flow to their most productive use.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with concept_tabs[1]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🛒 Prices, Markets, and Equilibrium</h3>
+        <p><strong>Definition:</strong> Markets are mechanisms where buyers and sellers interact. Prices act as signals, communicating scarcity and directing resources. Equilibrium occurs when supply matches demand.</p>
+        </div>
+        """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="case-study">
-        <h4>📱 Case Study 1: Wikipedia & Volunteer Knowledge Commons</h4>
-        <p><strong>The Problem:</strong> 99% of Wikipedia users never edit. These "free-riders" enjoy thousands of articles without contributing a single sentence.</p>
-        <p><strong>Why It Still Works:</strong></p>
+        <h4>🚕 Case Study: Uber's Surge Pricing</h4>
+        <p><strong>The Mechanism:</strong> When demand for rides spikes (e.g., after a concert), standard prices lead to a shortage (Quantity Demanded > Quantity Supplied).</p>
+        <p><strong>The Solution:</strong> Uber's algorithm dynamically raises the price. This accomplishes two market functions simultaneously:</p>
         <ul>
-            <li><strong>Low barrier to contribution</strong> — Anyone can edit; no special permission needed</li>
-            <li><strong>Intrinsic motivation matters</strong> — 1% of highly motivated users generate value for 99%</li>
-            <li><strong>Social recognition</strong> — Edit history is public; contributors gain reputation</li>
-            <li><strong>Community norms</strong> — Strong enforcement of quality standards</li>
+            <li><strong>Suppresses Demand:</strong> Price-sensitive riders wait or take the bus.</li>
+            <li><strong>Incentivizes Supply:</strong> Off-duty drivers log on to capture the premium.</li>
         </ul>
-        <p><strong>Lesson:</strong> Systems designed around low contribution friction and visible attribution can thrive even with high free-rider ratios.</p>
+        <p><strong>The Lesson:</strong> Dynamic pricing forces the market back into equilibrium rapidly.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with concept_tabs[2]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📐 Theories and Models</h3>
+        <p><strong>Definition:</strong> Economic models are deliberate simplifications of a complex reality. They strip away "noise" to focus on the core variables driving behavior (e.g., assuming <em>Ceteris Paribus</em> - all other things being equal).</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="managerial-lesson">
-        <h4>💼 Application Framework: VIPR Model</h4>
-        <p>To combat free-riding in organizations:</p>
+        <h4>💼 Why Managers Use Simplified Models</h4>
+        <p>A map that is perfectly true to scale is useless because it's as big as the territory it represents. Models work the same way.</p>
         <ul>
-            <li><strong>V</strong> — Make contributions <strong>Visible</strong> (dashboards, attribution)</li>
-            <li><strong>I</strong> — Align <strong>Incentives</strong> with desired behavior</li>
-            <li><strong>P</strong> — Implement <strong>Peer review</strong> & accountability</li>
-            <li><strong>R</strong> — Provide public <strong>Recognition</strong></li>
+            <li><strong>Demand Forecasting Models:</strong> Isolate price and income, ignoring weather or minor fads.</li>
+            <li><strong>Cost-Volume-Profit (CVP) Analysis:</strong> Assumes linear costs to easily calculate break-even points.</li>
         </ul>
+        <p><em>Rule of thumb for leaders: "All models are wrong, but some are useful." (George Box)</em></p>
         </div>
         """, unsafe_allow_html=True)
-    
-    with concept_tabs[1]:
+
+    with concept_tabs[3]:
         st.markdown("""
         <div class="concept-note">
-        <h3>📉 Loss Aversion: Why Losses Feel Worse Than Gains</h3>
-        <p><strong>The Principle:</strong> Losing $100 causes ~2x more pain than gaining $100 brings pleasure. This asymmetry drives decision-making.</p>
-        <p><strong>Discovered by:</strong> Kahneman & Tversky (1979), foundational to Prospect Theory</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        **Neuroscience Explanation:**
-        - Loss-related brain activity (amygdala, insula) is ~2.5x stronger than gain-related activity
-        - Evolutionary advantage: Early humans survived by avoiding losses more than pursuing gains
-        """)
-        
-        st.markdown("""
-        <div class="case-study">
-        <h4>💰 Case Study 2: Mortgage Refinancing Paradox</h4>
-        <p><strong>The Situation:</strong> Interest rates dropped 1.5%, meaning homeowners could refinance and save $200/month ($2,400/year).</p>
-        <p><strong>Observed Behavior:</strong> Only 35% refinanced despite obvious financial benefit.</p>
-        <p><strong>Why:</strong> Loss aversion prevented action:
-        <ul>
-            <li>"I'll lose my existing stable arrangement"</li>
-            <li>"The hassle/effort/risk feels like a loss"</li>
-            <li>"What if rates drop further?"</li>
-        </ul>
-        </p>
-        <p><strong>Solution (Used by Lenders):</strong> Reframe as "Lock in your savings before rates rise" (loss framing) rather than "Save money by refinancing" (gain framing). Adoption jumped to 72%.</p>
+        <h3>🔍 Positive vs. Normative Economics</h3>
+        <p><strong>Positive Economics:</strong> Objective and fact-based. "What is." Can be tested or verified with data.</p>
+        <p><strong>Normative Economics:</strong> Subjective and value-based. "What ought to be." Rooted in ethics or policy goals.</p>
         </div>
         """, unsafe_allow_html=True)
         
         st.markdown("""
         <div class="real-world-app">
-        <h4>🏢 Organizational Example: Software Migration</h4>
-        <p>Company wants teams to migrate from Excel to a modern data platform.</p>
-        <p><strong>❌ What Fails (Gain Framing):</strong> "New system will save 10 hours/week!"</p>
-        <p><strong>✅ What Works (Loss Framing):</strong> "Current system costs us 20 security incidents/year and $500K in audit failures. Platform prevents 95% of these losses."</p>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with concept_tabs[2]:
-        st.markdown("""
-        <div class="concept-note">
-        <h3>🤲 Trust: The Foundation of Cooperation</h3>
-        <p><strong>Core Principle:</strong> Trust is not given; it's built through repeated positive interactions, transparency, and demonstrated reciprocity.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        **Components of Trust:**
-        1. **Competence** — Do they have the skill? (Technical trust)
-        2. **Integrity** — Will they follow through? (Reliability trust)
-        3. **Benevolence** — Do they have my interests in mind? (Social trust)
-        """)
-        
-        st.markdown("""
-        <div class="case-study">
-        <h4>🌲 Case Study 3: Patagonia & Radical Transparency</h4>
-        <p><strong>The Challenge:</strong> Customers are skeptical of "green" companies (greenwashing is common).</p>
-        <p><strong>Patagonia's Approach:</strong>
+        <h4>📊 Spotting the Difference in the Boardroom</h4>
+        <p><strong>Scenario: Minimum Wage Increases</strong></p>
         <ul>
-            <li>Published detailed supply chain (factory locations, worker conditions, wages)</li>
-            <li>Admitted environmental impacts openly (not hidden)</li>
-            <li>Continuous improvement reported publicly</li>
-            <li>Encouraged customers to "buy less" (cannibalizing their own revenue)</li>
+            <li><strong>Manager A (Positive):</strong> "If the minimum wage rises to $15/hr, our payroll costs will increase by 12%, and we will need to automate 3 cashier roles to maintain our current margin." <em>(Testable forecasting)</em></li>
+            <li><strong>Manager B (Normative):</strong> "We should voluntarily raise our starting wage to $15/hr because it's the fair thing to do for our community, even if it hurts short-term profits." <em>(Moral judgment)</em></li>
         </ul>
-        </p>
-        <p><strong>Result:</strong>
-        <ul>
-            <li>Customers reciprocated honesty with premium prices (brand commands 40% markup)</li>
-            <li>Loyal advocates defend the brand online</li>
-            <li>Employee retention 2x industry average (trust works internally too)</li>
-            <li>$3B+ revenue despite higher costs</li>
-        </ul>
-        </p>
+        <p><strong>Managerial Application:</strong> Effective leaders use Positive economics to understand reality, and Normative economics to set the organization's mission and values.</p>
         </div>
         """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="managerial-lesson">
-        <h4>💼 Building Trust in Teams</h4>
-        <p><strong>The TRUST Framework:</strong></p>
-        <ul>
-            <li><strong>T</strong> — Transparency in decisions & communication</li>
-            <li><strong>R</strong> — Reciprocity (give before asking)</li>
-            <li><strong>U</strong> — Undo misunderstandings quickly</li>
-            <li><strong>S</strong> — Show consistent behavior</li>
-            <li><strong>T</strong> — Test with small commitments first</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with concept_tabs[3]:
-        st.markdown("""
-        <div class="concept-note">
-        <h3>🧩 Common Cognitive Biases in Organizations</h3>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        biases_data = {
-            "Bias": [
-                "Confirmation Bias",
-                "Sunk Cost Fallacy",
-                "Anchoring",
-                "Status Quo Bias",
-                "Dunning-Kruger Effect"
-            ],
-            "Definition": [
-                "Seeking info that confirms existing beliefs",
-                "Continuing bad projects due to past investment",
-                "Over-weighting first information received",
-                "Preferring things to stay the same",
-                "Overestimating own competence"
-            ],
-            "Organizational Impact": [
-                "Homogeneous teams make poor decisions",
-                "Companies throw good money after bad",
-                "First job offer anchors negotiation",
-                "Resistance to change despite better alternatives",
-                "Mediocre managers don't seek improvement"
-            ],
-            "Mitigation": [
-                "Diverse hiring & devil's advocate roles",
-                "Sunken cost audits; focus on future value",
-                "Multiple reference points & market research",
-                "Pilot programs with clear metrics",
-                "360-degree feedback; skill assessments"
-            ]
-        }
-        
-        bias_df = pd.DataFrame(biases_data)
-        st.dataframe(bias_df, use_container_width=True)
 
 elif learning_path == "💼 Executive Summary":
-    st.markdown('<div class="section-header">💼 Executive Summary: Behavioral Economics for Leaders</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">💼 Executive Summary: The Economic Leader</div>', unsafe_allow_html=True)
     
     exec_col1, exec_col2 = st.columns(2)
     
     with exec_col1:
         st.markdown("""
         <div class="managerial-lesson">
-        <h4>🎯 The Three Laws of Organizational Behavior</h4>
-        <p><strong>Law 1: Visibility Drives Cooperation</strong></p>
-        <p>When contributions are invisible, free-riding increases. Transparent attribution can boost contribution rates by 40-60%.</p>
-        <p><strong>Law 2: Loss Aversion > Gain Motivation</strong></p>
-        <p>Framing decisions around preventing losses is 2-3x more effective than highlighting gains.</p>
-        <p><strong>Law 3: Trust Requires Reciprocity</strong></p>
-        <p>Trust isn't mandated; it's earned through predictable, fair treatment. Small acts of trust beget larger reciprocal commitments.</p>
+        <h4>🎯 Four Pillars of Economic Decision Making</h4>
+        <p><strong>1. Embrace Opportunity Cost</strong></p>
+        <p>Never look at an investment in isolation. Always ask: "What are we giving up to do this?"</p>
+        <p><strong>2. Respect Market Signals</strong></p>
+        <p>Prices are not just math; they are communication. If your inventory is sitting, the market is signaling your price is too high for the perceived value.</p>
+        <p><strong>3. Use Models Safely</strong></p>
+        <p>Rely on economic models for directional guidance, but know their blind spots. Understand the assumptions (Ceteris Paribus) baked into your data.</p>
+        <p><strong>4. Separate Facts from Values</strong></p>
+        <p>Clearly distinguish between positive statements (data) and normative statements (strategy/ethics) during executive debates to avoid endless circular arguments.</p>
         </div>
         """, unsafe_allow_html=True)
     
     with exec_col2:
         st.markdown("""
         <div class="real-world-app">
-        <h4>📊 ROI Impact</h4>
+        <h4>📊 Strategic Impact Matrix</h4>
+        <p>Integrating these concepts yields tangible corporate results:</p>
         <ul>
-            <li><strong>Visibility + Incentives:</strong> +35% team productivity</li>
-            <li><strong>Loss Framing:</strong> +60% adoption rates for new systems</li>
-            <li><strong>Trust Building:</strong> +40% employee retention</li>
-            <li><strong>Combined Effect:</strong> +120% team output potential</li>
+            <li><strong>Opportunity Cost Analysis:</strong> Eliminates "pet projects" and optimizes capital ROI (+15-20% CapEx efficiency).</li>
+            <li><strong>Dynamic Pricing Models:</strong> Captures consumer surplus, directly lifting gross margins.</li>
+            <li><strong>Positive Fact-Finding:</strong> Reduces executive bias in forecasting.</li>
         </ul>
-        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6); margin-top: 1rem;">
-        Based on meta-analysis of 200+ organizational studies
-        </p>
         </div>
         """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    # Quick decision matrix
-    st.markdown("### 🛠️ Quick Decision Matrix")
-    
-    decision_matrix = {
-        "Challenge": [
-            "Teams not collaborating on shared projects",
-            "Low adoption of new systems/processes",
-            "High turnover despite good compensation",
-            "Knowledge hoarding across departments"
-        ],
-        "Root Cause": [
-            "Lack of visibility & accountability",
-            "Change perceived as loss (not gain)",
-            "Low psychological safety & trust",
-            "Free-rider incentives (no recognition)"
-        ],
-        "Intervention": [
-            "Implement transparent dashboards + peer recognition",
-            "Quantify current pain points; frame as loss prevention",
-            "Leader transparency; pilot programs; listen to concerns",
-            "Public attribution; LinkedIn profiles; career advancement"
-        ],
-        "Expected Impact": [
-            "+30-50% contribution",
-            "+50-70% adoption",
-            "-30% turnover",
-            "+40-60% knowledge sharing"
-        ]
-    }
-    
-    decision_df = pd.DataFrame(decision_matrix)
-    st.dataframe(decision_df, use_container_width=True)
 
 elif learning_path == "🛠️ Implementation Guide":
-    st.markdown('<div class="section-header">🛠️ Implementation Guide: From Theory to Practice</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">🛠️ Implementation Guide: Economic Thinking in Practice</div>', unsafe_allow_html=True)
     
-    impl_tabs = st.tabs(["30-Day Plan", "Metrics & KPIs", "Common Pitfalls", "Tools & Templates"])
+    impl_tabs = st.tabs(["Decision Frameworks", "Meeting Interventions", "Common Pitfalls"])
     
     with impl_tabs[0]:
         st.markdown("""
         <div class="managerial-lesson">
-        <h4>📅 30-Day Behavioral Economics Implementation Plan</h4>
+        <h4>📅 The Marginal Analysis Framework</h4>
+        <p>How to apply economic thinking to your next major project:</p>
+        <ul>
+            <li><strong>Step 1: Ignore Sunk Costs.</strong> Look only at future costs and future revenues.</li>
+            <li><strong>Step 2: Calculate Marginal Revenue (MR).</strong> How much *extra* revenue will this one specific unit/project bring?</li>
+            <li><strong>Step 3: Calculate Marginal Cost (MC).</strong> How much *extra* cost will this incur?</li>
+            <li><strong>Step 4: The Golden Rule.</strong> As long as MR > MC, expand operations. Stop exactly where MR = MC.</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("""
-        **Week 1: Foundation (Awareness)**
-        - [ ] Share behavioral economics concepts with leadership team
-        - [ ] Identify one high-impact organizational challenge (free-riding, low adoption, etc.)
-        - [ ] Establish baseline metrics
-        - [ ] Run this simulation with your team
-        
-        **Week 2: Visibility Initiative**
-        - [ ] Design contribution tracking system (dashboards, metrics)
-        - [ ] Brief team on new transparency measures
-        - [ ] Communicate "Why": connection to behavioral economics
-        - [ ] Soft launch with pilot team
-        
-        **Week 3: Incentive Alignment**
-        - [ ] Map current incentives to desired behaviors
-        - [ ] Design peer recognition program
-        - [ ] Create visible leaderboards or achievement systems
-        - [ ] Train managers on behavioral motivation techniques
-        
-        **Week 4: Build & Monitor**
-        - [ ] Full rollout of visibility + incentives
-        - [ ] Weekly pulse surveys on adoption
-        - [ ] Celebrate early wins publicly
-        - [ ] Gather feedback; iterate
-        """)
-    
     with impl_tabs[1]:
         st.markdown("""
         <div class="real-world-app">
-        <h4>📊 Metrics to Track</h4>
+        <h4>🗣️ Intervening in Meetings</h4>
+        <p>Use these phrases to steer your team toward sound economic thinking:</p>
+        <ul>
+            <li><strong>To surface Trade-offs:</strong> "I love this initiative. If we commit $50k to it, which of our current projects are we pausing to free up that budget?"</li>
+            <li><strong>To check Models:</strong> "This revenue forecast looks great. What are the two biggest assumptions we are making, and what happens if they are wrong?"</li>
+            <li><strong>To clarify Positive vs Normative:</strong> "Let's pause. Are we arguing about what the data *is* (positive), or are we disagreeing on what our goal *should* be (normative)?"</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
         
-        metrics_data = {
-            "Behavioral Metric": [
-                "Contribution Rate (%)",
-                "System Adoption (%)",
-                "Voluntary Collaboration",
-                "Employee Retention (%)",
-                "Knowledge Sharing (docs/week)",
-                "Team Satisfaction (NPS)"
-            ],
-            "Baseline": [
-                "40%",
-                "35%",
-                "Low",
-                "85%",
-                "12",
-                "52"
-            ],
-            "Target (90 days)": [
-                "70%",
-                "80%",
-                "Medium-High",
-                "88%",
-                "35",
-                "68"
-            ],
-            "Measurement Method": [
-                "Dashboard tracking",
-                "Feature usage logs",
-                "Project participation surveys",
-                "HR data",
-                "Wiki/CMS analytics",
-                "Monthly pulse survey"
-            ]
-        }
-        
-        metrics_df = pd.DataFrame(metrics_data)
-        st.dataframe(metrics_df, use_container_width=True)
-    
     with impl_tabs[2]:
         st.markdown("""
         <div class="case-study">
-        <h4>⚠️ Common Implementation Pitfalls</h4>
-        <p><strong>Pitfall 1: Transparency Without Trust</strong></p>
+        <h4>⚠️ Common Pitfalls to Avoid</h4>
+        <p><strong>Pitfall 1: Ignoring the Secondary Effects</strong></p>
         <ul>
-            <li>❌ Showing contribution dashboards before establishing psychological safety</li>
-            <li>✅ Build trust first; then add visibility</li>
+            <li>❌ "Cutting our price by 10% will increase our sales volume." (Forgetting competitors will likely cut their prices too).</li>
+            <li>✅ Build game theory into your models.</li>
         </ul>
-        <p><strong>Pitfall 2: Incentives Misaligned with Behavior</strong></p>
+        <p><strong>Pitfall 2: Confusing Accounting Profit with Economic Profit</strong></p>
         <ul>
-            <li>❌ Rewarding individual performance while expecting team collaboration</li>
-            <li>✅ Make team outcomes 40-60% of compensation</li>
-        </ul>
-        <p><strong>Pitfall 3: Loss Framing Without Solutions</strong></p>
-        <ul>
-            <li>❌ Highlighting current pain points without showing how new system solves it</li>
-            <li>✅ Pair loss messaging with clear solutions & transition support</li>
-        </ul>
-        <p><strong>Pitfall 4: Change Fatigue</strong></p>
-        <ul>
-            <li>❌ Implementing 5 behavioral initiatives simultaneously</li>
-            <li>✅ Start with one high-impact initiative; expand after 60 days</li>
+            <li>❌ Celebrating a $100k profit on a project that tied up $2M in capital for a year.</li>
+            <li>✅ Always subtract the Opportunity Cost of capital (e.g., 5% risk-free rate) to find true Economic Profit.</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
-    
-    with impl_tabs[3]:
-        st.markdown("""
-        <div class="real-world-app">
-        <h4>🛠️ Ready-to-Use Templates</h4>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        template_col1, template_col2 = st.columns(2)
-        
-        with template_col1:
-            st.markdown("""
-            **Communication Email Template**
-            
-            ```
-            Subject: How Behavioral Economics Will Transform Our Team
-            
-            Hi team,
-            
-            We're launching a new initiative based on behavioral 
-            economics research. The goal: increase collaboration, 
-            reduce silos, and boost our shared project success.
-            
-            Starting [DATE]:
-            • New contribution visibility dashboard
-            • Peer recognition program
-            • Team collaboration bonuses (30% of bonus pool)
-            
-            Why this matters: Research shows that 70% of failed 
-            collaborations stem from invisibility and misaligned 
-            incentives. This fixes both.
-            
-            Questions? Let's discuss.
-            
-            [Your Name]
-            ```
-            """)
-        
-        with template_col2:
-            st.markdown("""
-            **One-Pager: Loss Aversion Change Narrative**
-            
-            ```
-            THE CURRENT STATE (2024)
-            ❌ 200 manual data entry hours/week
-            ❌ $500K annual productivity loss
-            ❌ 15 security incidents/year
-            
-            THE NEW STATE (2025)
-            ✓ 20 automated data hours/week
-            ✓ $480K annual savings
-            ✓ 1-2 security incidents/year
-            
-            WHAT WE'RE PREVENTING BY ACTING NOW:
-            → Losing competitive edge
-            → Risk of audit failures
-            → Talent drain (team frustration)
-            ```
-            """)
 
 # =====================================================================
 # FOOTER
@@ -994,11 +647,11 @@ st.markdown("---")
 footer_col1, footer_col2, footer_col3 = st.columns(3)
 
 with footer_col1:
-    st.caption("🎓 Built with behavioral economics research | Powered by Streamlit")
+    st.caption("🎓 Built for Managerial Economics | Powered by Streamlit")
 
 with footer_col2:
-    total_score = min(100, round(st.session_state.game_score + st.session_state.mcq_score))
-    st.caption(f"📈 Your Performance: {total_score}/100")
+    total_score = min(100, round(st.session_state.game_score + st.session_state.quiz_score))
+    st.caption(f"📈 Managerial Acumen: {total_score}/100")
 
 with footer_col3:
     st.caption(f"⏰ Session: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
