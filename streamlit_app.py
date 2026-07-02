@@ -5,17 +5,56 @@ import numpy as np
 from datetime import datetime
 
 # =====================================================================
-# PAGE CONFIGURATION & THEME
+# PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Managerial Economics Simulator",
-    page_icon="📈",
+    page_title="Supply & Demand Simulator",
+    page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # =====================================================================
-# PREMIUM DESIGN SYSTEM (UPDATED WITH RADIO TEXT FIX)
+# PASSWORD PROTECTION SYSTEM
+# =====================================================================
+def check_password():
+    """Returns `True` if the user had the correct password."""
+    def password_entered():
+        if st.session_state["password"] == "Supply2026":
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # don't store password
+        else:
+            st.session_state["password_correct"] = False
+
+    if "password_correct" not in st.session_state:
+        # First run, show input for password.
+        st.markdown("<h1 style='text-align: center; color: #10B981;'>🔒 Secure Access</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Please enter the password to access the simulator.</p>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.text_input(
+                "Password", type="password", on_change=password_entered, key="password"
+            )
+        return False
+    
+    elif not st.session_state["password_correct"]:
+        # Password incorrect, show input + error.
+        st.markdown("<h1 style='text-align: center; color: #10B981;'>🔒 Secure Access</h1>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.text_input(
+                "Password", type="password", on_change=password_entered, key="password"
+            )
+            st.error("😕 Password incorrect. Please try again.")
+        return False
+    
+    return True
+
+if not check_password():
+    st.stop()
+
+# =====================================================================
+# PREMIUM DESIGN SYSTEM (EMERALD & GOLD THEME)
 # =====================================================================
 st.markdown("""
 <style>
@@ -27,16 +66,16 @@ st.markdown("""
     
     /* Main background */
     .stApp {
-        background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%);
+        background: linear-gradient(135deg, #022C22 0%, #064E3B 50%, #022C22 100%);
     }
     
     /* Header styling */
     .header-gradient {
-        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 50%, #DB2777 100%);
+        background: linear-gradient(135deg, #047857 0%, #10B981 50%, #F59E0B 100%);
         padding: 3rem 2rem;
         border-radius: 16px;
         margin-bottom: 2rem;
-        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.15);
+        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
     }
     
     .header-gradient h1 {
@@ -55,33 +94,27 @@ st.markdown("""
     
     /* Score banner */
     .score-banner {
-        background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
-        border: 2px solid #3B82F6;
+        background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
+        border: 2px solid #10B981;
         color: white;
         padding: 2rem;
         border-radius: 12px;
         text-align: center;
         margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
     }
     
     .score-banner h2 {
-        color: #60A5FA !important;
+        color: #34D399 !important;
         margin: 0 !important;
         font-weight: 700;
         font-size: 1.8rem;
     }
     
-    .score-banner p {
-        color: rgba(255, 255, 255, 0.8);
-        margin: 0.5rem 0 0 0 !important;
-        font-size: 1rem;
-    }
-    
     /* Container styling */
     .stContainer, .stForm {
-        background: rgba(30, 41, 59, 0.8);
-        border: 1px solid rgba(148, 163, 184, 0.2);
+        background: rgba(6, 78, 59, 0.8);
+        border: 1px solid rgba(16, 185, 129, 0.2);
         border-radius: 12px;
         padding: 2rem;
         margin-bottom: 1.5rem;
@@ -91,12 +124,12 @@ st.markdown("""
     
     /* Section headers */
     .section-header {
-        color: #60A5FA;
+        color: #FCD34D;
         font-weight: 700;
         font-size: 1.5rem;
         margin-bottom: 1.5rem;
         padding-bottom: 1rem;
-        border-bottom: 2px solid rgba(96, 165, 250, 0.3);
+        border-bottom: 2px solid rgba(252, 211, 77, 0.3);
     }
     
     /* Concept note box */
@@ -107,46 +140,34 @@ st.markdown("""
     }
     
     .concept-note {
-        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
-        border-left: 4px solid #3B82F6;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%);
+        border-left: 4px solid #10B981;
     }
-    .concept-note h3 { color: #3B82F6; margin-top: 0 !important; }
+    .concept-note h3 { color: #34D399; margin-top: 0 !important; }
     
     .case-study {
-        background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
-        border-left: 4px solid #22C55E;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+        border-left: 4px solid #F59E0B;
     }
-    .case-study h4 { color: #22C55E; margin-top: 0 !important; }
-    
-    .managerial-lesson {
-        background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(249, 115, 22, 0.05) 100%);
-        border-left: 4px solid #F97316;
-    }
-    .managerial-lesson h4 { color: #FB923C; margin-top: 0 !important; }
-    
-    .real-world-app {
-        background: linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(236, 72, 153, 0.05) 100%);
-        border-left: 4px solid #EC4899;
-    }
-    .real-world-app h4 { color: #EC4899; margin-top: 0 !important; }
+    .case-study h4 { color: #FBBF24; margin-top: 0 !important; }
     
     /* Key metrics */
     .metric-card {
-        background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(96, 165, 250, 0.3);
+        background: rgba(2, 44, 34, 0.6);
+        border: 1px solid rgba(52, 211, 153, 0.3);
         padding: 1.5rem;
         border-radius: 8px;
         text-align: center;
     }
     
     .metric-card h3 {
-        color: #60A5FA;
+        color: #6EE7B7;
         font-size: 1.2rem;
         margin: 0 0 0.5rem 0;
     }
     
     .metric-value {
-        color: #10B981;
+        color: #FCD34D;
         font-size: 2rem;
         font-weight: 700;
         margin: 0.5rem 0;
@@ -154,37 +175,36 @@ st.markdown("""
     
     /* Buttons */
     .stButton > button, .stFormSubmitButton > button {
-        background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%) !important;
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
         color: white !important;
         border: none !important;
         padding: 0.75rem 2rem !important;
         border-radius: 8px !important;
         font-weight: 600 !important;
         transition: all 0.3s ease !important;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3) !important;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
     }
     
     .stButton > button:hover, .stFormSubmitButton > button:hover {
-        box-shadow: 0 8px 24px rgba(37, 99, 235, 0.5) !important;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5) !important;
         transform: translateY(-2px) !important;
     }
     
     /* Tabs */
     .stTabs [data-baseweb="tab-list"] {
-        background: rgba(30, 41, 59, 0.5);
-        border-bottom: 2px solid rgba(96, 165, 250, 0.2);
+        background: rgba(6, 78, 59, 0.5);
+        border-bottom: 2px solid rgba(16, 185, 129, 0.2);
     }
     
     .stTabs [aria-selected="true"] {
-        border-bottom: 3px solid #2563EB !important;
+        border-bottom: 3px solid #10B981 !important;
     }
     
-    /* --- FIX: Text colors for dark mode & MCQs --- */
+    /* Text colors */
     .stMarkdown, p, li {
         color: rgba(255, 255, 255, 0.9) !important;
     }
     
-    /* Forces radio buttons, labels, and form text to be white */
     .stRadio p, .stRadio label, div[role="radiogroup"] p {
         color: rgba(255, 255, 255, 0.95) !important;
         font-size: 1.05rem;
@@ -192,7 +212,7 @@ st.markdown("""
     
     /* Sidebar */
     .stSidebar {
-        background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%);
+        background: linear-gradient(180deg, #022C22 0%, #064E3B 100%);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -205,10 +225,11 @@ def initialize_session_state():
         'game_played': False,
         'game_score': 0.0,
         'quiz_score': 0.0,
-        'profit': 0.0,
-        'revenue': 0.0,
-        'costs': 0.0,
-        'demand': 0,
+        'qd': 0,
+        'qs': 0,
+        'price_set': 0,
+        'status': "",
+        'gap': 0,
         'game_history': [],
         'current_round': 0,
         'q1_answered': False, 'q1_correct': False,
@@ -235,8 +256,7 @@ with st.sidebar:
             "🎮 Play & Learn",
             "📖 Conceptual Deep Dive",
             "📝 Knowledge Check",
-            "💼 Executive Summary",
-            "🛠️ Implementation Guide"
+            "💼 Executive Summary"
         ]
     )
 
@@ -245,8 +265,8 @@ with st.sidebar:
 # =====================================================================
 st.markdown("""
 <div class="header-gradient">
-    <h1>📈 Managerial Economics Simulator</h1>
-    <p>Master strategic decision-making through resource trade-offs, market pricing dynamics, and applied economic models.</p>
+    <h1>⚖️ Supply & Demand Simulator</h1>
+    <p>Master the fundamental laws of economics by finding market equilibrium, managing prices, and clearing the market.</p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -259,8 +279,8 @@ with dashboard_col:
     
     st.markdown(f"""
     <div class="score-banner">
-        <h2>Your Managerial Acumen Score: {total_score} / 100</h2>
-        <p>🎮 Simulation Score: {round(st.session_state.game_score)}/50 | 📝 Quiz Score: {round(st.session_state.quiz_score)}/50</p>
+        <h2>Overall Economics Score: {total_score} / 100</h2>
+        <p style='color: #FCD34D;'>🎮 Market Efficiency Score: {round(st.session_state.game_score)}/50 | 📝 Quiz Score: {round(st.session_state.quiz_score)}/50</p>
     </div>
     """, unsafe_allow_html=True)
 
@@ -271,86 +291,76 @@ with dashboard_col:
 if learning_path == "🎮 Play & Learn":
     game_section = st.container()
     with game_section:
-        st.markdown('<div class="section-header">🎮 Phase 1: The Product Launch Simulation</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-header">🎮 Phase 1: Find the Market Equilibrium</div>', unsafe_allow_html=True)
         
         col_concept, col_game = st.columns([1, 1.2])
         
         with col_concept:
             st.markdown("""
             <div class="concept-note">
-            <h3>📌 The Manager's Dilemma</h3>
-            <p><strong>Scenario:</strong> You are launching a new smart gadget. You face two core economic decisions based on standard <strong>Theories and Models</strong>.</p>
+            <h3>📌 Simulation Instructions</h3>
+            <p><strong>Your Role:</strong> You are analyzing the market for a new <em>Eco-Friendly Smart Thermostat</em>. Your goal is to find the exact price that "clears the market."</p>
+            <p><strong>The Rules:</strong></p>
             <ul>
-                <li><strong>1. Trade-offs (Resource Allocation):</strong> You have a $100k budget. Every dollar spent on Marketing (increases base demand) is a dollar taken away from R&D (justifies a higher price). This is your <em>Opportunity Cost</em>.</li>
-                <li><strong>2. Prices and Markets:</strong> Set your product price. According to the law of demand, higher prices yield lower unit sales, but higher margins.</li>
+                <li><strong>Law of Demand:</strong> As you raise the price, consumers will want to buy fewer units.</li>
+                <li><strong>Law of Supply:</strong> As you raise the price, manufacturers are willing to produce more units.</li>
             </ul>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            st.markdown("""
-            <div class="managerial-lesson">
-            <h4>💡 Positive vs. Normative Decisions</h4>
-            <p><strong>Positive Economics:</strong> "If we price at $50, our model predicts 2,000 units sold." (Fact-based, testable)</p>
-            <p><strong>Normative Economics:</strong> "We <em>should</em> price lower so more students can afford our gadget." (Value-based, opinion)</p>
-            <p><em>In this simulation, optimize purely for Profit (Positive).</em></p>
+            <p><strong>Objective:</strong> Adjust the price until Quantity Demanded ($Q_d$) exactly equals Quantity Supplied ($Q_s$). If you price too high, you get a <em>Surplus</em>. If you price too low, you get a <em>Shortage</em>. The closer the gap is to zero, the higher your score!</p>
             </div>
             """, unsafe_allow_html=True)
         
         with col_game:
             st.markdown("""
-            <div class="concept-note">
-            <h3>🎯 Your Decision Board</h3>
-            <p>Allocate your resources and set your price to maximize profit.</p>
+            <div class="case-study">
+            <h4>🎯 The Market Dashboard</h4>
+            <p>Set your market price to bring buyers and sellers into harmony.</p>
             </div>
             """, unsafe_allow_html=True)
             
-            budget_allocation = st.slider(
-                "⚖️ Budget Trade-off (Total: $100k)",
-                min_value=0, max_value=100, value=50, step=10,
-                help="0 = 100% R&D | 100 = 100% Marketing"
-            )
-            
-            marketing_budget = budget_allocation * 1000
-            rd_budget = (100 - budget_allocation) * 1000
-            
-            st.caption(f"📊 Allocation: ${marketing_budget:,} Marketing | ${rd_budget:,} R&D")
-            
             price = st.slider(
-                "🏷️ Set Product Price",
-                min_value=10, max_value=150, value=50, step=5
+                "🏷️ Set Market Price ($)",
+                min_value=10, max_value=120, value=20, step=2
             )
             
-            col_btn1, col_btn2 = st.columns([1, 2])
-            with col_btn1:
-                submit_game = st.button("▶️ Run Market Model", type="primary", use_container_width=True)
+            submit_game = st.button("▶️ Test Market Price", type="primary", use_container_width=True)
             
             if submit_game:
-                base_demand = 1000 + (marketing_budget / 20)
-                price_sensitivity = 20 - (rd_budget / 10000)
-                calculated_demand = max(0, int(base_demand - (price_sensitivity * price)))
+                # Underlying Economic Equations
+                # Demand: Qd = 5000 - 40P
+                # Supply: Qs = -1000 + 60P
+                # Equilibrium is at P = 60, Q = 2600
                 
-                revenue = calculated_demand * price
-                fixed_costs = 100000
-                variable_costs = calculated_demand * 15
-                total_costs = fixed_costs + variable_costs
-                profit = revenue - total_costs
+                qd = max(0, 5000 - (40 * price))
+                qs = max(0, -1000 + (60 * price))
                 
-                st.session_state.profit = profit
-                st.session_state.revenue = revenue
-                st.session_state.costs = total_costs
-                st.session_state.demand = calculated_demand
+                st.session_state.qd = qd
+                st.session_state.qs = qs
+                st.session_state.price_set = price
+                
+                gap = abs(qd - qs)
+                st.session_state.gap = gap
+                
+                if qd > qs:
+                    st.session_state.status = f"SHORTAGE of {gap:,} units"
+                elif qs > qd:
+                    st.session_state.status = f"SURPLUS of {gap:,} units"
+                else:
+                    st.session_state.status = "MARKET CLEARED! Equilibrium Found."
+                
                 st.session_state.current_round += 1
                 
                 st.session_state.game_history.append({
                     'round': st.session_state.current_round,
                     'price': price,
-                    'marketing': budget_allocation,
-                    'profit': profit,
-                    'demand': calculated_demand
+                    'qd': qd,
+                    'qs': qs,
+                    'gap': gap
                 })
                 
-                normalized_score = max(0, min(50, (profit / 80000) * 50))
-                st.session_state.game_score = normalized_score
+                # Score Calculation: Max score is 50. You lose points based on the size of the gap.
+                max_possible_gap = 5000 # Roughly the gap at extreme prices
+                penalty = (gap / max_possible_gap) * 50
+                st.session_state.game_score = max(0, 50 - penalty)
                 st.session_state.game_played = True
                 
                 st.rerun()
@@ -358,43 +368,35 @@ if learning_path == "🎮 Play & Learn":
     if st.session_state.game_played:
         results_section = st.container()
         with results_section:
-            st.markdown('<div class="section-header">📊 Market Results & Economic Analysis</div>', unsafe_allow_html=True)
-            metric_cols = st.columns(4)
+            st.markdown('<div class="section-header">📊 Market Results & Efficiency</div>', unsafe_allow_html=True)
+            metric_cols = st.columns(3)
             
             with metric_cols[0]:
-                profit_color = "#10B981" if st.session_state.profit > 0 else "#EF4444"
                 st.markdown(f"""
                 <div class="metric-card">
-                    <h3>Net Profit</h3>
-                    <div class="metric-value" style="color: {profit_color};">${st.session_state.profit:,.0f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">The Ultimate Metric</p>
+                    <h3>Quantity Demanded ($Q_d$)</h3>
+                    <div class="metric-value">{st.session_state.qd:,}</div>
+                    <p style="color: #6EE7B7; font-size: 0.9rem;">What consumers want</p>
                 </div>
                 """, unsafe_allow_html=True)
             
             with metric_cols[1]:
                 st.markdown(f"""
                 <div class="metric-card">
-                    <h3>Units Sold (Demand)</h3>
-                    <div class="metric-value">{st.session_state.demand:,}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">Market Clearance</p>
+                    <h3>Quantity Supplied ($Q_s$)</h3>
+                    <div class="metric-value">{st.session_state.qs:,}</div>
+                    <p style="color: #6EE7B7; font-size: 0.9rem;">What producers make</p>
                 </div>
                 """, unsafe_allow_html=True)
                 
             with metric_cols[2]:
+                status_color = "#10B981" if st.session_state.gap == 0 else "#F59E0B"
                 st.markdown(f"""
-                <div class="metric-card">
-                    <h3>Total Revenue</h3>
-                    <div class="metric-value">${st.session_state.revenue:,.0f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">Price × Quantity</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            with metric_cols[3]:
-                st.markdown(f"""
-                <div class="metric-card">
-                    <h3>Total Costs</h3>
-                    <div class="metric-value">${st.session_state.costs:,.0f}</div>
-                    <p style="color: #60A5FA; font-size: 0.9rem;">Fixed + Variable</p>
+                <div class="metric-card" style="border-color: {status_color};">
+                    <h3 style="color: {status_color};">Market Status</h3>
+                    <div class="metric-value" style="font-size: 1.5rem; color: {status_color}; margin-top: 1rem;">
+                        {st.session_state.status}
+                    </div>
                 </div>
                 """, unsafe_allow_html=True)
             
@@ -403,115 +405,124 @@ if learning_path == "🎮 Play & Learn":
             
             with viz_col1:
                 if len(st.session_state.game_history) > 0:
-                    st.markdown("### 📈 Profit Trajectory Over Rounds")
+                    st.markdown("### 📉 Market Gap Over Time (Lower is Better)")
                     history_df = pd.DataFrame(st.session_state.game_history)
                     st.line_chart(
-                        history_df.set_index('round')['profit'],
-                        color="#10B981"
+                        history_df.set_index('round')['gap'],
+                        color="#FCD34D"
                     )
             
             with viz_col2:
                 st.markdown("""
-                <div class="real-world-app">
+                <div class="case-study">
                 <h4>🔍 Economic Deconstruction</h4>
-                <p><strong>Trade-offs:</strong> Your budget allocation forced a choice between building brand awareness and reducing price sensitivity. This is <em>Opportunity Cost</em>.</p>
-                <p><strong>Prices & Markets:</strong> If profit is low, you likely hit the elastic part of the demand curve where high prices collapsed sales, or you priced too low to cover fixed costs.</p>
+                <p><strong>The Invisible Hand at Work:</strong></p>
+                <p>If you see a <strong>Shortage</strong>, your price is too low. Consumers are rushing to buy, but suppliers aren't incentivized to produce. The natural market response is to <em>raise prices</em>.</p>
+                <p>If you see a <strong>Surplus</strong>, your price is too high. Warehouses are filling up with unsold goods. Suppliers must <em>discount their prices</em> to clear inventory.</p>
                 </div>
                 """, unsafe_allow_html=True)
 
 elif learning_path == "📖 Conceptual Deep Dive":
-    st.markdown('<div class="section-header">📚 Managerial Economics Concepts</div>', unsafe_allow_html=True)
-    concept_tabs = st.tabs(["Trade-offs & Opportunity Cost", "Prices & Markets", "Theories & Models", "Positive vs. Normative"])
+    st.markdown('<div class="section-header">📚 The Laws of Supply & Demand</div>', unsafe_allow_html=True)
+    concept_tabs = st.tabs(["The Law of Demand", "The Law of Supply", "Market Equilibrium", "Shifts vs. Movements"])
     
     with concept_tabs[0]:
         st.markdown("""
         <div class="concept-note">
-        <h3>⚖️ Trade-offs & Opportunity Cost</h3>
-        <p><strong>Definition:</strong> Scarcity dictates that resources are limited. Choosing one path inherently means sacrificing another. The value of the next best alternative given up is the <strong>Opportunity Cost</strong>.</p>
+        <h3>📉 The Law of Demand</h3>
+        <p><strong>Definition:</strong> Ceteris paribus (all other things being equal), as the price of a good increases, the quantity demanded decreases. Conversely, as the price falls, quantity demanded rises.</p>
+        <p><strong>Why does this happen?</strong></p>
+        <ul>
+            <li><em>Substitution Effect:</em> If smart thermostats get too expensive, people buy regular thermostats.</li>
+            <li><em>Income Effect:</em> A higher price takes up a larger portion of a consumer's budget, naturally limiting how many they can afford.</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
         
     with concept_tabs[1]:
         st.markdown("""
         <div class="concept-note">
-        <h3>🛒 Prices, Markets, and Equilibrium</h3>
-        <p><strong>Definition:</strong> Markets are mechanisms where buyers and sellers interact. Prices act as signals, communicating scarcity and directing resources. Equilibrium occurs when supply matches demand.</p>
+        <h3>📈 The Law of Supply</h3>
+        <p><strong>Definition:</strong> Ceteris paribus, as the price of a good increases, the quantity supplied by producers increases. As the price falls, the quantity supplied falls.</p>
+        <p><strong>Why does this happen?</strong></p>
+        <p>The profit motive! Higher prices mean higher potential margins. If selling a smart thermostat suddenly yields more profit, manufacturers will reallocate resources, run factory night shifts, and build more units to capture that profit.</p>
         </div>
         """, unsafe_allow_html=True)
         
     with concept_tabs[2]:
         st.markdown("""
         <div class="concept-note">
-        <h3>📐 Theories and Models</h3>
-        <p><strong>Definition:</strong> Economic models are deliberate simplifications of a complex reality. They strip away "noise" to focus on the core variables driving behavior.</p>
+        <h3>⚖️ Market Equilibrium</h3>
+        <p><strong>Definition:</strong> The unique point where the Demand curve and Supply curve intersect. At this exact price point, the amount consumers want to buy is perfectly equal to the amount producers want to sell ($Q_d = Q_s$).</p>
+        <p>At equilibrium, there is no pressure for the price to change. There are no shortages (which drive prices up) and no surpluses (which drive prices down).</p>
         </div>
         """, unsafe_allow_html=True)
 
     with concept_tabs[3]:
         st.markdown("""
         <div class="concept-note">
-        <h3>🔍 Positive vs. Normative Economics</h3>
-        <p><strong>Positive Economics:</strong> Objective and fact-based. "What is." Can be tested or verified with data.</p>
-        <p><strong>Normative Economics:</strong> Subjective and value-based. "What ought to be." Rooted in ethics or policy goals.</p>
+        <h3>🔄 Shifts vs. Movements</h3>
+        <p><strong>Movement Along the Curve:</strong> Happens ONLY when the <em>Price</em> changes. This changes the <em>Quantity Demanded/Supplied</em>.</p>
+        <p><strong>Shift of the Entire Curve:</strong> Happens when an external factor changes. This changes the underlying <em>Demand/Supply</em> itself.</p>
+        <ul>
+            <li><em>Demand Shifters:</em> Income changes, consumer tastes, price of substitute goods.</li>
+            <li><em>Supply Shifters:</em> Cost of raw materials, new factory technology, number of sellers.</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
 
 elif learning_path == "📝 Knowledge Check":
-    st.markdown('<div class="section-header">📝 Check Your Managerial Acumen</div>', unsafe_allow_html=True)
-    st.markdown("Test your understanding of the four core themes. Each correct answer adds **12.5 points** to your total score.")
+    st.markdown('<div class="section-header">📝 Market Economics Quiz</div>', unsafe_allow_html=True)
+    st.markdown("Test your understanding. Each correct answer adds **12.5 points** to your total score.")
     
     with st.form("quiz_form"):
-        # Theme 1: Trade-offs
-        st.markdown("### 1. Trade-offs & Opportunity Cost")
+        st.markdown("### 1. The Law of Demand")
         q1 = st.radio(
-            "If a manager chooses to spend $50,000 on new software instead of a marketing campaign that would have reliably generated $60,000 in revenue, what is the opportunity cost of the software?",
+            "According to the Law of Demand, what happens when a smartphone company lowers the price of its flagship phone (assuming all else remains equal)?",
             options=[
-                "A) $50,000",
-                "B) $60,000 in lost revenue",
-                "C) $10,000",
-                "D) The cost of training employees on the new software"
+                "A) The demand curve shifts to the right.",
+                "B) The quantity demanded increases.",
+                "C) The quantity demanded decreases.",
+                "D) The supply curve shifts to the left."
             ],
             index=None
         )
         
-        # Theme 2: Prices and Markets
         st.markdown("---")
-        st.markdown("### 2. Prices and Markets")
+        st.markdown("### 2. Market Imbalances")
         q2 = st.radio(
-            "When a rideshare app implements 'surge pricing' during a rainstorm, which market mechanisms are primarily at work to restore equilibrium?",
+            "If the government sets a binding 'Price Ceiling' on apartment rents that is BELOW the natural market equilibrium price, what will be the result?",
             options=[
-                "A) It suppresses driver supply and increases rider demand.",
-                "B) It relies on normative economics to make the market fair.",
-                "C) It suppresses rider demand and incentivizes driver supply.",
-                "D) It sets a government-mandated price floor."
+                "A) A surplus of apartments.",
+                "B) The market will naturally reach equilibrium anyway.",
+                "C) A shortage of apartments.",
+                "D) An increase in the quantity supplied by landlords."
             ],
             index=None
         )
         
-        # Theme 3: Theories and Models
         st.markdown("---")
-        st.markdown("### 3. Theories and Models")
+        st.markdown("### 3. Supply Shifters")
         q3 = st.radio(
-            "Why do economic models frequently rely on the assumption of 'Ceteris Paribus' (all other things being equal)?",
+            "A sudden breakthrough in microchip manufacturing drastically lowers the cost of producing computers. How does this affect the market?",
             options=[
-                "A) Because real-world markets never change.",
-                "B) To isolate the effect of a single variable by holding other disruptive factors constant.",
-                "C) To calculate accounting profit rather than economic profit.",
-                "D) It proves that normative economic statements are factually correct."
+                "A) The supply curve shifts to the right, lowering equilibrium price.",
+                "B) The demand curve shifts to the right, raising equilibrium price.",
+                "C) There is a movement along the supply curve.",
+                "D) The supply curve shifts to the left, raising equilibrium price."
             ],
             index=None
         )
         
-        # Theme 4: Positive vs. Normative
         st.markdown("---")
-        st.markdown("### 4. Positive vs. Normative Economics")
+        st.markdown("### 4. Equilibrium Dynamics")
         q4 = st.radio(
-            "Which of the following boardroom statements is an example of Positive Economics?",
+            "At a price of $50, consumers want to buy 1,000 units, but producers only want to sell 600 units. What is occurring, and how will the market react?",
             options=[
-                "A) 'We ought to prioritize green energy to protect the environment.'",
-                "B) 'It is unfair that our competitors are paying minimum wage.'",
-                "C) 'The government must step in and regulate tech monopolies.'",
-                "D) 'Increasing our product price by 10% will likely reduce unit sales by 15%.'"
+                "A) A surplus of 400 units; prices will fall.",
+                "B) A shortage of 400 units; prices will fall.",
+                "C) A surplus of 400 units; prices will rise.",
+                "D) A shortage of 400 units; prices will rise."
             ],
             index=None
         )
@@ -521,82 +532,67 @@ elif learning_path == "📝 Knowledge Check":
         if submit_quiz:
             score = 0.0
             
-            # Check Q1
-            if q1 == "B) $60,000 in lost revenue":
-                score += 12.5
-                st.session_state.q1_correct = True
-            else:
-                st.session_state.q1_correct = False
+            if q1 == "B) The quantity demanded increases.":
+                score += 12.5; st.session_state.q1_correct = True
+            else: st.session_state.q1_correct = False
                 
-            # Check Q2
-            if q2 == "C) It suppresses rider demand and incentivizes driver supply.":
-                score += 12.5
-                st.session_state.q2_correct = True
-            else:
-                st.session_state.q2_correct = False
+            if q2 == "C) A shortage of apartments.":
+                score += 12.5; st.session_state.q2_correct = True
+            else: st.session_state.q2_correct = False
                 
-            # Check Q3
-            if q3 == "B) To isolate the effect of a single variable by holding other disruptive factors constant.":
-                score += 12.5
-                st.session_state.q3_correct = True
-            else:
-                st.session_state.q3_correct = False
+            if q3 == "A) The supply curve shifts to the right, lowering equilibrium price.":
+                score += 12.5; st.session_state.q3_correct = True
+            else: st.session_state.q3_correct = False
                 
-            # Check Q4
-            if q4 == "D) 'Increasing our product price by 10% will likely reduce unit sales by 15%.'":
-                score += 12.5
-                st.session_state.q4_correct = True
-            else:
-                st.session_state.q4_correct = False
+            if q4 == "D) A shortage of 400 units; prices will rise.":
+                score += 12.5; st.session_state.q4_correct = True
+            else: st.session_state.q4_correct = False
                 
             st.session_state.quiz_score = score
             st.session_state.quiz_submitted = True
             st.rerun()
 
-    # Show Results after submission
     if st.session_state.quiz_submitted:
         st.markdown("---")
         st.markdown(f"### 🎉 Quiz Results: {st.session_state.quiz_score}/50 points")
         
         if not st.session_state.q1_correct:
-            st.error("**Q1 Incorrect:** The opportunity cost is the value of the next best alternative given up, which was the $60,000 in revenue.")
+            st.error("**Q1 Incorrect:** A change in price causes a *movement along the curve* (change in quantity demanded), not a shift of the curve.")
         if not st.session_state.q2_correct:
-            st.error("**Q2 Incorrect:** Surge pricing raises prices to suppress excess rider demand while incentivizing more drivers to log on and supply rides.")
+            st.error("**Q2 Incorrect:** A price ceiling below equilibrium means price is kept artificially low, resulting in high demand and low supply—a shortage.")
         if not st.session_state.q3_correct:
-            st.error("**Q3 Incorrect:** Ceteris Paribus is used in models to strip away noise and see exactly how one variable (like price) affects another (like demand) in isolation.")
+            st.error("**Q3 Incorrect:** Cheaper production costs make it more profitable to produce, shifting the entire supply curve to the right, increasing quantity and lowering price.")
         if not st.session_state.q4_correct:
-            st.error("**Q4 Incorrect:** Positive economics is about testable, objective facts (e.g., forecasting sales volume drops based on price hikes).")
+            st.error("**Q4 Incorrect:** Demand (1000) > Supply (600) creates a shortage of 400. To resolve shortages, markets naturally drive prices UP.")
             
         if st.session_state.quiz_score == 50:
-            st.success("Perfect score! You have a strong grasp of foundational managerial economics.")
+            st.success("Perfect score! You understand exactly how markets clear.")
 
 elif learning_path == "💼 Executive Summary":
-    st.markdown('<div class="section-header">💼 Executive Summary: The Economic Leader</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">💼 Executive Summary: Reading the Market</div>', unsafe_allow_html=True)
     exec_col1, exec_col2 = st.columns(2)
     with exec_col1:
         st.markdown("""
-        <div class="managerial-lesson">
-        <h4>🎯 Four Pillars of Economic Decision Making</h4>
-        <p><strong>1. Embrace Opportunity Cost</strong></p>
-        <p>Never look at an investment in isolation. Always ask: "What are we giving up to do this?"</p>
-        <p><strong>2. Respect Market Signals</strong></p>
-        <p>Prices are not just math; they are communication.</p>
+        <div class="case-study">
+        <h4>🎯 Key Takeaways for Managers</h4>
+        <p><strong>1. Price is a Signal</strong></p>
+        <p>If your product is instantly flying off the shelves and you are backordered (a shortage), your price is likely too low. You are leaving money on the table.</p>
+        <p><strong>2. Don't Fight the Curve</strong></p>
+        <p>Raising prices WILL reduce unit sales (Law of Demand). The goal isn't to sell the most units possible; the goal is to find the equilibrium where profit is maximized.</p>
         </div>
         """, unsafe_allow_html=True)
-
-elif learning_path == "🛠️ Implementation Guide":
-    st.markdown('<div class="section-header">🛠️ Implementation Guide: Economic Thinking in Practice</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="managerial-lesson">
-    <h4>📅 The Marginal Analysis Framework</h4>
-    <ul>
-        <li><strong>Step 1: Ignore Sunk Costs.</strong> Look only at future costs and future revenues.</li>
-        <li><strong>Step 2: Calculate Marginal Revenue (MR).</strong></li>
-        <li><strong>Step 3: Calculate Marginal Cost (MC).</strong></li>
-        <li><strong>Step 4: The Golden Rule.</strong> As long as MR > MC, expand operations.</li>
-    </ul>
-    </div>
-    """, unsafe_allow_html=True)
+    with exec_col2:
+        st.markdown("""
+        <div class="concept-note">
+        <h4>📉 Shifting the Curve</h4>
+        <p>The best companies don't just move along the demand curve by changing prices. They shift the entire curve to the right through:</p>
+        <ul>
+            <li>Brand building and marketing (changing tastes).</li>
+            <li>Improving product quality.</li>
+            <li>Creating a network effect.</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
 
 # =====================================================================
 # FOOTER
@@ -605,11 +601,11 @@ st.markdown("---")
 footer_col1, footer_col2, footer_col3 = st.columns(3)
 
 with footer_col1:
-    st.caption("🎓 Built for Managerial Economics | Powered by Streamlit")
+    st.caption("🎓 Built for Economic Literacy | Powered by Streamlit")
 
 with footer_col2:
     total_score = min(100, round(st.session_state.game_score + st.session_state.quiz_score))
-    st.caption(f"📈 Managerial Acumen: {total_score}/100")
+    st.caption(f"📈 Total Score: {total_score}/100")
 
 with footer_col3:
     st.caption(f"⏰ Session: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
