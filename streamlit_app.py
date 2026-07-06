@@ -326,11 +326,6 @@ if learning_path == "🎮 Play & Learn":
             submit_game = st.button("▶️ Test Market Price", type="primary", use_container_width=True)
             
             if submit_game:
-                # Underlying Economic Equations
-                # Demand: Qd = 5000 - 40P
-                # Supply: Qs = -1000 + 60P
-                # Equilibrium is at P = 60, Q = 2600
-                
                 qd = max(0, 5000 - (40 * price))
                 qs = max(0, -1000 + (60 * price))
                 
@@ -358,8 +353,7 @@ if learning_path == "🎮 Play & Learn":
                     'gap': gap
                 })
                 
-                # Score Calculation: Max score is 50. You lose points based on the size of the gap.
-                max_possible_gap = 5000 # Roughly the gap at extreme prices
+                max_possible_gap = 5000 
                 penalty = (gap / max_possible_gap) * 50
                 st.session_state.game_score = max(0, 50 - penalty)
                 st.session_state.game_played = True
@@ -415,4 +409,289 @@ if learning_path == "🎮 Play & Learn":
             
             with viz_col2:
                 st.markdown("""
-                <div class="case-
+                <div class="case-study">
+                <h4>🔍 Economic Deconstruction</h4>
+                <p><strong>The Invisible Hand at Work:</strong></p>
+                <p>If you see a <strong>Shortage</strong>, your price is too low. Consumers are rushing to buy, but suppliers aren't incentivized to produce. The natural market response is to <em>raise prices</em>.</p>
+                <p>If you see a <strong>Surplus</strong>, your price is too high. Warehouses are filling up with unsold goods. Suppliers must <em>discount their prices</em> to clear inventory.</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+elif learning_path == "📖 Conceptual Deep Dive":
+    st.markdown('<div class="section-header">📚 The Laws of Supply & Demand</div>', unsafe_allow_html=True)
+    concept_tabs = st.tabs(["The Law of Demand", "The Law of Supply", "Market Equilibrium", "Shifts vs. Movements"])
+    
+    with concept_tabs[0]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📉 The Law of Demand</h3>
+        <p><strong>Definition:</strong> Ceteris paribus (all other things being equal), as the price of a good increases, the quantity demanded decreases. Conversely, as the price falls, quantity demanded rises.</p>
+        <p><strong>Why does this happen?</strong></p>
+        <ul>
+            <li><em>Substitution Effect:</em> If smart thermostats get too expensive, people buy regular thermostats.</li>
+            <li><em>Income Effect:</em> A higher price takes up a larger portion of a consumer's budget, naturally limiting how many they can afford.</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with concept_tabs[1]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📈 The Law of Supply</h3>
+        <p><strong>Definition:</strong> Ceteris paribus, as the price of a good increases, the quantity supplied by producers increases. As the price falls, the quantity supplied falls.</p>
+        <p><strong>Why does this happen?</strong></p>
+        <p>The profit motive! Higher prices mean higher potential margins. If selling a smart thermostat suddenly yields more profit, manufacturers will reallocate resources, run factory night shifts, and build more units to capture that profit.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with concept_tabs[2]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>⚖️ Market Equilibrium</h3>
+        <p><strong>Definition:</strong> The unique point where the Demand curve and Supply curve intersect. At this exact price point, the amount consumers want to buy is perfectly equal to the amount producers want to sell ($Q_d = Q_s$).</p>
+        <p>At equilibrium, there is no pressure for the price to change. There are no shortages (which drive prices up) and no surpluses (which drive prices down).</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with concept_tabs[3]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🔄 Shifts vs. Movements</h3>
+        <p><strong>Movement Along the Curve:</strong> Happens ONLY when the <em>Price</em> changes. This changes the <em>Quantity Demanded/Supplied</em>.</p>
+        <p><strong>Shift of the Entire Curve:</strong> Happens when an external factor changes. This changes the underlying <em>Demand/Supply</em> itself.</p>
+        <ul>
+            <li><em>Demand Shifters:</em> Income changes, consumer tastes, price of substitute goods.</li>
+            <li><em>Supply Shifters:</em> Cost of raw materials, new factory technology, number of sellers.</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif learning_path == "📈 Price Elasticity":
+    st.markdown('<div class="section-header">📈 Price Elasticity of Demand (PED)</div>', unsafe_allow_html=True)
+    
+    st.markdown("""
+    <p>While the Law of Demand tells us that consumers will buy less when prices rise, <strong>Price Elasticity</strong> tells us exactly <em>how much less</em>. It measures the sensitivity of consumers to price changes.</p>
+    """, unsafe_allow_html=True)
+
+    elasticity_tabs = st.tabs(["The Core Concept", "🧮 Interactive Calculator", "🇮🇳 Indian Corporate Case Studies"])
+    
+    with elasticity_tabs[0]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📏 Elastic vs. Inelastic</h3>
+        <p><strong>Elastic Demand ($|E_d| > 1$):</strong> Consumers are highly sensitive to price changes. A small increase in price leads to a massive drop in demand. This usually happens when there are many substitute products available, or the item is a luxury.</p>
+        <p><strong>Inelastic Demand ($|E_d| < 1$):</strong> Consumers are barely affected by price changes. Even if the price jumps, people still buy roughly the same amount. This occurs with essential goods, life-saving medicines, or habit-forming products.</p>
+        <p><strong>Unitary Elasticity ($|E_d| = 1$):</strong> The percentage change in quantity demanded is exactly equal to the percentage change in price.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with elasticity_tabs[1]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🧮 Calculate Elasticity</h3>
+        <p>Economists use the following formula to calculate the Price Elasticity of Demand ($E_d$):</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.latex(r"E_d = \left| \frac{\% \Delta Q_d}{\% \Delta P} \right|")
+        
+        st.markdown("#### Test a Scenario:")
+        calc_col1, calc_col2 = st.columns(2)
+        
+        with calc_col1:
+            pct_change_price = st.slider(
+                "Change in Price (%)",
+                min_value=1, max_value=100, value=10, step=1,
+                help="By what percentage did the company raise or lower the price?"
+            )
+        
+        with calc_col2:
+            pct_change_quantity = st.slider(
+                "Resulting Change in Quantity Demanded (%)",
+                min_value=0, max_value=100, value=5, step=1,
+                help="By what percentage did consumer demand change in response?"
+            )
+            
+        elasticity_score = pct_change_quantity / pct_change_price
+        
+        if elasticity_score > 1:
+            e_status = "Highly Elastic"
+            e_color = "#F87171" # Red-ish for sensitive
+            e_desc = "Consumers are very sensitive to this price change. A price hike will hurt total revenue."
+        elif elasticity_score < 1:
+            e_status = "Inelastic"
+            e_color = "#10B981" # Green for inelastic (good for pricing power)
+            e_desc = "Consumers are relatively insensitive to this price change. The company has pricing power."
+        else:
+            e_status = "Unitary Elastic"
+            e_color = "#FCD34D" # Yellow
+            e_desc = "Price and demand moved in perfectly equal proportion. Total revenue remains unchanged."
+
+        st.markdown(f"""
+        <div class="metric-card" style="border-color: {e_color}; margin-top: 1.5rem;">
+            <h3>Calculated Elasticity Score</h3>
+            <div class="metric-value" style="color: {e_color};">{elasticity_score:.2f}</div>
+            <p style="color: {e_color}; font-weight: bold; font-size: 1.2rem;">{e_status}</p>
+            <p style="color: white;">{e_desc}</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with elasticity_tabs[2]:
+        st.markdown("""
+        <div class="case-study">
+        <h4>📱 Reliance Jio (The Power of Highly Elastic Demand)</h4>
+        <p><strong>The Scenario:</strong> Before 2016, 1GB of mobile data in India cost around ₹250. Internet usage was considered a premium, discretionary spend.</p>
+        <p><strong>The Elasticity Reality:</strong> When Jio entered the market offering data for essentially free (and later at highly subsidized rates), the quantity demanded didn't just double—it exploded exponentially. Because the demand for data was <em>highly elastic</em>, dropping the price massively expanded the total size of the market, allowing Jio to capture hundreds of millions of users in record time.</p>
+        </div>
+        
+        <div class="case-study">
+        <h4>🧂 Tata Salt (Highly Inelastic)</h4>
+        <p><strong>The Scenario:</strong> Salt is a daily necessity in Indian cooking, and it makes up a tiny fraction of a household's grocery budget.</p>
+        <p><strong>The Elasticity Reality:</strong> If Tata Consumer Products raises the price of a 1kg packet of Tata Salt from ₹25 to ₹28 (a 12% increase), demand will barely flinch. Consumers will not stop using salt, nor will they spend hours hunting for a ₹2 cheaper substitute. The demand here is fundamentally inelastic, giving the brand strong pricing power.</p>
+        </div>
+        
+        <div class="case-study">
+        <h4>🚗 Maruti Suzuki Hatchbacks (Highly Elastic)</h4>
+        <p><strong>The Scenario:</strong> The sub-₹10 Lakh car segment in India is incredibly competitive.</p>
+        <p><strong>The Elasticity Reality:</strong> If Maruti Suzuki raises the price of the Swift by 8%, highly price-sensitive Indian middle-class buyers will immediately shift to substitutes like the Tata Punch or Hyundai Grand i10 Nios. Because close substitutes exist, the demand is highly elastic.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif learning_path == "📝 Knowledge Check":
+    st.markdown('<div class="section-header">📝 Market Economics Quiz</div>', unsafe_allow_html=True)
+    st.markdown("Test your understanding. Each correct answer adds **12.5 points** to your total score.")
+    
+    with st.form("quiz_form"):
+        st.markdown("### 1. The Law of Demand")
+        q1 = st.radio(
+            "According to the Law of Demand, what happens when a smartphone company lowers the price of its flagship phone (assuming all else remains equal)?",
+            options=[
+                "A) The demand curve shifts to the right.",
+                "B) The quantity demanded increases.",
+                "C) The quantity demanded decreases.",
+                "D) The supply curve shifts to the left."
+            ],
+            index=None
+        )
+        
+        st.markdown("---")
+        st.markdown("### 2. Market Imbalances")
+        q2 = st.radio(
+            "If the government sets a binding 'Price Ceiling' on apartment rents that is BELOW the natural market equilibrium price, what will be the result?",
+            options=[
+                "A) A surplus of apartments.",
+                "B) The market will naturally reach equilibrium anyway.",
+                "C) A shortage of apartments.",
+                "D) An increase in the quantity supplied by landlords."
+            ],
+            index=None
+        )
+        
+        st.markdown("---")
+        st.markdown("### 3. Supply Shifters")
+        q3 = st.radio(
+            "A sudden breakthrough in microchip manufacturing drastically lowers the cost of producing computers. How does this affect the market?",
+            options=[
+                "A) The supply curve shifts to the right, lowering equilibrium price.",
+                "B) The demand curve shifts to the right, raising equilibrium price.",
+                "C) There is a movement along the supply curve.",
+                "D) The supply curve shifts to the left, raising equilibrium price."
+            ],
+            index=None
+        )
+        
+        st.markdown("---")
+        st.markdown("### 4. Equilibrium Dynamics")
+        q4 = st.radio(
+            "At a price of $50, consumers want to buy 1,000 units, but producers only want to sell 600 units. What is occurring, and how will the market react?",
+            options=[
+                "A) A surplus of 400 units; prices will fall.",
+                "B) A shortage of 400 units; prices will fall.",
+                "C) A surplus of 400 units; prices will rise.",
+                "D) A shortage of 400 units; prices will rise."
+            ],
+            index=None
+        )
+        
+        submit_quiz = st.form_submit_button("Submit Answers", type="primary")
+        
+        if submit_quiz:
+            score = 0.0
+            
+            if q1 == "B) The quantity demanded increases.":
+                score += 12.5; st.session_state.q1_correct = True
+            else: st.session_state.q1_correct = False
+                
+            if q2 == "C) A shortage of apartments.":
+                score += 12.5; st.session_state.q2_correct = True
+            else: st.session_state.q2_correct = False
+                
+            if q3 == "A) The supply curve shifts to the right, lowering equilibrium price.":
+                score += 12.5; st.session_state.q3_correct = True
+            else: st.session_state.q3_correct = False
+                
+            if q4 == "D) A shortage of 400 units; prices will rise.":
+                score += 12.5; st.session_state.q4_correct = True
+            else: st.session_state.q4_correct = False
+                
+            st.session_state.quiz_score = score
+            st.session_state.quiz_submitted = True
+            st.rerun()
+
+    if st.session_state.quiz_submitted:
+        st.markdown("---")
+        st.markdown(f"### 🎉 Quiz Results: {st.session_state.quiz_score}/50 points")
+        
+        if not st.session_state.q1_correct:
+            st.error("**Q1 Incorrect:** A change in price causes a *movement along the curve* (change in quantity demanded), not a shift of the curve.")
+        if not st.session_state.q2_correct:
+            st.error("**Q2 Incorrect:** A price ceiling below equilibrium means price is kept artificially low, resulting in high demand and low supply—a shortage.")
+        if not st.session_state.q3_correct:
+            st.error("**Q3 Incorrect:** Cheaper production costs make it more profitable to produce, shifting the entire supply curve to the right, increasing quantity and lowering price.")
+        if not st.session_state.q4_correct:
+            st.error("**Q4 Incorrect:** Demand (1000) > Supply (600) creates a shortage of 400. To resolve shortages, markets naturally drive prices UP.")
+            
+        if st.session_state.quiz_score == 50:
+            st.success("Perfect score! You understand exactly how markets clear.")
+
+elif learning_path == "💼 Executive Summary":
+    st.markdown('<div class="section-header">💼 Executive Summary: Reading the Market</div>', unsafe_allow_html=True)
+    exec_col1, exec_col2 = st.columns(2)
+    with exec_col1:
+        st.markdown("""
+        <div class="case-study">
+        <h4>🎯 Key Takeaways for Managers</h4>
+        <p><strong>1. Price is a Signal</strong></p>
+        <p>If your product is instantly flying off the shelves and you are backordered (a shortage), your price is likely too low. You are leaving money on the table.</p>
+        <p><strong>2. Don't Fight the Curve</strong></p>
+        <p>Raising prices WILL reduce unit sales (Law of Demand). The goal isn't to sell the most units possible; the goal is to find the equilibrium where profit is maximized.</p>
+        </div>
+        """, unsafe_allow_html=True)
+    with exec_col2:
+        st.markdown("""
+        <div class="concept-note">
+        <h4>📉 Shifting the Curve</h4>
+        <p>The best companies don't just move along the demand curve by changing prices. They shift the entire curve to the right through:</p>
+        <ul>
+            <li>Brand building and marketing (changing tastes).</li>
+            <li>Improving product quality.</li>
+            <li>Creating a network effect.</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+# =====================================================================
+# FOOTER
+# =====================================================================
+st.markdown("---")
+footer_col1, footer_col2, footer_col3 = st.columns(3)
+
+with footer_col1:
+    st.caption("🎓 Built for Economic Literacy | Powered by Streamlit")
+
+with footer_col2:
+    total_score = min(100, round(st.session_state.game_score + st.session_state.quiz_score))
+    st.caption(f"📈 Total Score: {total_score}/100")
+
+with footer_col3:
+    st.caption(f"⏰ Session: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
