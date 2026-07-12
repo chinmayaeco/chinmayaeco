@@ -7,38 +7,38 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Consumer Choice Optimizer",
-    page_icon="⚖️",
+    page_title="Short-Run Production Optimization Engine",
+    page_icon="🏭",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # =====================================================================
-# PASSWORD PROTECTION SYSTEM
+# SECURE ACCESS SYSTEM
 # =====================================================================
 def check_password():
-    """Returns `True` if the user had the correct password."""
+    """Returns `True` if the user enters the correct security key."""
     def password_entered():
         if st.session_state["password"] == "PED2026":
             st.session_state["password_correct"] = True
-            del st.session_state["password"]  # don't store password
+            del st.session_state["password"]  
         else:
             st.session_state["password_correct"] = False
 
     if "password_correct" not in st.session_state:
-        st.markdown("<h1 style='text-align: center; color: #10B981;'>🔒 Secure Access</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>Please enter the password to access the simulator.</p>", unsafe_allow_html=True)
-        col1, col2, col3 = st.columns([1, 2, 1])
+        st.markdown("<h1 style='text-align: center; color: #3B82F6;'>🔒 Production Engine Security</h1>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Short-Run Simulator.</p>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 1.5, 1])
         with col2:
-            st.text_input("Password", type="password", on_change=password_entered, key="password")
+            st.text_input("Security Password", type="password", on_change=password_entered, key="password")
         return False
     
     elif not st.session_state["password_correct"]:
-        st.markdown("<h1 style='text-align: center; color: #10B981;'>🔒 Secure Access</h1>", unsafe_allow_html=True)
-        col1, col2, col3 = st.columns([1, 2, 1])
+        st.markdown("<h1 style='text-align: center; color: #3B82F6;'>🔒 Production Engine Security</h1>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 1.5, 1])
         with col2:
-            st.text_input("Password", type="password", on_change=password_entered, key="password")
-            st.error("😕 Password incorrect. Please try again.")
+            st.text_input("Security Password", type="password", on_change=password_entered, key="password")
+            st.error("😕 Access denied. Invalid token key.")
         return False
     
     return True
@@ -47,479 +47,432 @@ if not check_password():
     st.stop()
 
 # =====================================================================
-# PREMIUM DESIGN SYSTEM (EMERALD & GOLD THEME)
+# REVAMPED CORE DESIGN SYSTEM (SLATE, COBALT & AMBER METROPOLIS THEME)
 # =====================================================================
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     
-    * { font-family: 'Inter', sans-serif; }
+    * { font-family: 'Plus Jakarta Sans', sans-serif; }
     
-    /* Main background */
-    .stApp { background: linear-gradient(135deg, #022C22 0%, #064E3B 50%, #022C22 100%); }
+    /* Main Background & Core Canvas Layout */
+    .stApp { background: linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #0F172A 100%); }
     
-    /* Header styling */
+    /* Premium Header Area Custom Styling */
     .header-gradient {
-        background: linear-gradient(135deg, #047857 0%, #10B981 50%, #F59E0B 100%);
-        padding: 3rem 2rem;
-        border-radius: 16px;
+        background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #D97706 100%);
+        padding: 2.5rem 2rem;
+        border-radius: 14px;
         margin-bottom: 2rem;
-        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.15);
+        box-shadow: 0 15px 35px rgba(59, 130, 246, 0.15);
     }
-    .header-gradient h1 { color: white !important; font-size: 2.5rem !important; font-weight: 800 !important; margin: 0 !important; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); }
-    .header-gradient p { color: rgba(255, 255, 255, 0.95) !important; font-size: 1.1rem !important; margin: 0.5rem 0 0 0 !important; }
+    .header-gradient h1 { color: #FFFFFF !important; font-size: 2.4rem !important; font-weight: 800 !important; margin: 0 !important; }
+    .header-gradient p { color: rgba(255, 255, 255, 0.9) !important; font-size: 1.05rem !important; margin: 0.5rem 0 0 0 !important; }
     
-    /* Score banner */
+    /* Dynamic Performance Score Indicator */
     .score-banner {
-        background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
-        border: 2px solid #10B981;
-        color: white; padding: 2rem; border-radius: 12px; text-align: center; margin-bottom: 2rem;
-        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.2);
+        background: linear-gradient(135deg, #1E293B 0%, #334155 100%);
+        border: 1px solid rgba(59, 130, 246, 0.3);
+        color: #FFFFFF; padding: 1.5rem; border-radius: 12px; text-align: center; margin-bottom: 2rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
     }
-    .score-banner h2 { color: #34D399 !important; margin: 0 !important; font-weight: 700; font-size: 1.8rem; }
+    .score-banner h2 { color: #60A5FA !important; margin: 0 !important; font-weight: 700; font-size: 1.6rem; }
     
-    /* Container styling */
+    /* Elegant Content Blocks (Containers/Forms) */
     .stContainer, .stForm {
-        background: rgba(6, 78, 59, 0.8); border: 1px solid rgba(16, 185, 129, 0.2);
-        border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px);
+        background: rgba(30, 41, 59, 0.7) !important; 
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        border-radius: 12px; padding: 1.75rem; margin-bottom: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); backdrop-filter: blur(12px);
     }
     
-    /* Section headers */
+    /* System Division Headers */
     .section-header {
-        color: #FCD34D; font-weight: 700; font-size: 1.5rem; margin-bottom: 1.5rem;
-        padding-bottom: 1rem; border-bottom: 2px solid rgba(252, 211, 77, 0.3);
+        color: #FBBF24; font-weight: 700; font-size: 1.4rem; margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem; border-bottom: 1px solid rgba(251, 191, 36, 0.2);
     }
     
-    /* Concept note box */
-    .concept-note, .case-study { padding: 1.5rem; border-radius: 8px; margin: 1.5rem 0; }
-    .concept-note { background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-left: 4px solid #10B981; }
-    .concept-note h3 { color: #34D399; margin-top: 0 !important; }
-    .case-study { background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%); border-left: 4px solid #F59E0B; }
-    .case-study h4 { color: #FBBF24; margin-top: 0 !important; }
+    /* Concept Info Cards & Box Systems */
+    .concept-note, .case-study { padding: 1.25rem; border-radius: 8px; margin: 1.2rem 0; }
+    .concept-note { background: rgba(59, 130, 246, 0.08); border-left: 4px solid #3B82F6; }
+    .concept-note h3 { color: #60A5FA; margin-top: 0 !important; font-size: 1.2rem; }
+    .case-study { background: rgba(217, 119, 6, 0.08); border-left: 4px solid #D97706; }
+    .case-study h4 { color: #F59E0B; margin-top: 0 !important; font-size: 1.2rem; }
     
-    /* Key metrics */
+    /* Dynamic Metric Highlight Blocks */
     .metric-card {
-        background: rgba(2, 44, 34, 0.6); border: 1px solid rgba(52, 211, 153, 0.3);
-        padding: 1.5rem; border-radius: 8px; text-align: center;
+        background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.25rem; border-radius: 8px; text-align: center;
     }
-    .metric-card h3 { color: #6EE7B7; font-size: 1.2rem; margin: 0 0 0.5rem 0; }
-    .metric-value { color: #FCD34D; font-size: 2rem; font-weight: 700; margin: 0.5rem 0; }
+    .metric-card h3 { color: #94A3B8; font-size: 1.05rem; margin: 0 0 0.5rem 0; }
+    .metric-value { color: #FBBF24; font-size: 1.8rem; font-weight: 700; margin: 0.25rem 0; }
     
-    /* Buttons */
+    /* Interface Control Elements / Buttons */
     .stButton > button, .stFormSubmitButton > button {
-        background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important; color: white !important;
-        border: none !important; padding: 0.75rem 2rem !important; border-radius: 8px !important;
-        font-weight: 600 !important; transition: all 0.3s ease !important; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+        background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important; color: white !important;
+        border: none !important; padding: 0.65rem 1.75rem !important; border-radius: 6px !important;
+        font-weight: 600 !important; transition: all 0.2s ease !important;
     }
-    .stButton > button:hover, .stFormSubmitButton > button:hover { box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5) !important; transform: translateY(-2px) !important; }
+    .stButton > button:hover, .stFormSubmitButton > button:hover { 
+        transform: translateY(-1px) !important; 
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important; 
+    }
     
-    /* Tabs & Text */
-    .stTabs [data-baseweb="tab-list"] { background: rgba(6, 78, 59, 0.5); border-bottom: 2px solid rgba(16, 185, 129, 0.2); }
-    .stTabs [aria-selected="true"] { border-bottom: 3px solid #10B981 !important; }
-    .stMarkdown, p, li { color: rgba(255, 255, 255, 0.9) !important; }
-    .stRadio p, .stRadio label, div[role="radiogroup"] p { color: rgba(255, 255, 255, 0.95) !important; font-size: 1.05rem; }
-    .stSidebar { background: linear-gradient(180deg, #022C22 0%, #064E3B 100%); }
+    /* Framework Global Text Elements Adjustments */
+    .stMarkdown, p, li { color: #E2E8F0 !important; font-size: 0.98rem; line-height: 1.6; }
+    .stSidebar { background: #0F172A !important; border-right: 1px solid rgba(255, 255, 255, 0.05); }
 </style>
 """, unsafe_allow_html=True)
 
 # =====================================================================
-# SESSION STATE INITIALIZATION
+# SESSION STATE SYSTEM MANAGEMENT
 # =====================================================================
-def initialize_session_state():
+def init_short_run_state():
     defaults = {
-        'game_played': False,
-        'sim_score': 0.0,
-        'quiz_score': 0.0,
-        'sim_history': [],
-        'current_round': 0,
-        'q1_answered': False, 'q1_correct': False,
-        'q2_answered': False, 'q2_correct': False,
-        'q3_answered': False, 'q3_correct': False,
-        'q4_answered': False, 'q4_correct': False,
-        'quiz_submitted': False
+        'sim_calculated': False,
+        'operational_efficiency': 0.0,
+        'knowledge_rating': 0.0,
+        'prod_history': [],
+        'round_counter': 0,
+        'quiz_done': False,
+        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False
     }
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
 
-initialize_session_state()
+init_short_run_state()
 
 # =====================================================================
-# SIDEBAR: LEARNING PATH & NAVIGATION
+# SIDEBAR CONTROL DECK
 # =====================================================================
 with st.sidebar:
-    st.markdown("### 📚 Consumer Choice Path")
-    learning_path = st.radio(
-        "Select your focus:",
+    st.markdown("### 🏭 Short-Run Operations")
+    nav_selection = st.radio(
+        "Navigation Hub:",
         options=[
-            "🎮 Utility Optimization Simulator",
-            "📖 Conceptual Deep Dive",
-            "📈 Real-World Market Applications",
-            "📝 Knowledge Check",
-            "💼 Executive Summary"
+            "🎮 Short-Run Simulator Sandbox",
+            "📖 Core Theory Deep Dive",
+            "📈 Geometric Margins Analysis",
+            "📝 Operational Knowledge Check"
         ]
     )
 
 # =====================================================================
-# HEADER SECTION
+# LIVE SCORE TRACKING ENGINE
 # =====================================================================
-st.markdown("""
-<div class="header-gradient">
-    <h1>⚖️ Consumer Choice Theory</h1>
-    <p>Analyze how individuals achieve optimal satisfaction. Master the strategic equilibrium where budgetary constraints perfectly align with subjective consumer utility.</p>
-</div>
-""", unsafe_allow_html=True)
-
-# =====================================================================
-# PERFORMANCE DASHBOARD (ANTI-100% PERFECT SCORE MECHANIC)
-# =====================================================================
-dashboard_col = st.container()
-with dashboard_col:
-    # A structural ceiling cap and dynamic friction penalty ensures the absolute maximum score sits around 96-98, preventing anyone from hitting 100.
-    raw_total = st.session_state.sim_score + st.session_state.quiz_score
-    friction_penalty = 2.5 if raw_total > 80 else (0.03 * raw_total)
-    total_score = max(0.0, min(97.5, round(raw_total - friction_penalty, 1)))
+score_container = st.container()
+with score_container:
+    combined_raw = st.session_state.operational_efficiency + st.session_state.knowledge_rating
+    safety_buffer = 1.8 if combined_raw > 75 else (0.02 * combined_raw)
+    final_score = max(0.0, min(98.2, round(combined_raw - safety_buffer, 1)))
     
     st.markdown(f"""
     <div class="score-banner">
-        <h2>Overall Microeconomic Mastery: {total_score} / 100</h2>
-        <p style='color: #FCD34D;'>🎮 Optimization Score: {round(st.session_state.sim_score, 1)}/50 | 📝 Quiz Score: {round(st.session_state.quiz_score, 1)}/50</p>
-        <small style='color: #a7f3d0;'>⚠️ Dynamic market friction applied. Universal perfect efficiency (100%) is structurally impossible in a scarce resource reality.</small>
+        <h2>Industrial Efficiency Index: {final_score} / 100</h2>
+        <p style='color: #FBBF24; margin: 0.25rem 0 0 0;'>🎮 Optimization Yield: {round(st.session_state.operational_efficiency, 1)}/50 | 📝 Quiz Accuracy: {round(st.session_state.knowledge_rating, 1)}/50</p>
+        <small style='color: #94A3B8;'>System Constraint Note: Absolute zero-loss performance (100%) is structurally unavailable due to physical capital congestion constraints.</small>
     </div>
     """, unsafe_allow_html=True)
 
 # =====================================================================
-# MAIN CONTENT ROUTING
+# INTERACTIVE ROUTING ARCHITECTURE
 # =====================================================================
 
-if learning_path == "🎮 Utility Optimization Simulator":
-    game_section = st.container()
-    with game_section:
-        st.markdown('<div class="section-header">🎮 The Optimal Bundle Constrained Simulator</div>', unsafe_allow_html=True)
-        
-        col_concept, col_game = st.columns([1, 1.2])
-        
-        with col_concept:
-            st.markdown("""
-            <div class="concept-note">
-            <h3>📌 Your Mission: Maximize Total Utility</h3>
-            <p><strong>Your Scenario:</strong> An individual allocates a strict budget between two goods: <strong>Premium Coffee (Good X)</strong> and <strong>Streaming Subscriptions (Good Y)</strong>.</p>
-            <p><strong>The Constraint:</strong> You cannot exceed your budget. Spending less than your budget leaves utility unmaximized.</p>
-            <p><strong>The Rule of Optimality:</strong> True consumer equilibrium occurs precisely where the Budget Constraint is tangent to the highest attainable Indifference Curve. At this unique mathematical intersection:</p>
-            <p style='text-align: center; font-weight: bold; color: #FCD34D;'>MRS = Price Ratio<br><code>(MU_x / MU_y) = (P_x / P_y)</code></p>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col_game:
-            st.markdown("""
-            <div class="case-study">
-            <h4>🎯 Budget & Market Parameters</h4>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Constants for simulator
-            income = 200
-            price_x = 20
-            price_y = 40
-            
-            st.write(f"💰 **Total Disposable Income:** ${income}")
-            st.write(f"☕ **Price of Premium Coffee (Good X):** ${price_x} per unit")
-            st.write(f"🎬 **Price of Streaming (Good Y):** ${price_y} per unit")
-            
-            # User picks quantities
-            qty_x = st.slider("Select Quantity of Premium Coffee (X)", min_value=0, max_value=12, value=4, step=1)
-            qty_y = st.slider("Select Quantity of Streaming (Y)", min_value=0, max_value=8, value=2, step=1)
-            
-            submit_sim = st.button("⚖️ Calculate Consumer Equilibrium", type="primary", use_container_width=True)
-            
-            if submit_sim:
-                total_spent = (qty_x * price_x) + (qty_y * price_y)
-                
-                # Cobb-Douglas derived utility simulation: U = X^0.5 * Y^0.5 scaled up
-                # Theoretical optimal bundle is X=5, Y=2.5. Since integer selection: X=5, Y=2 gives total_spent = 180 (underbudget)
-                # Let's reward high allocations that balance MRS near price ratio (20/40 = 0.5)
-                utility = float(round((qty_x ** 0.5) * (qty_y ** 0.5) * 20, 2)) if (qty_x > 0 and qty_y > 0) else 0.0
-                
-                # Process outcome and calculate points
-                if total_spent > income:
-                    status = "Budget Violated! ❌ (Bankruptcy)"
-                    score_add = 0.0
-                elif total_spent == income:
-                    # Perfect balance evaluation
-                    mrs = (qty_y / qty_x) if qty_x > 0 else 0
-                    price_ratio = price_x / price_y # 0.5
-                    
-                    if abs(mrs - price_ratio) < 0.01:
-                        status = "Absolute Consumer Equilibrium Achieved! 🌟"
-                        score_add = 46.5 # Cap strictly under 50 to prevent 100/100 matching rules
-                    else:
-                        status = "Affordable but Inefficient Bundle ➖ (MRS ≠ Price Ratio)"
-                        score_add = 30.0
-                else:
-                    status = "Inefficient Allocation 📉 (Leftover Income Unspent)"
-                    score_add = max(5.0, utility - 5.0)
-
-                st.session_state.current_round += 1
-                st.session_state.sim_score = min(46.5, score_add)
-                
-                st.session_state.sim_history.append({
-                    'round': st.session_state.current_round,
-                    'qty_x': qty_x,
-                    'qty_y': qty_y,
-                    'spent': total_spent,
-                    'utility': utility,
-                    'status': status
-                })
-                
-                st.session_state.game_played = True
-                st.rerun()
-
-    if st.session_state.game_played:
-        results_section = st.container()
-        with results_section:
-            st.markdown('<div class="section-header">📊 Optimization Metrics Result</div>', unsafe_allow_html=True)
-            
-            latest_result = st.session_state.sim_history[-1]
-            metric_cols = st.columns(3)
-            
-            with metric_cols[0]:
-                st.markdown(f"""
-                <div class="metric-card">
-                    <h3>Total Capital Spent</h3>
-                    <div class="metric-value">${latest_result['spent']}</div>
-                    <p style="color: #6EE7B7; font-size: 0.9rem;">Budget Limit: $200</p>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            with metric_cols[1]:
-                st.markdown(f"""
-                <div class="metric-card">
-                    <h3>Subjective Utility Yielded</h3>
-                    <div class="metric-value">{latest_result['utility']} Utils</div>
-                    <p style="color: #6EE7B7; font-size: 0.9rem;">Calculated via Preference Curves</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
-            with metric_cols[2]:
-                is_ok = "🌟" in latest_result['status'] or "Inefficient" in latest_result['status'] and "Leftover" not in latest_result['status']
-                status_color = "#10B981" if is_ok else "#EF4444"
-                
-                st.markdown(f"""
-                <div class="metric-card" style="border-color: {status_color};">
-                    <h3 style="color: {status_color};">Equilibrium State</h3>
-                    <div class="metric-value" style="font-size: 1.5rem; color: {status_color};">{latest_result['status']}</div>
-                </div>
-                """, unsafe_allow_html=True)
-            
-            st.markdown("---")
-            st.markdown("### 📈 Visualizing Consumer Constraints vs. Preferences")
-            
-            # Generate numerical values to render Budget Line & Indifference Curves
-            x_vals = np.linspace(0.1, 12, 20)
-            budget_y = (200 - (20 * x_vals)) / 40
-            budget_y = np.clip(budget_y, 0, None)
-            
-            # Create interactive standard DataFrame for user visualization
-            chart_data = pd.DataFrame({
-                'Good X (Coffee)': x_vals,
-                'Budget Line Constraint': budget_y,
-            })
-            st.line_chart(chart_data.set_index('Good X (Coffee)'), color="#FCD34D")
-
-elif learning_path == "📖 Conceptual Deep Dive":
-    st.markdown('<div class="section-header">📚 Foundations of Rational Choice Theory</div>', unsafe_allow_html=True)
-    concept_tabs = st.tabs(["Indifference Curves", "Budget Constraints", "The Optimal Points Condition"])
+if nav_selection == "🎮 Short-Run Simulator Sandbox":
+    st.markdown('<div class="section-header">🎮 Variable Labor Allocation Sandbox</div>', unsafe_allow_html=True)
     
-    with concept_tabs[0]:
+    panel_left, panel_right = st.columns([1, 1.2])
+    
+    with panel_left:
         st.markdown("""
         <div class="concept-note">
-        <h3>📊 Indifference Curves (Preferences)</h3>
-        <p>An <strong>Indifference Curve</strong> represents all combinations of two goods that provide a consumer with the exact same level of total satisfaction or utility.</p>
-        <p><strong>Core Mathematical Properties:</strong></p>
+        <h3>📌 Short-Run Operational Constraints</h3>
+        <p><strong>Fixed Capital Variable Environment:</strong> You operate an industrial manufacturing facility with a locked assembly system setup ($K = 4$ units).</p>
+        <p><strong>Your Task:</strong> Determine the optimal number of operational assembly technicians ($L$) to deploy. Your target is to identify the precise boundary where total expansion ends and inefficiency begins.</p>
+        <p><strong>Economic Equilibrium Rule:</strong> Efficiency is maximized when your Average Product curve matches your Marginal Product curve ($AP_L = MP_L$). Beyond this intersection point, structural congestion drops net returns.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with panel_right:
+        st.markdown("""
+        <div class="case-study">
+        <h4>⚙️ Fixed Infrastructure Capacity Parameters</h4>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        fixed_k = 4
+        st.write(f"🔒 **Fixed Capital Capacity Asset Size ($K$):** {fixed_k} Industrial Units (Static)")
+        st.write("📊 **Short-Run Production Function:** Standard Non-Linear Model")
+        
+        # User input slider for labor allocation
+        labor_input = st.slider("Deploy Workforce Size (Labor Units - L):", min_value=0, max_value=15, value=2, step=1)
+        
+        compute_metrics = st.button("🏗️ Calculate Production Metrics", type="primary", use_container_width=True)
+        
+        if compute_metrics:
+            # Short-run production modeling simulation formulas:
+            # TP = 6 * K * L^2 - 0.4 * L^3
+            tp = float(round((6 * fixed_k * (labor_input ** 2)) - (0.4 * (labor_input ** 3)), 1)) if labor_input > 0 else 0.0
+            ap = float(round(tp / labor_input, 2)) if labor_input > 0 else 0.0
+            
+            # Derivative for exact Marginal Product: dTP/dL = 12 * K * L - 1.2 * L^2
+            mp = float(round((12 * fixed_k * labor_input) - (1.2 * (labor_input ** 2)), 2)) if labor_input > 0 else 0.0
+            
+            # Map dynamic status evaluations based on economic returns zones
+            if labor_input == 0:
+                zone_status = "Zero Production Capacity ⚪"
+                points_given = 0.0
+            elif mp > ap:
+                zone_status = "Phase 1: Increasing Returns (Under-utilization) 📈"
+                points_given = 25.0
+            elif mp <= ap and mp >= 0:
+                # Target sweet spot calculation zone
+                if abs(mp - ap) < 5.0 or labor_input == 10:
+                    zone_status = "Optimal Allocation Zone: Peak Efficiency Achieved 🌟"
+                    points_given = 47.5
+                else:
+                    zone_status = "Phase 2: Diminishing Returns (Congested Capital) ⚠️"
+                    points_given = 35.0
+            else:
+                zone_status = "Phase 3: Negative Returns (System Failure) 🚨"
+                points_given = 5.0
+                
+            st.session_state.round_counter += 1
+            st.session_state.operational_efficiency = min(47.5, points_given)
+            
+            st.session_state.prod_history.append({
+                'run': st.session_state.round_counter,
+                'labor': labor_input,
+                'tp': tp,
+                'ap': ap,
+                'mp': mp,
+                'status': zone_status
+            })
+            st.session_state.sim_calculated = True
+            st.rerun()
+
+    if st.session_state.sim_calculated:
+        metrics_block = st.container()
+        with metrics_block:
+            st.markdown('<div class="section-header">📊 Dynamic Factory Output Performance Summary</div>', unsafe_allow_html=True)
+            
+            latest_run = st.session_state.prod_history[-1]
+            card_col1, card_col2, card_col3 = st.columns(3)
+            
+            with card_col1:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <h3>Total Product (TP)</h3>
+                    <div class="metric-value">{latest_run['tp']} Units</div>
+                    <p style="color: #64748B; font-size: 0.85rem;">Gross Output Yield</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+            with card_col2:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <h3>Average Product ($AP_L$)</h3>
+                    <div class="metric-value">{latest_run['ap']} Units</div>
+                    <p style="color: #64748B; font-size: 0.85rem;">Efficiency Per Worker ($TP/L$)</p>
+                </div>
+                """, unsafe_allow_html=True)
+                
+            with card_col3:
+                border_accent = "#F59E0B" if "Optimal" in latest_run['status'] else "#3B82F6"
+                if "Negative" in latest_run['status']: border_accent = "#EF4444"
+                
+                st.markdown(f"""
+                <div class="metric-card" style="border-color: {border_accent};">
+                    <h3 style="color: #94A3B8;">Current Returns Zone</h3>
+                    <div class="metric-value" style="font-size: 1.25rem; color: #FBBF24; padding-top: 0.4rem;">{latest_run['status']}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+            st.markdown("---")
+            st.markdown("### 📈 Short-Run Variable Performance Distribution Curves")
+            
+            # Build continuous arrays to trace out smooth classic microeconomic production graphs
+            l_range = np.linspace(0.1, 15, 60)
+            tp_curve = (6 * 4 * (l_range ** 2)) - (0.4 * (l_range ** 3))
+            ap_curve = tp_curve / l_range
+            mp_curve = (12 * 4 * l_range) - (1.2 * (l_range ** 2))
+            
+            graph_data = pd.DataFrame({
+                'Labor Assigned (L)': l_range,
+                'Average Product (AP)': ap_curve,
+                'Marginal Product (MP)': mp_curve
+            })
+            
+            st.line_chart(graph_data.set_index('Labor Assigned (L)'), color=["#3B82F6", "#F59E0B"])
+            st.caption("💡 **Operational Analysis:** Notice that the orange Marginal Product ($MP$) curve intersects the blue Average Product ($AP$) curve exactly at its highest point ($L=10$). This marks the maximum efficiency threshold before systemic crowding takes over.")
+
+elif nav_selection == "📖 Core Theory Deep Dive":
+    st.markdown('<div class="section-header">📚 Structural Mechanics of Short-Run Frameworks</div>', unsafe_allow_html=True)
+    theory_tabs = st.tabs(["Short-Run Limits Matrix", "The Structural Productivity Matrix", "The Law of Diminishing Returns"])
+    
+    with theory_tabs[0]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>⚡ Time Horizon Boundaries: Short Run vs. Long Run</h3>
+        <p>In analytical economics, the <strong>Short Run</strong> is not defined by calendar dates or duration windows. It is explicitly an operational period where <strong>at least one structural input is completely fixed</strong>.</p>
+        <p><strong>Core Constraints Matrix:</strong></p>
         <ul>
-            <li><strong>Downward Sloping:</strong> To get more of Good X, a consumer must sacrifice some of Good Y to maintain identical happiness.</li>
-            <li><strong>Convex to the Origin:</strong> Due to the law of diminishing marginal utility, as you acquire more of a good, your willingness to trade away another good for it decreases. This slope is the <strong>Marginal Rate of Substitution (MRS)</strong>.</li>
-            <li><strong>Non-Intersecting:</strong> Higher curves correspond to superior levels of utility ($U_3 > U_2 > U_1$).</li>
+            <li><strong>Fixed Inputs ($K$):</strong> Factors that cannot be adjusted instantly due to contracts, building timelines, or heavy capital procurement constraints (e.g., commercial real estate, factories, customized heavy machinery).</li>
+            <li><strong>Variable Inputs ($L$):</strong> Factors that can be adjusted on demand to ramp capacity up or down (e.g., hourly labor shifts, raw assembly materials, utility usage).</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-    with concept_tabs[1]:
+    with theory_tabs[1]:
         st.markdown("""
         <div class="concept-note">
-        <h3>💰 Budget Constraints (Scarcity)</h3>
-        <p>While Indifference Curves illustrate what a consumer <em>wants</em> to do, the <strong>Budget Constraint</strong> establishes what they <em>can</em> do based on limited purchasing power.</p>
-        <p>The standard algebraic equation represents market equilibrium across available bundles:</p>
+        <h3>🔢 The Metric Identities</h3>
+        <p>Short-run operations are evaluated through three interrelated mathematical indicators:</p>
+        <ol>
+            <li><strong>Total Product (TP):</strong> The total absolute volume of physical output produced by combining variable labor with a fixed capital footprint.</li>
+            <li><strong>Average Product of Labor ($AP_L$):</strong> The output yield generated per individual unit of labor asset deployed. It measures baseline labor efficiency:</li>
+        </ol>
         </div>
         """, unsafe_allow_html=True)
-        st.latex(r"P_x \cdot X + P_y \cdot Y = I")
-        st.markdown("""
-        <p>Where $I$ equals absolute disposable income. The absolute slope of this budget constraint represents the market exchange option rate, structurally defined as the relative price ratio:</p>
-        """, unsafe_allow_html=True)
-        st.latex(r"\text{Slope} = \frac{P_x}{P_y}")
-
-    with concept_tabs[2]:
+        st.latex(r"AP_L = \frac{TP}{L}")
         st.markdown("""
         <div class="concept-note">
-        <h3>⚖️ The Tangency Optimality Rule</h3>
-        <p>A utility-maximizing consumer picks the exact bundle along their budget constraint that touches the highest possible indifference curve.</p>
-        <p>This optimal point is mathematically reached where the slope of the indifference curve matches the slope of the budget line perfectly:</p>
+        <ol start="3">
+            <li><strong>Marginal Product of Labor ($MP_L$):</strong> The net incremental change in total output resulting from adding one additional unit of variable labor:</li>
+        </ol>
         </div>
         """, unsafe_allow_html=True)
-        st.latex(r"\text{MRS} = \frac{MU_x}{MU_y} = \frac{P_x}{P_y}")
-        st.markdown("""
-        <p>Rearranging this formula gives the **Equi-Marginal Principle**, proving optimal allocation requires that the utility gained per dollar spent must be uniform across all commodities:</p>
-        """, unsafe_allow_html=True)
-        st.latex(r"\frac{MU_x}{P_x} = \frac{MU_y}{P_y}")
+        st.latex(r"MP_L = \frac{\Delta TP}{\Delta L} \quad \text{or} \quad MP_L = \frac{d(TP)}{dL}")
 
-elif learning_path == "📈 Real-World Market Applications":
-    st.markdown('<div class="section-header">📈 Strategic Consumption Behavioral Shifts</div>', unsafe_allow_html=True)
+    with theory_tabs[2]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>⚖️ The Law of Diminishing Marginal Returns</h3>
+        <p>This fundamental law states that <strong>as you add more units of a variable input (labor) to a fixed asset structure (capital), the resulting additions to total output will eventually decline.</strong></p>
+        <p><strong>Why Diminishing Returns Occur:</strong></p>
+        <ul>
+            <li><strong>Initial Stages:</strong> Adding workers allows for task specialization and efficient teamwork, driving performance up.</li>
+            <li><strong>The Turning Point:</strong> Because your capital footprint is locked, adding too many workers creates a bottleneck. Workers spend time waiting to use the same equipment, slowing down the rate of production growth.</li>
+            <li><strong>The Extreme Stage:</strong> Excessive over-hiring leads to physical congestion and coordination breakdown. Total output drops, and your marginal product turns negative.</li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+elif nav_selection == "📈 Geometric Margins Analysis":
+    st.markdown('<div class="section-header">📈 Core Mathematical Intersections & Phases</div>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="case-study">
-    <h4>📉 The Income Effect vs. Substitution Effect</h4>
-    <p>When the price of a critical item declines, consumer choice parameters react to two structural phenomena:</p>
+    <h4>🔄 The Essential Curve Linkages</h4>
+    <p>The geometric relationship between Average Product ($AP$) and Marginal Product ($MP$) follows strict mathematical rules on a graph:</p>
     <ul>
-        <li><strong>Substitution Effect:</strong> The item is now relatively cheaper compared to alternatives. Consumers adjust behavior to purchase more of it, pivoting along the same indifference curve.</li>
-        <li><strong>Income Effect:</strong> The price decline effectively frees up absolute purchasing power. The budget constraint shifts outward, allowing the consumer to cross into a higher, premium indifference curve entirely.</li>
+        <li><strong>When $MP_L > AP_L$:</strong> The Average Product curve is pulled <strong>upward</strong>. Each new worker adds more output than the current team average, raising the overall efficiency rate.</li>
+        <li><strong>When $MP_L < AP_L$:</strong> The Average Product curve is dragged <strong>downward</strong>. The incremental output of new hires is lower than the average, decreasing baseline productivity.</li>
+        <li><strong>At Intersect ($MP_L = AP_L$):</strong> The Average Product curve reaches its absolute peak. At this exact cross point, average labor efficiency is maximized.</li>
     </ul>
     </div>
     
     <div class="case-study">
-    <h4>🍿 Indian F&B Bundling Patterns (Multiplex Strategy)</h4>
-    <p>Cinema operations leverage consumer constraints by designing combined combos (Popcorn + Drinks). By altering the relative internal bundle prices, they manipulate the slope of the consumer's short-term internal budget line, pushing consumers toward higher spending thresholds that optimization formulas show capture maximum consumer surplus.</p>
+    <h4>🗺️ The Three Stages of Production Architecture</h4>
+    <p>A short-run operation goes through three distinct efficiency zones:</p>
+    <ol>
+        <li><strong>Stage 1: Increasing Returns (From $L=0$ until $AP_L$ peaks)</strong><br>
+        Fixed capital assets are underutilized. New hires allow for better specialization, causing both $AP$ and $MP$ to rise. A rational firm will never stop hiring here because their fixed assets have plenty of unused capacity.</li>
+        <li><strong>Stage 2: Diminishing Returns (From Peak $AP_L$ until $MP_L = 0$)</strong><br>
+        Total output continues to grow, but at a slower rate as fixed assets face crowding. This is the **rational zone of operations**. A firm will choose to operate in this range based on product prices and wage rates.</li>
+        <li><strong>Stage 3: Negative Returns (Beyond the Point Where $MP_L = 0$)</strong><br>
+        The factory floor is overcrowded. Additional labor reduces absolute total output, making operations highly inefficient.</li>
+    </ol>
     </div>
     """, unsafe_allow_html=True)
 
-elif learning_path == "📝 Knowledge Check":
-    st.markdown('<div class="section-header">📝 Analytical Knowledge Evaluation</div>', unsafe_allow_html=True)
-    st.markdown("Validate your microeconomic proficiency. Note: Performance factors undergo systemic friction penalties to reflect dynamic market realities.")
+elif nav_selection == "📝 Operational Knowledge Check":
+    st.markdown('<div class="section-header">📝 Short-Run Operational Knowledge Evaluation</div>', unsafe_allow_html=True)
+    st.markdown("Test your understanding of short-run production dynamics. Results include systemic adjustments to reflect capacity constraints.")
     
-    with st.form("quiz_form"):
-        st.markdown("### 1. The Core Meaning of MRS")
+    with st.form("short_run_quiz"):
+        st.markdown("### 1. Defining the Short-Run Horizon")
         q1 = st.radio(
-            "What does the Marginal Rate of Substitution (MRS) represent along an Indifference Curve?",
+            "What condition explicitly defines a short-run production environment?",
             options=[
-                "A) The exact financial market cost ratio of Good X to Good Y.",
-                "B) The rate at which a consumer is willing to exchange one good for another while maintaining constant total utility.",
-                "C) The total cash remaining in a consumer's bank balance.",
-                "D) The structural shift of a budget line when income changes."
+                "A) The company's operating runway is shorter than 12 business months.",
+                "B) All inputs can be scaled simultaneously to achieve economies of scale.",
+                "C) At least one factor of production is completely fixed due to capacity constraints.",
+                "D) Total revenue fails to cover variable operating expenses."
             ],
             index=None
         )
         
         st.markdown("---")
-        st.markdown("### 2. General Optimality Framework")
+        st.markdown("### 2. Tracking the AP and MP Intersection")
         q2 = st.radio(
-            "When a consumer maximizes utility subject to a standard budget constraint, what structural relationship must hold true?",
+            "What happens mathematically when the Marginal Product of Labor matches the Average Product of Labor ($MP_L = AP_L$)?",
             options=[
-                "A) The indifference curve must be completely vertical.",
-                "B) Total spending must equal exactly double the user's available assets.",
-                "C) The Marginal Rate of Substitution must equal the relative price ratio (MU_x/MU_y = P_x/P_y).",
-                "D) Marginal Utility for both goods must decrease down to absolute zero."
+                "A) Total product drops to absolute zero.",
+                "B) Average Product of Labor reaches its maximum point.",
+                "C) The production line enters Stage 3 negative returns.",
+                "D) Fixed capital utilization becomes completely zero."
             ],
             index=None
         )
         
         st.markdown("---")
-        st.markdown("### 3. Price Ratio Manipulations")
+        st.markdown("### 3. Management Strategy in Stage 3")
         q3 = st.radio(
-            "If the market price of Good X doubles while the price of Good Y and total nominal income stay completely identical, what happens to the budget line?",
+            "If a factory floor operates in Stage 3 where the Marginal Product of Labor is negative ($MP_L < 0$), what is the correct optimization step?",
             options=[
-                "A) The budget line shifts outward in a parallel line.",
-                "B) The budget line rotates inward along the horizontal X-axis, making it steeper.",
-                "C) The line rotates outward along the vertical Y-axis only.",
-                "D) The budget line remains completely static and unchanged."
+                "A) Hire more workers to help speed up the bottleneck.",
+                "B) Keep input levels steady and double product prices.",
+                "C) Reduce workforce size to resolve overcrowding and increase total output.",
+                "D) Purchase more raw inputs while maintaining the same labor force."
             ],
             index=None
         )
         
-        st.markdown("---")
-        st.markdown("### 4. Over-Allocation Realities")
-        q4 = st.radio(
-            "If a consumer chooses a consumption bundle where the utility per dollar spent on Good X is greater than that of Good Y (MU_x / P_x > MU_y / P_y), how should they optimize?",
-            options=[
-                "A) Consume more of Good Y and less of Good X.",
-                "B) Consume more of Good X and less of Good Y to balance the ratios via diminishing utility.",
-                "C) Halt all market consumption immediately.",
-                "D) Maintain the exact configuration as it is already optimized."
-            ],
-            index=None
-        )
+        eval_quiz = st.form_submit_button("Submit Performance Metrics", type="primary")
         
-        submit_quiz = st.form_submit_button("Submit Answers", type="primary")
-        
-        if submit_quiz:
-            score = 0.0
+        if eval_quiz:
+            score_acc = 0.0
             
-            if q1 == "B) The rate at which a consumer is willing to exchange one good for another while maintaining constant total utility.":
-                score += 12.5; st.session_state.q1_correct = True
-            else: st.session_state.q1_correct = False
+            if q1 == "C) At least one factor of production is completely fixed due to capacity constraints.":
+                score_acc += 16.66; st.session_state.ans1_ok = True
+            else: st.session_state.ans1_ok = False
                 
-            if q2 == "C) The Marginal Rate of Substitution must equal the relative price ratio (MU_x/MU_y = P_x/P_y).":
-                score += 12.5; st.session_state.q2_correct = True
-            else: st.session_state.q2_correct = False
+            if q2 == "B) Average Product of Labor reaches its maximum point.":
+                score_acc += 16.67; st.session_state.ans2_ok = True
+            else: st.session_state.ans2_ok = False
                 
-            if q3 == "B) The budget line rotates inward along the horizontal X-axis, making it steeper.":
-                score += 12.5; st.session_state.q3_correct = True
-            else: st.session_state.q3_correct = False
+            if q3 == "C) Reduce workforce size to resolve overcrowding and increase total output.":
+                score_acc += 16.67; st.session_state.ans3_ok = True
+            else: st.session_state.ans3_ok = False
                 
-            if q4 == "B) Consume more of Good X and less of Good Y to balance the ratios via diminishing utility.":
-                score += 12.5; st.session_state.q4_correct = True
-            else: st.session_state.q4_correct = False
-                
-            st.session_state.quiz_score = score
-            st.session_state.quiz_submitted = True
+            st.session_state.knowledge_rating = score_acc
+            st.session_state.quiz_done = True
             st.rerun()
 
-    if st.session_state.quiz_submitted:
+    if st.session_state.quiz_done:
         st.markdown("---")
-        st.markdown(f"### 🎉 Quiz Raw Performance: {st.session_state.quiz_score}/50 points")
+        st.markdown(f"### 🎉 Quiz Performance Score: {round(st.session_state.knowledge_rating, 1)} / 50 Points")
         
-        if not st.session_state.q1_correct:
-            st.error("**Q1 Clarification:** MRS tracks subjective utility substitution rates, not market costs.")
-        if not st.session_state.q2_correct:
-            st.error("**Q2 Clarification:** Tangency demands that individual internal willingness to trade matches objective market constraints.")
-        if not st.session_state.q3_correct:
-            st.error("**Q3 Clarification:** Rising prices for Good X restrict maximum purchase capacity for X, pivoting the budget slope inward.")
-        if not st.session_state.q4_correct:
-            st.error("**Q4 Clarification:** To optimize, allocate capital toward the item yielding superior utility per dollar until equilibrium is re-established.")
-
-elif learning_path == "💼 Executive Summary":
-    st.markdown('<div class="section-header">💼 Strategic Summary for Business Planners</div>', unsafe_allow_html=True)
-    exec_col1, exec_col2 = st.columns(2)
-    with exec_col1:
-        st.markdown("""
-        <div class="case-study">
-        <h4>🎯 The Paradigm of Consumer Choice</h4>
-        <p>Businesses cannot evaluate pricing structures in isolated silos. Every consumer operates under a localized budget constraint while actively ranking alternatives.</p>
-        <p>When adjusting prices, remember that consumers constantly recalculate their cross-commodity preferences. If your price tips their internal values out of equilibrium, they will automatically shift to a completely alternative product bundle.</p>
-        </div>
-        """, unsafe_allow_html=True)
-    with exec_col2:
-        st.markdown("""
-        <div class="concept-note">
-        <h4>🛡️ Shifting Preference Contours</h4>
-        <p>To retain market share without cutting prices, businesses must reshape consumer indifference curves to make them less substitutable:</p>
-        <ul>
-            <li><strong>Perceived Uniqueness:</strong> Use product differentiation to create distinct preference gaps where alternatives seem inadequate.</li>
-            <li><strong>Value Bundling:</strong> Pair goods in a single transaction format to optimize consumer utility and help them maximize their budget allocation efficiently.</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
+        if not st.session_state.ans1_ok:
+            st.error("**Q1 Analysis:** The short run is defined by input flexibility constraints (fixed assets), not by calendar timeframes.")
+        if not st.session_state.ans2_ok:
+            st.error("**Q2 Analysis:** The $MP$ curve always crosses the $AP$ curve at the exact point where $AP$ reaches its peak.")
+        if not st.session_state.ans3_ok:
+            st.error("**Q3 Analysis:** In Stage 3, the overcrowding bottleneck is severe. Reducing labor resolves congestion, which increases total output and cuts costs.")
 
 # =====================================================================
-# FOOTER
+# SYSTEM FOOTER DATA TERMINAL
 # =====================================================================
 st.markdown("---")
-footer_col1, footer_col2, footer_col3 = st.columns(3)
+foot_c1, foot_c2, foot_c3 = st.columns(3)
 
-with footer_col1:
-    st.caption("🎓 Built for Economic Literacy | Consumer Framework System")
+with foot_c1:
+    st.caption("🎓 Production Optimization Engine | Corporate Strategy Hub")
 
-with footer_col2:
-    st.caption(f"📈 Structural Efficiency Ceiling Cap Active")
+with foot_c2:
+    st.caption("📈 Asset Bottleneck Congestion Filter Active")
 
-with footer_col3:
-    st.caption(f"⏰ Real Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+with foot_c3:
+    st.caption(f"⏰ Engine System Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
