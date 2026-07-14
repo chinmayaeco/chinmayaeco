@@ -7,7 +7,7 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Short-Run Production Optimization Engine",
+    page_title="Industrial Production Optimization Engine",
     page_icon="🏭",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -27,7 +27,7 @@ def check_password():
 
     if "password_correct" not in st.session_state:
         st.markdown("<h1 style='text-align: center; color: #3B82F6;'>🔒 Production Engine Security</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Short-Run Simulator.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Short-Run & Long-Run Simulator.</p>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1, 1.5, 1])
         with col2:
             st.text_input("Security Password", type="password", on_change=password_entered, key="password")
@@ -47,7 +47,7 @@ if not check_password():
     st.stop()
 
 # =====================================================================
-# REVAMPED CORE DESIGN SYSTEM (SLATE, COBALT & AMBER METROPOLIS THEME)
+# CORE DESIGN SYSTEM (SLATE, COBALT & AMBER METROPOLIS THEME)
 # =====================================================================
 st.markdown("""
 <style>
@@ -127,33 +127,38 @@ st.markdown("""
 # =====================================================================
 # SESSION STATE SYSTEM MANAGEMENT
 # =====================================================================
-def init_short_run_state():
+def init_system_state():
     defaults = {
         'sim_calculated': False,
+        'lr_calculated': False,
         'operational_efficiency': 0.0,
+        'lr_efficiency': 0.0,
         'knowledge_rating': 0.0,
         'prod_history': [],
+        'lr_history': [],
         'round_counter': 0,
+        'lr_round_counter': 0,
         'quiz_done': False,
-        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False
+        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False, 'ans4_ok': False, 'ans5_ok': False
     }
     for key, value in defaults.items():
         if key not in st.session_state:
             st.session_state[key] = value
 
-init_short_run_state()
+init_system_state()
 
 # =====================================================================
 # SIDEBAR CONTROL DECK
 # =====================================================================
 with st.sidebar:
-    st.markdown("### 🏭 Short-Run Operations")
+    st.markdown("### 🏭 Production Operations")
     nav_selection = st.radio(
         "Navigation Hub:",
         options=[
             "🎮 Short-Run Simulator Sandbox",
+            "🚀 Long-Run Simulator Sandbox",
             "📖 Core Theory Deep Dive",
-            "📈 Geometric Margins Analysis",
+            "📈 Geometric Margins & Expansion Path",
             "📝 Operational Knowledge Check"
         ]
     )
@@ -163,15 +168,20 @@ with st.sidebar:
 # =====================================================================
 score_container = st.container()
 with score_container:
-    combined_raw = st.session_state.operational_efficiency + st.session_state.knowledge_rating
-    safety_buffer = 1.8 if combined_raw > 75 else (0.02 * combined_raw)
-    final_score = max(0.0, min(98.2, round(combined_raw - safety_buffer, 1)))
+    combined_raw = st.session_state.operational_efficiency + st.session_state.lr_efficiency + st.session_state.knowledge_rating
+    # Realigned scale factor matching the introduction of long-run grading units
+    max_possible = 150.0 
+    final_score = max(0.0, min(99.4, round((combined_raw / max_possible) * 100, 1)))
     
     st.markdown(f"""
     <div class="score-banner">
-        <h2>Industrial Efficiency Index: {final_score} / 100</h2>
-        <p style='color: #FBBF24; margin: 0.25rem 0 0 0;'>🎮 Optimization Yield: {round(st.session_state.operational_efficiency, 1)}/50 | 📝 Quiz Accuracy: {round(st.session_state.knowledge_rating, 1)}/50</p>
-        <small style='color: #94A3B8;'>System Constraint Note: Absolute zero-loss performance (100%) is structurally unavailable due to physical capital congestion constraints.</small>
+        <h2>Global Operational Efficiency Index: {final_score} / 100</h2>
+        <p style='color: #FBBF24; margin: 0.25rem 0 0 0;'>
+            SR Yield: {round(st.session_state.operational_efficiency, 1)}/50 | 
+            LR Yield: {round(st.session_state.lr_efficiency, 1)}/50 | 
+            Quiz Accuracy: {round(st.session_state.knowledge_rating, 1)}/50
+        </p>
+        <small style='color: #94A3B8;'>System Constraint Note: Absolute zero-loss performance (100%) is structurally unavailable due to capital congestion limits and long-run scale frictions.</small>
     </div>
     """, unsafe_allow_html=True)
 
@@ -179,9 +189,9 @@ with score_container:
 # INTERACTIVE ROUTING ARCHITECTURE
 # =====================================================================
 
+# --- SECTION 1: SHORT RUN SIMULATOR ---
 if nav_selection == "🎮 Short-Run Simulator Sandbox":
-    st.markdown('<div class="section-header">🎮 Variable Labor Allocation Sandbox</div>', unsafe_allow_html=True)
-    
+    st.markdown('<div class="section-header">🎮 Variable Labor Allocation Sandbox (Short-Run)</div>', unsafe_allow_html=True)
     panel_left, panel_right = st.columns([1, 1.2])
     
     with panel_left:
@@ -189,37 +199,25 @@ if nav_selection == "🎮 Short-Run Simulator Sandbox":
         <div class="concept-note">
         <h3>📌 Short-Run Operational Constraints</h3>
         <p><strong>Fixed Capital Variable Environment:</strong> You operate an industrial manufacturing facility with a locked assembly system setup ($K = 4$ units).</p>
-        <p><strong>Your Task:</strong> Determine the optimal number of operational assembly technicians ($L$) to deploy. Your target is to identify the precise boundary where total expansion ends and inefficiency begins.</p>
+        <p><strong>Your Task:</strong> Determine the optimal number of operational assembly technicians ($L$) to deploy.</p>
         <p><strong>Economic Equilibrium Rule:</strong> Efficiency is maximized when your Average Product curve matches your Marginal Product curve ($AP_L = MP_L$). Beyond this intersection point, structural congestion drops net returns.</p>
         </div>
         """, unsafe_allow_html=True)
         
     with panel_right:
-        st.markdown("""
-        <div class="case-study">
-        <h4>⚙️ Fixed Infrastructure Capacity Parameters</h4>
-        </div>
-        """, unsafe_allow_html=True)
-        
+        st.markdown('<div class="case-study"><h4>⚙️ Fixed Infrastructure Capacity Parameters</h4></div>', unsafe_allow_html=True)
         fixed_k = 4
         st.write(f"🔒 **Fixed Capital Capacity Asset Size ($K$):** {fixed_k} Industrial Units (Static)")
-        st.write("📊 **Short-Run Production Function:** Standard Non-Linear Model")
+        st.write("📊 **Short-Run Production Function:** $TP = 6KL^2 - 0.4L^3$")
         
-        # User input slider for labor allocation
         labor_input = st.slider("Deploy Workforce Size (Labor Units - L):", min_value=0, max_value=15, value=2, step=1)
-        
-        compute_metrics = st.button("🏗️ Calculate Production Metrics", type="primary", use_container_width=True)
+        compute_metrics = st.button("🏗️ Calculate Short-Run Metrics", type="primary", use_container_width=True)
         
         if compute_metrics:
-            # Short-run production modeling simulation formulas:
-            # TP = 6 * K * L^2 - 0.4 * L^3
             tp = float(round((6 * fixed_k * (labor_input ** 2)) - (0.4 * (labor_input ** 3)), 1)) if labor_input > 0 else 0.0
             ap = float(round(tp / labor_input, 2)) if labor_input > 0 else 0.0
-            
-            # Derivative for exact Marginal Product: dTP/dL = 12 * K * L - 1.2 * L^2
             mp = float(round((12 * fixed_k * labor_input) - (1.2 * (labor_input ** 2)), 2)) if labor_input > 0 else 0.0
             
-            # Map dynamic status evaluations based on economic returns zones
             if labor_input == 0:
                 zone_status = "Zero Production Capacity ⚪"
                 points_given = 0.0
@@ -227,10 +225,9 @@ if nav_selection == "🎮 Short-Run Simulator Sandbox":
                 zone_status = "Phase 1: Increasing Returns (Under-utilization) 📈"
                 points_given = 25.0
             elif mp <= ap and mp >= 0:
-                # Target sweet spot calculation zone
                 if abs(mp - ap) < 5.0 or labor_input == 10:
                     zone_status = "Optimal Allocation Zone: Peak Efficiency Achieved 🌟"
-                    points_given = 47.5
+                    points_given = 50.0
                 else:
                     zone_status = "Phase 2: Diminishing Returns (Congested Capital) ⚠️"
                     points_given = 35.0
@@ -239,15 +236,10 @@ if nav_selection == "🎮 Short-Run Simulator Sandbox":
                 points_given = 5.0
                 
             st.session_state.round_counter += 1
-            st.session_state.operational_efficiency = min(47.5, points_given)
+            st.session_state.operational_efficiency = min(50.0, points_given)
             
             st.session_state.prod_history.append({
-                'run': st.session_state.round_counter,
-                'labor': labor_input,
-                'tp': tp,
-                'ap': ap,
-                'mp': mp,
-                'status': zone_status
+                'run': st.session_state.round_counter, 'labor': labor_input, 'tp': tp, 'ap': ap, 'mp': mp, 'status': zone_status
             })
             st.session_state.sim_calculated = True
             st.rerun()
@@ -256,70 +248,142 @@ if nav_selection == "🎮 Short-Run Simulator Sandbox":
         metrics_block = st.container()
         with metrics_block:
             st.markdown('<div class="section-header">📊 Dynamic Factory Output Performance Summary</div>', unsafe_allow_html=True)
-            
             latest_run = st.session_state.prod_history[-1]
             card_col1, card_col2, card_col3 = st.columns(3)
             
             with card_col1:
-                st.markdown(f"""
-                <div class="metric-card">
-                    <h3>Total Product (TP)</h3>
-                    <div class="metric-value">{latest_run['tp']} Units</div>
-                    <p style="color: #64748B; font-size: 0.85rem;">Gross Output Yield</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
+                st.markdown(f'<div class="metric-card"><h3>Total Product (TP)</h3><div class="metric-value">{latest_run["tp"]} Units</div><p style="color: #64748B; font-size: 0.85rem;">Gross Output Yield</p></div>', unsafe_allow_html=True)
             with card_col2:
-                st.markdown(f"""
-                <div class="metric-card">
-                    <h3>Average Product ($AP_L$)</h3>
-                    <div class="metric-value">{latest_run['ap']} Units</div>
-                    <p style="color: #64748B; font-size: 0.85rem;">Efficiency Per Worker ($TP/L$)</p>
-                </div>
-                """, unsafe_allow_html=True)
-                
+                st.markdown(f'<div class="metric-card"><h3>Average Product ($AP_L$)</h3><div class="metric-value">{latest_run["ap"]} Units</div><p style="color: #64748B; font-size: 0.85rem;">Efficiency Per Worker ($TP/L$)</p></div>', unsafe_allow_html=True)
             with card_col3:
                 border_accent = "#F59E0B" if "Optimal" in latest_run['status'] else "#3B82F6"
                 if "Negative" in latest_run['status']: border_accent = "#EF4444"
-                
-                st.markdown(f"""
-                <div class="metric-card" style="border-color: {border_accent};">
-                    <h3 style="color: #94A3B8;">Current Returns Zone</h3>
-                    <div class="metric-value" style="font-size: 1.25rem; color: #FBBF24; padding-top: 0.4rem;">{latest_run['status']}</div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-card" style="border-color: {border_accent};"><h3 style="color: #94A3B8;">Current Returns Zone</h3><div class="metric-value" style="font-size: 1.25rem; color: #FBBF24; padding-top: 0.4rem;">{latest_run["status"]}</div></div>', unsafe_allow_html=True)
                 
             st.markdown("---")
             st.markdown("### 📈 Short-Run Variable Performance Distribution Curves")
-            
-            # Build continuous arrays to trace out smooth classic microeconomic production graphs
             l_range = np.linspace(0.1, 15, 60)
             tp_curve = (6 * 4 * (l_range ** 2)) - (0.4 * (l_range ** 3))
             ap_curve = tp_curve / l_range
             mp_curve = (12 * 4 * l_range) - (1.2 * (l_range ** 2))
             
-            graph_data = pd.DataFrame({
-                'Labor Assigned (L)': l_range,
-                'Average Product (AP)': ap_curve,
-                'Marginal Product (MP)': mp_curve
-            })
-            
+            graph_data = pd.DataFrame({'Labor Assigned (L)': l_range, 'Average Product (AP)': ap_curve, 'Marginal Product (MP)': mp_curve})
             st.line_chart(graph_data.set_index('Labor Assigned (L)'), color=["#3B82F6", "#F59E0B"])
             st.caption("💡 **Operational Analysis:** Notice that the orange Marginal Product ($MP$) curve intersects the blue Average Product ($AP$) curve exactly at its highest point ($L=10$). This marks the maximum efficiency threshold before systemic crowding takes over.")
 
+# --- SECTION 2: LONG RUN SIMULATOR (NEW) ---
+elif nav_selection == "🚀 Long-Run Simulator Sandbox":
+    st.markdown('<div class="section-header">🚀 Long-Run Isoquant & Cost Minimization Sandbox</div>', unsafe_allow_html=True)
+    panel_left, panel_right = st.columns([1, 1.2])
+    
+    with panel_left:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📌 Long-Run Scale Optimization</h3>
+        <p><strong>All Inputs Are Variable:</strong> In the long run, your facility can scale both <strong>Workforce (Labor - $L$)</strong> and <strong>Infrastructure (Capital - $K$)</strong>.</p>
+        <p><strong>Production Function:</strong> Handled via a flexible Cobb-Douglas structural framework:
+        $$Q = A \cdot L^\alpha \cdot K^\beta$$</p>
+        <p><strong>The Cost-Minimization Target:</strong> To achieve optimal output efficiency for a given budget, the firm must align inputs such that the Marginal Rate of Technical Substitution ($MRTS$) equals the input factor price ratio:
+        $$MRTS_{L,K} = \frac{MP_L}{MP_K} = \frac{w}{r} \implies \frac{\alpha K}{\beta L} = \frac{w}{r}$$</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("### ⚙️ Factor Input Prices & Elasticity Matrix")
+        w_price = st.number_input("Wage Rate ($w$ / Unit of Labor):", min_value=1.0, max_value=200.0, value=20.0, step=5.0)
+        r_price = st.number_input("Capital Rental Rate ($r$ / Unit of Capital):", min_value=1.0, max_value=200.0, value=40.0, step=5.0)
+        
+        st.markdown("##### Cobb-Douglas Output Scaling Parameters")
+        alpha_val = st.slider("Labor Output Elasticity ($\\alpha$):", min_value=0.1, max_value=1.5, value=0.6, step=0.1)
+        beta_val = st.slider("Capital Output Elasticity ($\\beta$):", min_value=0.1, max_value=1.5, value=0.4, step=0.1)
+
+    with panel_right:
+        st.markdown('<div class="case-study"><h4>🛠️ Operational Capacity Scaling Controls</h4></div>', unsafe_allow_html=True)
+        st.write("Adjust both parameters simultaneously to configure your factory blueprint size.")
+        
+        input_l = st.slider("Select Long-Run Labor Force ($L$):", min_value=1, max_value=100, value=30, step=1)
+        input_k = st.slider("Select Long-Run Capital Footprint ($K$):", min_value=1, max_value=100, value=20, step=1)
+        
+        compute_lr = st.button("🚀 Calculate Long-Run System Dynamics", type="primary", use_container_width=True)
+        
+        if compute_lr:
+            tech_coeff = 10.0
+            q_output = float(round(tech_coeff * (input_l ** alpha_val) * (input_k ** beta_val), 1))
+            total_cost = float(round((w_price * input_l) + (r_price * input_k), 2))
+            unit_cost = float(round(total_cost / q_output, 2)) if q_output > 0 else 0.0
+            
+            # Theoretical optimal ratio calculation: K/L = (beta * w) / (alpha * r)
+            optimal_k_l_ratio = (beta_val * w_price) / (alpha_val * r_price)
+            current_k_l_ratio = input_k / input_l
+            ratio_deviation = abs(current_k_l_ratio - optimal_k_l_ratio) / optimal_k_l_ratio
+            
+            # Track returns to scale classification
+            rts_sum = alpha_val + beta_val
+            if abs(rts_sum - 1.0) < 0.01:
+                rts_status = "Constant Returns to Scale (CRS) ⚖️"
+            elif rts_sum > 1.0:
+                rts_status = "Increasing Returns to Scale (IRS) 🚀"
+            else:
+                rts_status = "Decreasing Returns to Scale (DRS) 📉"
+                
+            # Grade operational calibration based on cost-minimizing alignment
+            if ratio_deviation <= 0.05:
+                efficiency_status = "Optimal Input Mix: Perfect Alignment Chosen 🌟"
+                points = 50.0
+            elif ratio_deviation <= 0.25:
+                efficiency_status = "Suboptimal Mix: Minor Resource Friction Detected ⚠️"
+                points = 35.0
+            else:
+                efficiency_status = "Inefficient Mix: Major Resource Imbalance 🚨"
+                points = 15.0
+                
+            st.session_state.lr_round_counter += 1
+            st.session_state.lr_efficiency = min(50.0, points)
+            
+            st.session_state.lr_history.append({
+                'run': st.session_state.lr_round_counter, 'L': input_l, 'K': input_k, 'Q': q_output,
+                'cost': total_cost, 'unit_cost': unit_cost, 'rts': rts_status, 'efficiency': efficiency_status,
+                'opt_ratio': optimal_k_l_ratio, 'curr_ratio': current_k_l_ratio
+            })
+            st.session_state.lr_calculated = True
+            st.rerun()
+
+    if st.session_state.lr_calculated:
+        lr_metrics_block = st.container()
+        with lr_metrics_block:
+            st.markdown('<div class="section-header">📊 Dynamic Macro-Factory Performance Tracking</div>', unsafe_allow_html=True)
+            latest_lr = st.session_state.lr_history[-1]
+            c1, c2, c3, c4 = st.columns(4)
+            
+            with c1:
+                st.markdown(f'<div class="metric-card"><h3>Total Output ($Q$)</h3><div class="metric-value">{latest_lr["Q"]} Units</div><p style="color: #64748B; font-size: 0.85rem;">Cobb-Douglas Production</p></div>', unsafe_allow_html=True)
+            with c2:
+                st.markdown(f'<div class="metric-card"><h3>Total Cost ($TC$)</h3><div class="metric-value">${latest_lr["cost"]}</div><p style="color: #64748B; font-size: 0.85rem;">$wL + rK$ Outlay</p></div>', unsafe_allow_html=True)
+            with c3:
+                st.markdown(f'<div class="metric-card"><h3>Average Unit Cost</h3><div class="metric-value">${latest_lr["unit_cost"]}</div><p style="color: #64748B; font-size: 0.85rem;">Economic Cost Per Unit</p></div>', unsafe_allow_html=True)
+            with c4:
+                st.markdown(f'<div class="metric-card"><h3>Returns Matrix</h3><div class="metric-value" style="font-size: 1.15rem; padding-top: 0.4rem;">{latest_lr["rts"]}</div></div>', unsafe_allow_html=True)
+            
+            st.markdown(f"""
+            <div class="concept-note" style="border-left-color: #FBBF24;">
+                <h4>Allocation Diagnosis: {latest_lr['efficiency']}</h4>
+                <p>Target Cost-Minimizing Ratio ($K/L$): <strong>{round(latest_lr['opt_ratio'], 3)}</strong> | Current Deployed Ratio ($K/L$): <strong>{round(latest_lr['curr_ratio'], 3)}</strong></p>
+                <small>To lower unit costs to the absolute structural floor, alter inputs until your engineered ratio perfectly hits the target allocation threshold.</small>
+            </div>
+            """, unsafe_allow_html=True)
+
+# --- SECTION 3: THEORY DEEP DIVE ---
 elif nav_selection == "📖 Core Theory Deep Dive":
-    st.markdown('<div class="section-header">📚 Structural Mechanics of Short-Run Frameworks</div>', unsafe_allow_html=True)
-    theory_tabs = st.tabs(["Short-Run Limits Matrix", "The Structural Productivity Matrix", "The Law of Diminishing Returns"])
+    st.markdown('<div class="section-header">📚 Structural Mechanics of Microeconomic Production</div>', unsafe_allow_html=True)
+    theory_tabs = st.tabs(["Short-Run Constraints Matrix", "The Structural Productivity Matrix", "Long-Run Variably Scaled Foundations", "Returns to Scale (RTS) Dynamics"])
     
     with theory_tabs[0]:
         st.markdown("""
         <div class="concept-note">
         <h3>⚡ Time Horizon Boundaries: Short Run vs. Long Run</h3>
-        <p>In analytical economics, the <strong>Short Run</strong> is not defined by calendar dates or duration windows. It is explicitly an operational period where <strong>at least one structural input is completely fixed</strong>.</p>
-        <p><strong>Core Constraints Matrix:</strong></p>
+        <p>In analytical economics, time horizons are explicitly operational rather than chronological:</p>
         <ul>
-            <li><strong>Fixed Inputs ($K$):</strong> Factors that cannot be adjusted instantly due to contracts, building timelines, or heavy capital procurement constraints (e.g., commercial real estate, factories, customized heavy machinery).</li>
-            <li><strong>Variable Inputs ($L$):</strong> Factors that can be adjusted on demand to ramp capacity up or down (e.g., hourly labor shifts, raw assembly materials, utility usage).</li>
+            <li><strong>Short Run:</strong> An operational window where <strong>at least one production input is fixed</strong> ($K$). Structural bottlenecks occur due to fixed facility scale constraints.</li>
+            <li><strong>Long Run:</strong> An optimization horizon where <strong>all factors of production are fully variable</strong>. Firms can switch asset sizes, construct new plants, or reshape total operational layouts.</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -327,11 +391,11 @@ elif nav_selection == "📖 Core Theory Deep Dive":
     with theory_tabs[1]:
         st.markdown("""
         <div class="concept-note">
-        <h3>🔢 The Metric Identities</h3>
+        <h3>🔢 Short-Run Metric Identities</h3>
         <p>Short-run operations are evaluated through three interrelated mathematical indicators:</p>
         <ol>
-            <li><strong>Total Product (TP):</strong> The total absolute volume of physical output produced by combining variable labor with a fixed capital footprint.</li>
-            <li><strong>Average Product of Labor ($AP_L$):</strong> The output yield generated per individual unit of labor asset deployed. It measures baseline labor efficiency:</li>
+            <li><strong>Total Product (TP):</strong> Absolute physical output volume produced.</li>
+            <li><strong>Average Product of Labor ($AP_L$):</strong> Baseline labor efficiency:</li>
         </ol>
         </div>
         """, unsafe_allow_html=True)
@@ -339,7 +403,7 @@ elif nav_selection == "📖 Core Theory Deep Dive":
         st.markdown("""
         <div class="concept-note">
         <ol start="3">
-            <li><strong>Marginal Product of Labor ($MP_L$):</strong> The net incremental change in total output resulting from adding one additional unit of variable labor:</li>
+            <li><strong>Marginal Product of Labor ($MP_L$):</strong> The net incremental change in output resulting from adding one additional unit of labor:</li>
         </ol>
         </div>
         """, unsafe_allow_html=True)
@@ -348,50 +412,64 @@ elif nav_selection == "📖 Core Theory Deep Dive":
     with theory_tabs[2]:
         st.markdown("""
         <div class="concept-note">
-        <h3>⚖️ The Law of Diminishing Marginal Returns</h3>
-        <p>This fundamental law states that <strong>as you add more units of a variable input (labor) to a fixed asset structure (capital), the resulting additions to total output will eventually decline.</strong></p>
-        <p><strong>Why Diminishing Returns Occur:</strong></p>
+        <h3>🚀 Long-Run Production Functions & Isoquants</h3>
+        <p>Because all inputs can change in the long run, we track production frontiers through a multi-variable geometric mapping framework.</p>
+        <p><strong>The Isoquant Map:</strong> An isoquant is a contour curve representing all distinct combinations of labor ($L$) and capital ($K$) that yield the <strong>exact same level of absolute total output</strong> ($Q$). Higher curves symbolize larger output capacity volumes.</p>
+        <p><strong>Marginal Rate of Technical Substitution ($MRTS$):</strong> Measures the exact rate at which a firm can substitute capital for labor while maintaining a static output volume. It reflects the negative slope of the isoquant curve:</p>
+        </div>
+        """, unsafe_allow_html=True)
+        st.latex(r"MRTS_{L,K} = -\frac{\Delta K}{\Delta L} = \frac{MP_L}{MP_K}")
+
+    with theory_tabs[3]:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>⚖️ Returns to Scale Parameter Tracking</h3>
+        <p>Returns to Scale evaluates how total output behaves when <strong>all production inputs are increased by the exact same proportional factor</strong> ($\lambda$).</p>
+        <p>Using a homogeneous Cobb-Douglas function ($Q = A L^\alpha K^\beta$), scaling inputs by $\lambda$ results in: $Q(\lambda L, \lambda K) = \lambda^{\alpha + \beta} Q$.</p>
         <ul>
-            <li><strong>Initial Stages:</strong> Adding workers allows for task specialization and efficient teamwork, driving performance up.</li>
-            <li><strong>The Turning Point:</strong> Because your capital footprint is locked, adding too many workers creates a bottleneck. Workers spend time waiting to use the same equipment, slowing down the rate of production growth.</li>
-            <li><strong>The Extreme Stage:</strong> Excessive over-hiring leads to physical congestion and coordination breakdown. Total output drops, and your marginal product turns negative.</li>
+            <li><strong>Constant Returns to Scale (CRS):</strong> $\alpha + \beta = 1$. Doubling inputs perfectly doubles output yield.</li>
+            <li><strong>Increasing Returns to Scale (IRS):</strong> $\alpha + \beta > 1$. Doubling inputs more than doubles total output (driven by structural specialization or specialization advantages).</li>
+            <li><strong>Decreasing Returns to Scale (DRS):</strong> $\alpha + \beta < 1$. Doubling inputs leads to a less-than-proportional increase in total output (often caused by administrative complexity or management fragmentation).</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
 
-elif nav_selection == "📈 Geometric Margins Analysis":
-    st.markdown('<div class="section-header">📈 Core Mathematical Intersections & Phases</div>', unsafe_allow_html=True)
+# --- SECTION 4: GEOMETRIC INTERSECTIONS ---
+elif nav_selection == "📈 Geometric Margins & Expansion Path":
+    st.markdown('<div class="section-header">📈 Core Mathematical Intersections & Long-Run Expansion Paths</div>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="case-study">
-    <h4>🔄 The Essential Curve Linkages</h4>
-    <p>The geometric relationship between Average Product ($AP$) and Marginal Product ($MP$) follows strict mathematical rules on a graph:</p>
+    <h4>🔄 Short-Run Geometric Curve Linkages</h4>
     <ul>
-        <li><strong>When $MP_L > AP_L$:</strong> The Average Product curve is pulled <strong>upward</strong>. Each new worker adds more output than the current team average, raising the overall efficiency rate.</li>
-        <li><strong>When $MP_L < AP_L$:</strong> The Average Product curve is dragged <strong>downward</strong>. The incremental output of new hires is lower than the average, decreasing baseline productivity.</li>
-        <li><strong>At Intersect ($MP_L = AP_L$):</strong> The Average Product curve reaches its absolute peak. At this exact cross point, average labor efficiency is maximized.</li>
+        <li><strong>When $MP_L > AP_L$:</strong> The Average Product curve is pulled <strong>upward</strong>. New workers raise the overall baseline team productivity.</li>
+        <li><strong>When $MP_L < AP_L$:</strong> The Average Product curve is dragged <strong>downward</strong>.</li>
+        <li><strong>At Intersect ($MP_L = AP_L$):</strong> The Average Product curve reaches its absolute mathematical peak.</li>
     </ul>
     </div>
     
     <div class="case-study">
-    <h4>🗺️ The Three Stages of Production Architecture</h4>
-    <p>A short-run operation goes through three distinct efficiency zones:</p>
-    <ol>
-        <li><strong>Stage 1: Increasing Returns (From $L=0$ until $AP_L$ peaks)</strong><br>
-        Fixed capital assets are underutilized. New hires allow for better specialization, causing both $AP$ and $MP$ to rise. A rational firm will never stop hiring here because their fixed assets have plenty of unused capacity.</li>
-        <li><strong>Stage 2: Diminishing Returns (From Peak $AP_L$ until $MP_L = 0$)</strong><br>
-        Total output continues to grow, but at a slower rate as fixed assets face crowding. This is the **rational zone of operations**. A firm will choose to operate in this range based on product prices and wage rates.</li>
-        <li><strong>Stage 3: Negative Returns (Beyond the Point Where $MP_L = 0$)</strong><br>
-        The factory floor is overcrowded. Additional labor reduces absolute total output, making operations highly inefficient.</li>
-    </ol>
+    <h4>🗺️ Long-Run Optimization & The Expansion Path Frontier</h4>
+    <p>In long-run optimization geometry, structural efficiency is modeled by overlaying <strong>Isoquants</strong> with <strong>Isocost Lines</strong>:</p>
+    <ul>
+        <li><strong>Isocost Line Equation:</strong> Represents all asset combinations costing an identical total financial capital outlay ($TC = wL + rK$). The slope equals the relative economic price ratio: $-w/r$.</li>
+        <li><strong>Tangency Optimization Equilibrium:</strong> The least-cost combination to achieve a target output level occurs at the precise graphic location where an isoquant curve is perfectly tangent to the lowest achievable isocost line. At this point:</li>
+    </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    st.latex(r"MRTS_{L,K} = \frac{MP_L}{MP_K} = \frac{w}{r}")
+    st.markdown("""
+    <div class="case-study">
+    <p><strong>The Expansion Path:</strong> Connecting all consecutive tangency equilibrium points as production scales creates the firm's <strong>Long-Run Expansion Path</strong>. This line traces the most financially rational path for structural asset configuration as a company scales.</p>
     </div>
     """, unsafe_allow_html=True)
 
+# --- SECTION 5: KNOWLEDGE CHECK ---
 elif nav_selection == "📝 Operational Knowledge Check":
-    st.markdown('<div class="section-header">📝 Short-Run Operational Knowledge Evaluation</div>', unsafe_allow_html=True)
-    st.markdown("Test your understanding of short-run production dynamics. Results include systemic adjustments to reflect capacity constraints.")
+    st.markdown('<div class="section-header">📝 Master Production Knowledge Evaluation Deck</div>', unsafe_allow_html=True)
+    st.markdown("Test your integrated understanding of short-run bottlenecks and long-run asset scaling architecture.")
     
-    with st.form("short_run_quiz"):
+    with st.form("integrated_production_quiz"):
         st.markdown("### 1. Defining the Short-Run Horizon")
         q1 = st.radio(
             "What condition explicitly defines a short-run production environment?",
@@ -400,8 +478,7 @@ elif nav_selection == "📝 Operational Knowledge Check":
                 "B) All inputs can be scaled simultaneously to achieve economies of scale.",
                 "C) At least one factor of production is completely fixed due to capacity constraints.",
                 "D) Total revenue fails to cover variable operating expenses."
-            ],
-            index=None
+            ], index=None
         )
         
         st.markdown("---")
@@ -413,21 +490,43 @@ elif nav_selection == "📝 Operational Knowledge Check":
                 "B) Average Product of Labor reaches its maximum point.",
                 "C) The production line enters Stage 3 negative returns.",
                 "D) Fixed capital utilization becomes completely zero."
-            ],
-            index=None
+            ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 3. Management Strategy in Stage 3")
+        st.markdown("### 3. Long-Run Cost Minimization Parameter Alignment")
         q3 = st.radio(
-            "If a factory floor operates in Stage 3 where the Marginal Product of Labor is negative ($MP_L < 0$), what is the correct optimization step?",
+            "What condition mathematically characterizes the optimal, least-cost combinations of inputs along a firm's long-run expansion path?",
+            options=[
+                "A) Marginal product of all variable assets drops to absolute zero.",
+                "B) The MRTS is perfectly equal to the ratio of the factor input prices (w/r).",
+                "C) Labor and capital inputs are utilized in an identical 1:1 hardware footprint ratio.",
+                "D) Total fixed outlays perfectly equal total variable outlays."
+            ], index=None
+        )
+        
+        st.markdown("---")
+        st.markdown("### 4. Decoding Returns to Scale Functionality")
+        q4 = st.radio(
+            "If a company doubles both its labor force and its capital assets, and total output increases by exactly 150%, how is this function categorized?",
+            options=[
+                "A) Decreasing Returns to Scale (DRS)",
+                "B) Constant Returns to Scale (CRS)",
+                "C) Increasing Returns to Scale (IRS)",
+                "D) Conflicted Diminishing Returns Architecture"
+            ], index=None
+        )
+        
+        st.markdown("---")
+        st.markdown("### 5. Management Strategy in Stage 3 Short-Run Scenarios")
+        q5 = st.radio(
+            "If a factory floor operates in short-run Stage 3 where the Marginal Product of Labor is negative ($MP_L < 0$), what is the correct optimization step?",
             options=[
                 "A) Hire more workers to help speed up the bottleneck.",
                 "B) Keep input levels steady and double product prices.",
                 "C) Reduce workforce size to resolve overcrowding and increase total output.",
                 "D) Purchase more raw inputs while maintaining the same labor force."
-            ],
-            index=None
+            ], index=None
         )
         
         eval_quiz = st.form_submit_button("Submit Performance Metrics", type="primary")
@@ -436,16 +535,24 @@ elif nav_selection == "📝 Operational Knowledge Check":
             score_acc = 0.0
             
             if q1 == "C) At least one factor of production is completely fixed due to capacity constraints.":
-                score_acc += 16.66; st.session_state.ans1_ok = True
+                score_acc += 10.0; st.session_state.ans1_ok = True
             else: st.session_state.ans1_ok = False
                 
             if q2 == "B) Average Product of Labor reaches its maximum point.":
-                score_acc += 16.67; st.session_state.ans2_ok = True
+                score_acc += 10.0; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
                 
-            if q3 == "C) Reduce workforce size to resolve overcrowding and increase total output.":
-                score_acc += 16.67; st.session_state.ans3_ok = True
+            if q3 == "B) The MRTS is perfectly equal to the ratio of the factor input prices (w/r).":
+                score_acc += 10.0; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
+            
+            if q4 == "C) Increasing Returns to Scale (IRS)":
+                score_acc += 10.0; st.session_state.ans4_ok = True
+            else: st.session_state.ans4_ok = False
+                
+            if q5 == "C) Reduce workforce size to resolve overcrowding and increase total output.":
+                score_acc += 10.0; st.session_state.ans5_ok = True
+            else: st.session_state.ans5_ok = False
                 
             st.session_state.knowledge_rating = score_acc
             st.session_state.quiz_done = True
@@ -456,11 +563,15 @@ elif nav_selection == "📝 Operational Knowledge Check":
         st.markdown(f"### 🎉 Quiz Performance Score: {round(st.session_state.knowledge_rating, 1)} / 50 Points")
         
         if not st.session_state.ans1_ok:
-            st.error("**Q1 Analysis:** The short run is defined by input flexibility constraints (fixed assets), not by calendar timeframes.")
+            st.error("**Q1 Analysis:** The short run is defined by input flexibility constraints (fixed assets), not calendar timeframes.")
         if not st.session_state.ans2_ok:
             st.error("**Q2 Analysis:** The $MP$ curve always crosses the $AP$ curve at the exact point where $AP$ reaches its peak.")
         if not st.session_state.ans3_ok:
-            st.error("**Q3 Analysis:** In Stage 3, the overcrowding bottleneck is severe. Reducing labor resolves congestion, which increases total output and cuts costs.")
+            st.error("**Q3 Analysis:** Cost minimization dictates that the rate at which you can technically trade inputs ($MRTS$) must align with the market rate for buying them ($w/r$).")
+        if not st.session_state.ans4_ok:
+            st.error("**Q4 Analysis:** Scaling inputs by 2x (100% increase) yielding a 2.5x (150% increase) output shift indicates Increasing Returns to Scale ($\alpha + \beta > 1$).")
+        if not st.session_state.ans5_ok:
+            st.error("**Q5 Analysis:** In short-run Stage 3, physical capital overcrowding is severe. Lowering labor resolves congestion, boosting net output volume.")
 
 # =====================================================================
 # SYSTEM FOOTER DATA TERMINAL
@@ -472,7 +583,7 @@ with foot_c1:
     st.caption("🎓 Production Optimization Engine | Corporate Strategy Hub")
 
 with foot_c2:
-    st.caption("📈 Asset Bottleneck Congestion Filter Active")
+    st.caption("🚀 Integrated Multi-Horizon Capital Congestion Filter Active")
 
 with foot_c3:
     st.caption(f"⏰ Engine System Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
