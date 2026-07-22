@@ -7,7 +7,7 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Long-Run Production Optimization Engine",
+    page_title="Long-Run Production & Cost Optimization Engine",
     page_icon="🚀",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -135,7 +135,7 @@ def init_system_state():
         'lr_history': [],
         'lr_round_counter': 0,
         'quiz_done': False,
-        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False
+        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False, 'ans4_ok': False
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -152,7 +152,8 @@ with st.sidebar:
         "Navigation Hub:",
         options=[
             "🚀 Long-Run Simulator Sandbox",
-            "📖 Core Theory Deep Dive",
+            "📖 Core Production Theory",
+            "📊 Cost Economics & Financial Taxonomy",
             "📈 Geometric Expansion Paths",
             "📝 Operational Knowledge Check"
         ]
@@ -279,7 +280,7 @@ if nav_selection == "🚀 Long-Run Simulator Sandbox":
             """, unsafe_allow_html=True)
 
 # --- SECTION 2: CORE THEORY DEEP DIVE ---
-elif nav_selection == "📖 Core Theory Deep Dive":
+elif nav_selection == "📖 Core Production Theory":
     st.markdown('<div class="section-header">📚 Structural Mechanics of Long-Run Microeconomic Production</div>', unsafe_allow_html=True)
     theory_tabs = st.tabs(["Long-Run Variably Scaled Foundations", "Returns to Scale (RTS) Dynamics"])
     
@@ -308,7 +309,103 @@ elif nav_selection == "📖 Core Theory Deep Dive":
         </div>
         """, unsafe_allow_html=True)
 
-# --- SECTION 3: GEOMETRIC EXPANSION PATHS ---
+# --- SECTION 3: COST ECONOMICS & FINANCIAL TAXONOMY ---
+elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
+    st.markdown('<div class="section-header">📊 Integrated Microeconomic Cost Analysis & Taxonomy</div>', unsafe_allow_html=True)
+    
+    cost_tab1, cost_tab2, cost_tab3, cost_tab4 = st.tabs([
+        "💰 Accounting vs. Economic Cost",
+        "🛑 Opportunity & Sunk Costs",
+        "📉 Short-Run Cost Structure (FC, VC, TC)",
+        "📐 Unit & Marginal Costs (AC, AFC, AVC, MC)"
+    ])
+
+    with cost_tab1:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>Accounting Cost vs. Economic Cost</h3>
+        <p>Strategic decision-making requires distinguishing between conventional accounting expenditures and true economic cost.</p>
+        <ul>
+            <li><strong>Explicit Cost (Accounting Cost):</strong> Direct, out-of-pocket monetary expenses recorded in financial ledgers (e.g., wages, raw materials, rent, utilities).</li>
+            <li><strong>Implicit Cost:</strong> The non-monetary opportunity costs of using self-owned resources (e.g., foregone salary of the owner, foregone rent on owned land, foregone interest on invested equity capital).</li>
+            <li><strong>Economic Cost Equation:</strong></li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        st.latex(r"\text{Economic Cost} = \text{Explicit Costs} + \text{Implicit Costs}")
+        
+        st.markdown("""
+        <div class="case-study">
+        <h4>💡 Profitability Metrics Comparison</h4>
+        <p><strong>Accounting Profit</strong> = Total Revenue - Explicit Costs</p>
+        <p><strong>Economic Profit</strong> = Total Revenue - (Explicit Costs + Implicit Costs) = Total Revenue - Economic Cost</p>
+        <p><em>Note: If Economic Profit = 0, the firm earns a <strong>Normal Profit</strong>, covering all explicit and implicit opportunity costs.</em></p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with cost_tab2:
+        col_opp, col_sunk = st.columns(2)
+        
+        with col_opp:
+            st.markdown("""
+            <div class="concept-note">
+            <h3>💡 Opportunity Cost</h3>
+            <p>The value of the <strong>next best alternative forgone</strong> when making a decision.</p>
+            <p>Every resource deployment choice carries an opportunity cost. In cost minimization, if capital is deployed into machinery, its opportunity cost is the return it would have generated in its next best alternative investment.</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col_sunk:
+            st.markdown("""
+            <div class="case-study">
+            <h3>🛑 Sunk Cost</h3>
+            <p>An expense that has <strong>already been incurred and cannot be recovered</strong> by any future decision.</p>
+            <p><strong>The Golden Rule of Sunk Costs:</strong> Sunk costs are <em>irrelevant</em> for forward-looking economic decisions. Rational firms ignore sunk costs when evaluating marginal production steps.</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    with cost_tab3:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>Short-Run Production Cost Components</h3>
+        <p>In the short run, at least one factor of production (usually Capital $K$) is fixed.</p>
+        <ul>
+            <li><strong>Total Fixed Cost (TFC):</strong> Expenses that do not vary with output volume ($Q$). They must be paid even if output is zero (e.g., factory lease, administrative salaries).</li>
+            <li><strong>Total Variable Cost (TVC):</strong> Expenses that vary directly with output volume ($Q$) (e.g., raw materials, direct hourly labor).</li>
+            <li><strong>Total Cost (TC) Identity:</strong></li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        st.latex(r"TC(Q) = TFC + TVC(Q)")
+
+    with cost_tab4:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>Per-Unit and Marginal Cost Dynamics</h3>
+        <p>Dividing total metrics by volume ($Q$) yields per-unit cost curves, which govern competitive pricing and profit-maximization behavior.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.latex(r"ATC = \frac{TC}{Q} = \frac{TFC + TVC}{Q} = AFC + AVC")
+        st.latex(r"MC = \frac{\Delta TC}{\Delta Q} = \frac{\partial TC}{\partial Q}")
+        
+        st.markdown("""
+        <div class="case-study">
+        <h4>📌 Critical Curve Relationships</h4>
+        <ul>
+            <li><strong>Average Fixed Cost ($AFC$):</strong> Continuously declines as output scales (known as <em>"spreading the overhead"</em>).</li>
+            <li><strong>Marginal Cost ($MC$) and Average Cost ($ATC$/$AVC$):</strong>
+                <ul>
+                    <li>When $MC < ATC$, Average Total Cost is falling.</li>
+                    <li>When $MC > ATC$, Average Total Cost is rising.</li>
+                    <li>$MC$ intersects $ATC$ and $AVC$ at their absolute <strong>minimum points</strong>.</li>
+                </ul>
+            </li>
+        </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- SECTION 4: GEOMETRIC EXPANSION PATHS ---
 elif nav_selection == "📈 Geometric Expansion Paths":
     st.markdown('<div class="section-header">📈 Core Mathematical Intersections & Long-Run Expansion Paths</div>', unsafe_allow_html=True)
     
@@ -329,10 +426,10 @@ elif nav_selection == "📈 Geometric Expansion Paths":
     </div>
     """, unsafe_allow_html=True)
 
-# --- SECTION 4: KNOWLEDGE CHECK ---
+# --- SECTION 5: KNOWLEDGE CHECK ---
 elif nav_selection == "📝 Operational Knowledge Check":
-    st.markdown('<div class="section-header">📝 Master Long-Run Production Knowledge Evaluation Deck</div>', unsafe_allow_html=True)
-    st.markdown("Test your integrated understanding of long-run asset scaling architecture.")
+    st.markdown('<div class="section-header">📝 Master Long-Run Production & Cost Knowledge Evaluation Deck</div>', unsafe_allow_html=True)
+    st.markdown("Test your integrated understanding of production scaling and economic cost architecture.")
     
     with st.form("integrated_production_quiz"):
         st.markdown("### 1. Long-Run Cost Minimization Parameter Alignment")
@@ -359,14 +456,26 @@ elif nav_selection == "📝 Operational Knowledge Check":
         )
         
         st.markdown("---")
-        st.markdown("### 3. Structural Definition of an Isoquant Curve")
+        st.markdown("### 3. Economic Profit vs. Accounting Profit")
         q3 = st.radio(
-            "Which statement precisely describes a production isoquant line graph?",
+            "An entrepreneur leaves a $100,000/year job to start a firm. Revenues are $300,000 and explicit costs are $180,000. What is the Economic Profit?",
             options=[
-                "A) All asset combinations that yield the exact same amount of absolute total cost outlays.",
-                "B) The maximum combination of goods two independent modern corporate entities can trade.",
-                "C) All combinations of labor and capital inputs that generate the exact same quantity of total output.",
-                "D) The structural boundary where marginal productivity shifts from negative to positive coefficients."
+                "A) $120,000",
+                "B) $20,000",
+                "C) $300,000",
+                "D) -$80,000"
+            ], index=None
+        )
+        
+        st.markdown("---")
+        st.markdown("### 4. Sunk Cost & Decision Theory")
+        q4 = st.radio(
+            "A company spent $5M developing a prototype that turns out to be non-viable. To complete it will cost $1M more, but projected revenue is only $500,000. Should they proceed?",
+            options=[
+                "A) Yes, to recover part of the initial $5M investment.",
+                "B) No, because incremental revenue ($500k) is less than incremental cost ($1M); the $5M is a sunk cost.",
+                "C) Yes, because total revenue exceeds the remaining variable cost.",
+                "D) No, because fixed costs must always be amortized fully."
             ], index=None
         )
         
@@ -376,16 +485,20 @@ elif nav_selection == "📝 Operational Knowledge Check":
             score_acc = 0.0
             
             if q1 == "B) The MRTS is perfectly equal to the ratio of the factor input prices (w/r).":
-                score_acc += 16.66; st.session_state.ans1_ok = True
+                score_acc += 12.5; st.session_state.ans1_ok = True
             else: st.session_state.ans1_ok = False
                 
             if q2 == "C) Increasing Returns to Scale (IRS)":
-                score_acc += 16.67; st.session_state.ans2_ok = True
+                score_acc += 12.5; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
                 
-            if q3 == "C) All combinations of labor and capital inputs that generate the exact same quantity of total output.":
-                score_acc += 16.67; st.session_state.ans3_ok = True
+            if q3 == "B) $20,000":
+                score_acc += 12.5; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
+
+            if q4 == "B) No, because incremental revenue ($500k) is less than incremental cost ($1M); the $5M is a sunk cost.":
+                score_acc += 12.5; st.session_state.ans4_ok = True
+            else: st.session_state.ans4_ok = False
                 
             st.session_state.knowledge_rating = score_acc
             st.session_state.quiz_done = True
@@ -400,7 +513,9 @@ elif nav_selection == "📝 Operational Knowledge Check":
         if not st.session_state.ans2_ok:
             st.error("**Q2 Analysis:** Scaling inputs by 2x (100% increase) yielding a 2.5x (150% increase) output shift indicates Increasing Returns to Scale ($\alpha + \beta > 1$).")
         if not st.session_state.ans3_ok:
-            st.error("**Q3 Analysis:** An isoquant maps matching production volumes (iso = equal, quant = quantity), distinct from an isocost line which maps expense outlays.")
+            st.error("**Q3 Analysis:** Accounting Profit = $300k - $180k = $120k. Subtract the $100k foregone salary (implicit cost) to get Economic Profit = $20,000.")
+        if not st.session_state.ans4_ok:
+            st.error("**Q4 Analysis:** The $5M spent is a sunk cost and unrecoverable. Marginal cost to finish ($1M) exceeds marginal revenue ($500k), so continuing loses another $500k.")
 
 # =====================================================================
 # SYSTEM FOOTER DATA TERMINAL
@@ -409,7 +524,7 @@ st.markdown("---")
 foot_c1, foot_c2, foot_c3 = st.columns(3)
 
 with foot_c1:
-    st.caption("🎓 Production Optimization Engine | Corporate Strategy Hub")
+    st.caption("🎓 Production & Cost Optimization Engine | Corporate Strategy Hub")
 
 with foot_c2:
     st.caption("🚀 Fully Variable Asset Scale Optimization Active")
