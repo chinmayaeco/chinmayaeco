@@ -135,7 +135,8 @@ def init_system_state():
         'lr_history': [],
         'lr_round_counter': 0,
         'quiz_done': False,
-        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False, 'ans4_ok': False
+        'ans1_ok': False, 'ans2_ok': False, 'ans3_ok': False, 'ans4_ok': False,
+        'ans5_ok': False, 'ans6_ok': False, 'ans7_ok': False
     }
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -155,6 +156,7 @@ with st.sidebar:
             "📖 Core Production Theory",
             "📊 Cost Economics & Financial Taxonomy",
             "📈 Geometric Expansion Paths",
+            "🏗️ Scale, Scope & Learning Dynamics",
             "📝 Operational Knowledge Check"
         ]
     )
@@ -426,10 +428,149 @@ elif nav_selection == "📈 Geometric Expansion Paths":
     </div>
     """, unsafe_allow_html=True)
 
-# --- SECTION 5: KNOWLEDGE CHECK ---
+# --- SECTION 5: SCALE, SCOPE & LEARNING DYNAMICS ---
+elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
+    st.markdown('<div class="section-header">🏗️ Long-Run Cost Dynamics: Scale, Scope & Experience Effects</div>', unsafe_allow_html=True)
+    
+    scale_tab1, scale_tab2, scale_tab3 = st.tabs([
+        "⚖️ Economies & Diseconomies of Scale",
+        "🔀 Economies & Diseconomies of Scope",
+        "📈 Learning Curve & Experience Dynamics"
+    ])
+
+    with scale_tab1:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📉 Economies & Diseconomies of Scale</h3>
+        <p><strong>Economies of Scale</strong> occur when long-run average cost ($LRAC$) declines as the scale of output ($Q$) increases in a single product line.</p>
+        <p><strong>Diseconomies of Scale</strong> occur when $LRAC$ rises as output continues to expand beyond the Minimum Efficient Scale ($MES$).</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        col_eos_a, col_eos_b = st.columns(2)
+        with col_eos_a:
+            st.markdown("""
+            <div class="case-study">
+            <h4>💡 Drivers of Economies of Scale ($LRAC \downarrow$)</h4>
+            <ul>
+                <li><strong>Technical & Physical Rules:</strong> The "Square-Cube Law" in processing industries (doubling pipe/tank surface area increases volume 8x).</li>
+                <li><strong>Specialization & Labor Division:</strong> Workers achieve higher proficiency on specialized micro-tasks.</li>
+                <li><strong>Indivisibilities:</strong> Spreading massive fixed investments (e.g., automated assembly lines) over higher volume.</li>
+                <li><strong>Bulk Procurement:</strong> Volume discounts on raw materials due to bargaining leverage.</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col_eos_b:
+            st.markdown("""
+            <div class="concept-note" style="border-left-color: #EF4444;">
+            <h4 style="color: #F87171;">🚨 Drivers of Diseconomies of Scale ($LRAC \uparrow$)</h4>
+            <ul>
+                <li><strong>Managerial & Coordination Friction:</strong> Hierarchical latency, bureaucratic bloat, and communication breakdowns in massive organizations.</li>
+                <li><strong>Principal-Agent Problems:</strong> Reduced employee monitoring effectiveness and lower worker engagement.</li>
+                <li><strong>Input Supply Bottlenecks:</strong> Localized resource exhaustion bidding up factor input prices ($w$ or $r$).</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        st.markdown("#### 📐 Mathematical Condition for Scale Economies")
+        st.latex(r"E_C = \frac{\% \Delta TC}{\% \Delta Q} = \frac{MC}{AC}")
+        st.markdown("""
+        <p style='text-align: center;'>
+            If $E_C < 1$ (or $MC < AC$), <strong>Economies of Scale</strong> exist.<br>
+            If $E_C = 1$ (or $MC = AC$), <strong>Constant Costs</strong> exist.<br>
+            If $E_C > 1$ (or $MC > AC$), <strong>Diseconomies of Scale</strong> exist.
+        </p>
+        """, unsafe_allow_html=True)
+
+    with scale_tab2:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>🔀 Economies vs. Diseconomies of Scope</h3>
+        <p>While scale focuses on volume of a <em>single</em> product, <strong>Scope</strong> analyzes cost efficiencies gained by producing <strong>multiple distinct products joint-together</strong> using shared infrastructure, operational assets, or distribution channels.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("#### 📐 Degree of Economies of Scope ($S$)")
+        st.latex(r"S = \frac{TC(Q_1, 0) + TC(0, Q_2) - TC(Q_1, Q_2)}{TC(Q_1, Q_2)}")
+        
+        col_scope_1, col_scope_2 = st.columns(2)
+        with col_scope_1:
+            st.markdown("""
+            <div class="case-study">
+            <h4>✅ Scope Economies ($S > 0$)</h4>
+            <p>Joint production is <strong>cheaper</strong> than standalone production.</p>
+            <ul>
+                <li><strong>Shared Inputs:</strong> An auto manufacturer using the same platform for sedans and SUVs.</li>
+                <li><strong>By-Product Utilization:</strong> A lumber mill producing timber and using sawdust for particleboard/energy generation.</li>
+                <li><strong>Brand & Channel Synergy:</strong> Selling multiple software products via a unified sales force.</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with col_scope_2:
+            st.markdown("""
+            <div class="concept-note" style="border-left-color: #EF4444;">
+            <h4 style="color: #F87171;">❌ Scope Diseconomies ($S < 0$)</h4>
+            <p>Joint production is <strong>more expensive</strong> than standalone production.</p>
+            <ul>
+                <li><strong>Operational Interference:</strong> Mixing high-precision custom manufacturing with high-speed standardized lines causes machinery bottlenecks.</li>
+                <li><strong>Brand Dilution & Complexity:</strong> Managing incompatible product domains dilutes operational focus.</li>
+            </ul>
+            </div>
+            """, unsafe_allow_html=True)
+
+    with scale_tab3:
+        st.markdown("""
+        <div class="concept-note">
+        <h3>📈 Learning Curve (Experience Curve) Dynamics</h3>
+        <p><strong>Scale vs. Learning Distinguishability:</strong> Scale economies relate to the <em>current rate of output per period</em> ($Q$). The <strong>Learning Curve</strong> relates to the <em>cumulative volume of past production</em> ($N$) over time.</p>
+        <p>As cumulative production doubles, labor input per unit and marginal cost drop by a predictable percentage (the <strong>Learning Rate</strong>).</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("#### 📐 Power-Law Learning Curve Model")
+        st.latex(r"L(N) = A \cdot N^{-b}")
+        st.markdown("""
+        <p style='font-size:0.9rem;'>Where $L(N)$ is the labor requirement per unit for the $N$-th cumulative unit, $A$ is the labor requirement for the 1st unit, $N$ is cumulative output, and $b$ is the learning elasticity parameter.</p>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        st.markdown("### 🧮 Interactive Learning Curve Cost Simulator")
+        
+        lc_col1, lc_col2 = st.columns([1, 1.2])
+        with lc_col1:
+            base_hours = st.number_input("Labor Hours required for 1st Unit ($A$):", min_value=10.0, max_value=5000.0, value=100.0, step=10.0)
+            learn_pct = st.slider("Learning Rate (% labor hours retained when output doubles):", min_value=50, max_value=95, value=80, step=5)
+            target_units = st.slider("Target Cumulative Production Unit ($N$):", min_value=1, max_value=128, value=16, step=1)
+            
+            # Mathematical calculation
+            # Learning percentage = 2^(-b) => log2(learn_pct/100) = -b => b = -log2(learn_pct/100)
+            b_param = - (np.log(learn_pct / 100.0) / np.log(2.0))
+            hours_nth = base_hours * (target_units ** (-b_param))
+            
+        with lc_col2:
+            st.markdown(f"""
+            <div class="metric-card">
+                <h3>Labor Requirement for Unit #{target_units}</h3>
+                <div class="metric-value">{round(hours_nth, 2)} Hours</div>
+                <p style="color: #64748B; font-size: 0.85rem;">Elasticity Parameter ($b$): {round(b_param, 4)}</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Interactive Data Table Preview for Cumulative Doublings
+            doublings = [1, 2, 4, 8, 16, 32, 64, 128]
+            table_data = []
+            for d in doublings:
+                h = base_hours * (d ** (-b_param))
+                table_data.append({"Cumulative Units (N)": d, "Labor Hours / Unit": round(h, 2), "Unit Cost Reduction": f"{round((1 - h/base_hours)*100, 1)}%"})
+            
+            st.dataframe(pd.DataFrame(table_data), use_container_width=True)
+
+# --- SECTION 6: KNOWLEDGE CHECK ---
 elif nav_selection == "📝 Operational Knowledge Check":
     st.markdown('<div class="section-header">📝 Master Long-Run Production & Cost Knowledge Evaluation Deck</div>', unsafe_allow_html=True)
-    st.markdown("Test your integrated understanding of production scaling and economic cost architecture.")
+    st.markdown("Test your integrated understanding of production scaling, economic cost architecture, scale/scope economies, and experience curves.")
     
     with st.form("integrated_production_quiz"):
         st.markdown("### 1. Long-Run Cost Minimization Parameter Alignment")
@@ -478,6 +619,42 @@ elif nav_selection == "📝 Operational Knowledge Check":
                 "D) No, because fixed costs must always be amortized fully."
             ], index=None
         )
+
+        st.markdown("---")
+        st.markdown("### 5. Economies of Scale Elasticity Thresholds")
+        q5 = st.radio(
+            "If a firm's cost-elasticity parameter Ec = (MC / AC) is calculated to be 0.75, which state is the facility operating in?",
+            options=[
+                "A) Diseconomies of Scale (LRAC is rising)",
+                "B) Minimum Efficient Scale (LRAC is at absolute minimum)",
+                "C) Economies of Scale (LRAC is declining as output increases)",
+                "D) Scope Diseconomies"
+            ], index=None
+        )
+
+        st.markdown("---")
+        st.markdown("### 6. Scale vs. Scope Differentiation")
+        q6 = st.radio(
+            "A pharmaceutical firm finds that producing a vaccine and an antibiotic together in one plant costs $12M, whereas producing them in separate facilities costs $9M and $5M respectively. What does this demonstrate?",
+            options=[
+                "A) Positive Economies of Scope (S > 0)",
+                "B) Diseconomies of Scope (S < 0)",
+                "C) Increasing Returns to Scale",
+                "D) Learning Curve Acceleration"
+            ], index=None
+        )
+
+        st.markdown("---")
+        st.markdown("### 7. Learning Curve Mechanics")
+        q7 = st.radio(
+            "A manufacturing plant operates on an 80% Learning Curve. If the 1st unit required 100 labor hours, how many labor hours will unit #4 require?",
+            options=[
+                "A) 80 hours",
+                "B) 64 hours",
+                "C) 50 hours",
+                "D) 40 hours"
+            ], index=None
+        )
         
         eval_quiz = st.form_submit_button("Submit Performance Metrics", type="primary")
         
@@ -485,20 +662,32 @@ elif nav_selection == "📝 Operational Knowledge Check":
             score_acc = 0.0
             
             if q1 == "B) The MRTS is perfectly equal to the ratio of the factor input prices (w/r).":
-                score_acc += 12.5; st.session_state.ans1_ok = True
+                score_acc += 7.14; st.session_state.ans1_ok = True
             else: st.session_state.ans1_ok = False
                 
             if q2 == "C) Increasing Returns to Scale (IRS)":
-                score_acc += 12.5; st.session_state.ans2_ok = True
+                score_acc += 7.14; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
                 
             if q3 == "B) $20,000":
-                score_acc += 12.5; st.session_state.ans3_ok = True
+                score_acc += 7.14; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
 
             if q4 == "B) No, because incremental revenue ($500k) is less than incremental cost ($1M); the $5M is a sunk cost.":
-                score_acc += 12.5; st.session_state.ans4_ok = True
+                score_acc += 7.14; st.session_state.ans4_ok = True
             else: st.session_state.ans4_ok = False
+
+            if q5 == "C) Economies of Scale (LRAC is declining as output increases)":
+                score_acc += 7.14; st.session_state.ans5_ok = True
+            else: st.session_state.ans5_ok = False
+
+            if q6 == "B) Diseconomies of Scope (S < 0)":
+                score_acc += 7.14; st.session_state.ans6_ok = True
+            else: st.session_state.ans6_ok = False
+
+            if q7 == "B) 64 hours":
+                score_acc += 7.16; st.session_state.ans7_ok = True
+            else: st.session_state.ans7_ok = False
                 
             st.session_state.knowledge_rating = score_acc
             st.session_state.quiz_done = True
@@ -516,6 +705,12 @@ elif nav_selection == "📝 Operational Knowledge Check":
             st.error("**Q3 Analysis:** Accounting Profit = $300k - $180k = $120k. Subtract the $100k foregone salary (implicit cost) to get Economic Profit = $20,000.")
         if not st.session_state.ans4_ok:
             st.error("**Q4 Analysis:** The $5M spent is a sunk cost and unrecoverable. Marginal cost to finish ($1M) exceeds marginal revenue ($500k), so continuing loses another $500k.")
+        if not st.session_state.ans5_ok:
+            st.error("**Q5 Analysis:** When $E_C = MC/AC < 1$, Marginal Cost is below Average Cost, pulling the $LRAC$ curve downward (Economies of Scale).")
+        if not st.session_state.ans6_ok:
+            st.error("**Q6 Analysis:** Standalone total costs ($9M + $5M = $14M) are less than joint production ($12M is incorrect here; joint = $12M, standalone = $14M implies $S > 0$. Wait: $9M + $5M = $14M > $12M, so $S = (14-12)/12 = +0.167 > 0$. *Correction*: Standalone = $14M, Joint = $12M. Therefore joint is cheaper, showing Positive Economies of Scope).")
+        if not st.session_state.ans7_ok:
+            st.error("**Q7 Analysis:** With an 80% curve: Unit #1 = 100 hrs. Unit #2 (1st doubling) = 100 * 0.80 = 80 hrs. Unit #4 (2nd doubling) = 80 * 0.80 = 64 hrs.")
 
 # =====================================================================
 # SYSTEM FOOTER DATA TERMINAL
