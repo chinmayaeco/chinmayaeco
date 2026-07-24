@@ -190,7 +190,7 @@ if nav_selection == "🚀 Long-Run Simulator Sandbox":
     panel_left, panel_right = st.columns([1, 1.2])
     
     with panel_left:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>📌 Long-Run Scale Optimization</h3>
         <p><strong>All Inputs Are Variable:</strong> In the long run, your facility can scale both <strong>Workforce (Labor - $L$)</strong> and <strong>Infrastructure (Capital - $K$)</strong> without capacity limits.</p>
@@ -287,7 +287,7 @@ elif nav_selection == "📖 Core Production Theory":
     theory_tabs = st.tabs(["Long-Run Variably Scaled Foundations", "Returns to Scale (RTS) Dynamics"])
     
     with theory_tabs[0]:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>🚀 Long-Run Production Functions & Isoquants</h3>
         <p>In analytical economics, the <strong>Long Run</strong> is defined as an optimization horizon where <strong>all factors of production are fully variable</strong>. Firms can switch asset sizes, construct new plants, or reshape total operational layouts simultaneously.</p>
@@ -298,7 +298,7 @@ elif nav_selection == "📖 Core Production Theory":
         st.latex(r"MRTS_{L,K} = -\frac{\Delta K}{\Delta L} = \frac{MP_L}{MP_K}")
 
     with theory_tabs[1]:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>⚖️ Returns to Scale Parameter Tracking</h3>
         <p>Returns to Scale evaluates how total output behaves when <strong>all production inputs are increased by the exact same proportional factor</strong> ($\lambda$).</p>
@@ -323,7 +323,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
     ])
 
     with cost_tab1:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>Accounting Cost vs. Economic Cost</h3>
         <p>Strategic decision-making requires distinguishing between conventional accounting expenditures and true economic cost.</p>
@@ -336,7 +336,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
         """, unsafe_allow_html=True)
         st.latex(r"\text{Economic Cost} = \text{Explicit Costs} + \text{Implicit Costs}")
         
-        st.markdown("""
+        st.markdown(r"""
         <div class="case-study">
         <h4>💡 Profitability Metrics Comparison</h4>
         <p><strong>Accounting Profit</strong> = Total Revenue - Explicit Costs</p>
@@ -349,7 +349,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
         col_opp, col_sunk = st.columns(2)
         
         with col_opp:
-            st.markdown("""
+            st.markdown(r"""
             <div class="concept-note">
             <h3>💡 Opportunity Cost</h3>
             <p>The value of the <strong>next best alternative forgone</strong> when making a decision.</p>
@@ -358,7 +358,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
             """, unsafe_allow_html=True)
             
         with col_sunk:
-            st.markdown("""
+            st.markdown(r"""
             <div class="case-study">
             <h3>🛑 Sunk Cost</h3>
             <p>An expense that has <strong>already been incurred and cannot be recovered</strong> by any future decision.</p>
@@ -367,7 +367,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
             """, unsafe_allow_html=True)
 
     with cost_tab3:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>Short-Run Production Cost Components</h3>
         <p>In the short run, at least one factor of production (usually Capital $K$) is fixed.</p>
@@ -381,7 +381,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
         st.latex(r"TC(Q) = TFC + TVC(Q)")
 
     with cost_tab4:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>Per-Unit and Marginal Cost Dynamics</h3>
         <p>Dividing total metrics by volume ($Q$) yields per-unit cost curves, which govern competitive pricing and profit-maximization behavior.</p>
@@ -391,7 +391,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
         st.latex(r"ATC = \frac{TC}{Q} = \frac{TFC + TVC}{Q} = AFC + AVC")
         st.latex(r"MC = \frac{\Delta TC}{\Delta Q} = \frac{\partial TC}{\partial Q}")
         
-        st.markdown("""
+        st.markdown(r"""
         <div class="case-study">
         <h4>📌 Critical Curve Relationships</h4>
         <ul>
@@ -411,7 +411,7 @@ elif nav_selection == "📊 Cost Economics & Financial Taxonomy":
 elif nav_selection == "📈 Geometric Expansion Paths":
     st.markdown('<div class="section-header">📈 Core Mathematical Intersections & Long-Run Expansion Paths</div>', unsafe_allow_html=True)
     
-    st.markdown("""
+    st.markdown(r"""
     <div class="case-study">
     <h4>🗺️ Long-Run Optimization & The Expansion Path Frontier</h4>
     <p>In long-run optimization geometry, structural efficiency is modeled by overlaying <strong>Isoquants</strong> with <strong>Isocost Lines</strong>:</p>
@@ -422,7 +422,7 @@ elif nav_selection == "📈 Geometric Expansion Paths":
     </div>
     """, unsafe_allow_html=True)
     st.latex(r"MRTS_{L,K} = \frac{MP_L}{MP_K} = \frac{w}{r}")
-    st.markdown("""
+    st.markdown(r"""
     <div class="case-study">
     <p><strong>The Expansion Path:</strong> Connecting all consecutive tangency equilibrium points as production scales creates the firm's <strong>Long-Run Expansion Path</strong>. This line traces the most financially rational path for structural asset configuration as a company scales.</p>
     </div>
@@ -439,7 +439,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
     ])
 
     with scale_tab1:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>📉 Economies & Diseconomies of Scale</h3>
         <p><strong>Economies of Scale</strong> occur when long-run average cost ($LRAC$) declines as the scale of output ($Q$) increases in a single product line.</p>
@@ -449,7 +449,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
         
         col_eos_a, col_eos_b = st.columns(2)
         with col_eos_a:
-            st.markdown("""
+            st.markdown(r"""
             <div class="case-study">
             <h4>💡 Drivers of Economies of Scale ($LRAC \downarrow$)</h4>
             <ul>
@@ -462,7 +462,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
             """, unsafe_allow_html=True)
             
         with col_eos_b:
-            st.markdown("""
+            st.markdown(r"""
             <div class="concept-note" style="border-left-color: #EF4444;">
             <h4 style="color: #F87171;">🚨 Drivers of Diseconomies of Scale ($LRAC \uparrow$)</h4>
             <ul>
@@ -475,7 +475,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
             
         st.markdown("#### 📐 Mathematical Condition for Scale Economies")
         st.latex(r"E_C = \frac{\% \Delta TC}{\% \Delta Q} = \frac{MC}{AC}")
-        st.markdown("""
+        st.markdown(r"""
         <p style='text-align: center;'>
             If $E_C < 1$ (or $MC < AC$), <strong>Economies of Scale</strong> exist.<br>
             If $E_C = 1$ (or $MC = AC$), <strong>Constant Costs</strong> exist.<br>
@@ -484,7 +484,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
         """, unsafe_allow_html=True)
 
     with scale_tab2:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>🔀 Economies vs. Diseconomies of Scope</h3>
         <p>While scale focuses on volume of a <em>single</em> product, <strong>Scope</strong> analyzes cost efficiencies gained by producing <strong>multiple distinct products joint-together</strong> using shared infrastructure, operational assets, or distribution channels.</p>
@@ -496,7 +496,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
         
         col_scope_1, col_scope_2 = st.columns(2)
         with col_scope_1:
-            st.markdown("""
+            st.markdown(r"""
             <div class="case-study">
             <h4>✅ Scope Economies ($S > 0$)</h4>
             <p>Joint production is <strong>cheaper</strong> than standalone production.</p>
@@ -509,7 +509,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
             """, unsafe_allow_html=True)
             
         with col_scope_2:
-            st.markdown("""
+            st.markdown(r"""
             <div class="concept-note" style="border-left-color: #EF4444;">
             <h4 style="color: #F87171;">❌ Scope Diseconomies ($S < 0$)</h4>
             <p>Joint production is <strong>more expensive</strong> than standalone production.</p>
@@ -521,7 +521,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
             """, unsafe_allow_html=True)
 
     with scale_tab3:
-        st.markdown("""
+        st.markdown(r"""
         <div class="concept-note">
         <h3>📈 Learning Curve (Experience Curve) Dynamics</h3>
         <p><strong>Scale vs. Learning Distinguishability:</strong> Scale economies relate to the <em>current rate of output per period</em> ($Q$). The <strong>Learning Curve</strong> relates to the <em>cumulative volume of past production</em> ($N$) over time.</p>
@@ -531,7 +531,7 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
         
         st.markdown("#### 📐 Power-Law Learning Curve Model")
         st.latex(r"L(N) = A \cdot N^{-b}")
-        st.markdown("""
+        st.markdown(r"""
         <p style='font-size:0.9rem;'>Where $L(N)$ is the labor requirement per unit for the $N$-th cumulative unit, $A$ is the labor requirement for the 1st unit, $N$ is cumulative output, and $b$ is the learning elasticity parameter.</p>
         """, unsafe_allow_html=True)
         
@@ -544,8 +544,6 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
             learn_pct = st.slider("Learning Rate (% labor hours retained when output doubles):", min_value=50, max_value=95, value=80, step=5)
             target_units = st.slider("Target Cumulative Production Unit ($N$):", min_value=1, max_value=128, value=16, step=1)
             
-            # Mathematical calculation
-            # Learning percentage = 2^(-b) => log2(learn_pct/100) = -b => b = -log2(learn_pct/100)
             b_param = - (np.log(learn_pct / 100.0) / np.log(2.0))
             hours_nth = base_hours * (target_units ** (-b_param))
             
@@ -558,7 +556,6 @@ elif nav_selection == "🏗️ Scale, Scope & Learning Dynamics":
             </div>
             """, unsafe_allow_html=True)
             
-            # Interactive Data Table Preview for Cumulative Doublings
             doublings = [1, 2, 4, 8, 16, 32, 64, 128]
             table_data = []
             for d in doublings:
@@ -681,7 +678,7 @@ elif nav_selection == "📝 Operational Knowledge Check":
                 score_acc += 7.14; st.session_state.ans5_ok = True
             else: st.session_state.ans5_ok = False
 
-            if q6 == "B) Diseconomies of Scope (S < 0)":
+            if q6 == "A) Positive Economies of Scope (S > 0)":
                 score_acc += 7.14; st.session_state.ans6_ok = True
             else: st.session_state.ans6_ok = False
 
@@ -708,7 +705,7 @@ elif nav_selection == "📝 Operational Knowledge Check":
         if not st.session_state.ans5_ok:
             st.error("**Q5 Analysis:** When $E_C = MC/AC < 1$, Marginal Cost is below Average Cost, pulling the $LRAC$ curve downward (Economies of Scale).")
         if not st.session_state.ans6_ok:
-            st.error("**Q6 Analysis:** Standalone total costs ($9M + $5M = $14M) are less than joint production ($12M is incorrect here; joint = $12M, standalone = $14M implies $S > 0$. Wait: $9M + $5M = $14M > $12M, so $S = (14-12)/12 = +0.167 > 0$. *Correction*: Standalone = $14M, Joint = $12M. Therefore joint is cheaper, showing Positive Economies of Scope).")
+            st.error("**Q6 Analysis:** Standalone total costs ($9M + $5M = $14M) exceed joint production ($12M). Since $S = (14 - 12)/12 = +0.167 > 0$, joint production generates Positive Economies of Scope.")
         if not st.session_state.ans7_ok:
             st.error("**Q7 Analysis:** With an 80% curve: Unit #1 = 100 hrs. Unit #2 (1st doubling) = 100 * 0.80 = 80 hrs. Unit #4 (2nd doubling) = 80 * 0.80 = 64 hrs.")
 
