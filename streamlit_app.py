@@ -7,8 +7,8 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Scale, Scope & Learning Dynamics Engine",
-    page_icon="🏗️",
+    page_title="Perfect Competition Dynamics Engine",
+    page_icon="⚖️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -27,7 +27,7 @@ def check_password():
 
     if "password_correct" not in st.session_state:
         st.markdown("<h1 style='text-align: center; color: #3B82F6;'>🔒 Operations Engine Security</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Scale, Scope & Learning Engine.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Perfect Competition Engine.</p>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1, 1.5, 1])
         with col2:
             st.text_input("Security Password", type="password", on_change=password_entered, key="password")
@@ -67,7 +67,7 @@ st.markdown("""
     }
     .score-banner h2 { color: #60A5FA !important; margin: 0 !important; font-weight: 700; font-size: 1.6rem; }
     
-    /* Elegant Content Blocks (Containers/Forms) */
+    /* Content Blocks (Containers/Forms) */
     .stContainer, .stForm {
         background: rgba(30, 41, 59, 0.7) !important; 
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
@@ -107,7 +107,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important; 
     }
     
-    /* Framework Global Text Elements Adjustments */
+    /* Global Text Adjustments */
     .stMarkdown, p, li { color: #E2E8F0 !important; font-size: 0.98rem; line-height: 1.6; }
     .stSidebar { background: #0F172A !important; border-right: 1px solid rgba(255, 255, 255, 0.05); }
 </style>
@@ -132,13 +132,14 @@ init_system_state()
 # SIDEBAR CONTROL DECK
 # =====================================================================
 with st.sidebar:
-    st.markdown("### 🏗️ Operations Hub")
+    st.markdown("### ⚖️ Competition Hub")
     nav_selection = st.radio(
         "Navigation Hub:",
         options=[
-            "⚖️ Economies & Diseconomies of Scale",
-            "🔀 Economies & Diseconomies of Scope",
-            "📈 Learning Curve & Experience Dynamics",
+            "📌 Market Foundations & Price Taking",
+            "⚡ Short-Run Equilibrium & Shutdown Rules",
+            "🔄 Long-Run Equilibrium & Industry Efficiency",
+            "🧮 Interactive Firm & Market Simulator",
             "📝 Knowledge Check Deck"
         ]
     )
@@ -150,9 +151,9 @@ score_container = st.container()
 with score_container:
     st.markdown(f"""
     <div class="score-banner">
-        <h2>Operational Knowledge Rating: {round(st.session_state.knowledge_rating, 1)} / 100 Index</h2>
+        <h2>Perfect Competition Mastery Index: {round(st.session_state.knowledge_rating, 1)} / 100</h2>
         <p style='color: #FBBF24; margin: 0.25rem 0 0 0;'>
-            📝 Concept Mastery Evaluation Active
+            📝 Competitive Dynamics Evaluation Active
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -161,230 +162,270 @@ with score_container:
 # INTERACTIVE ROUTING ARCHITECTURE
 # =====================================================================
 
-# --- SECTION 1: ECONOMIES & DISECONOMIES OF SCALE ---
-if nav_selection == "⚖️ Economies & Diseconomies of Scale":
-    st.markdown('<div class="section-header">⚖️ Economies & Diseconomies of Scale</div>', unsafe_allow_html=True)
+# --- SECTION 1: MARKET FOUNDATIONS & PRICE TAKING ---
+if nav_selection == "📌 Market Foundations & Price Taking":
+    st.markdown('<div class="section-header">📌 Foundations of Perfect Competition</div>', unsafe_allow_html=True)
     
     st.markdown(r"""
     <div class="concept-note">
-    <h3>📉 Understanding Scale Dynamics</h3>
-    <p><strong>Scale Dynamics</strong> examine how per-unit costs change as a firm scales up total output volume ($Q$) in a single product line over the long run.</p>
+    <h3>🏛️ Core Assumptions of Perfect Competition</h3>
+    <p>A <strong>Perfectly Competitive Market</strong> is an idealized market structure where price is determined purely by aggregate market demand and market supply. Individual firms are <strong>price takers</strong> with zero market power.</p>
     <ul>
-        <li><strong>Economies of Scale:</strong> Occurs when Long-Run Average Cost ($LRAC$) <em>declines</em> as output ($Q$) increases.</li>
-        <li><strong>Diseconomies of Scale:</strong> Occurs when $LRAC$ <em>rises</em> as output continues to expand beyond the Minimum Efficient Scale ($MES$).</li>
+        <li><strong>Many Buyers and Sellers:</strong> No single economic actor can influence the market price.</li>
+        <li><strong>Homogeneous Products:</strong> Goods offered by sellers are perfect substitutes.</li>
+        <li><strong>Free Entry and Exit:</strong> No barriers to entry or exit in the long run.</li>
+        <li><strong>Perfect Information:</strong> Buyers and sellers have full knowledge of prices, quality, and technology.</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
     
-    col_eos_a, col_eos_b = st.columns(2)
-    with col_eos_a:
+    col_found_a, col_found_b = st.columns(2)
+    with col_found_a:
         st.markdown(r"""
         <div class="case-study">
-        <h4>💡 Key Drivers of Economies of Scale ($LRAC \downarrow$)</h4>
+        <h4>🎯 The Firm as a Price Taker</h4>
+        <p>Because products are identical and sellers are small relative to the market, an individual firm faces a <strong>perfectly elastic horizontal demand curve</strong> at the prevailing market price ($P^*$).</p>
         <ul>
-            <li><strong>Technical & Physical Rules:</strong> The "Square-Cube Law" (doubling a container's surface area increases volume 8x, lowering per-unit storage cost).</li>
-            <li><strong>Specialization of Labor:</strong> Complex processes broken down into micro-tasks lead to higher efficiency and expertise.</li>
-            <li><strong>Indivisibilities:</strong> Spreading large non-divisible fixed costs (e.g., massive machinery, high-cost R&D) over more units.</li>
-            <li><strong>Bulk Procurement:</strong> Higher bargaining power yields purchasing discounts on raw materials.</li>
+            <li>If a firm charges $P > P^*$, demand falls to <strong>zero</strong>.</li>
+            <li>If a firm charges $P \le P^*$, it can sell all output it produces without dropping the price.</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-    with col_eos_b:
+    with col_found_b:
         st.markdown(r"""
-        <div class="concept-note" style="border-left-color: #EF4444;">
-        <h4 style="color: #F87171;">🚨 Drivers of Diseconomies of Scale ($LRAC \uparrow$)</h4>
+        <div class="concept-note" style="border-left-color: #10B981;">
+        <h4 style="color: #34D399;">📊 Revenue Identities under Price Taking</h4>
+        <p>When price ($P$) is constant regardless of output quantity ($q$):</p>
         <ul>
-            <li><strong>Managerial & Coordination Friction:</strong> Bureaucratic bloat, communication lag, and hierarchical latency in massive organizations.</li>
-            <li><strong>Principal-Agent Misalignment:</strong> Reduced employee monitoring effectiveness leading to lower morale and productivity.</li>
-            <li><strong>Input Supply Bottlenecks:</strong> Regional resource depletion bidding up factor input prices ($w$ or $r$).</li>
+            <li><strong>Total Revenue:</strong> $TR(q) = P \cdot q$</li>
+            <li><strong>Average Revenue:</strong> $AR(q) = \frac{TR}{q} = P$</li>
+            <li><strong>Marginal Revenue:</strong> $MR(q) = \frac{dTR}{dq} = P$</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-    st.markdown("#### 📐 Mathematical Condition for Scale Elasticity")
-    st.latex(r"E_C = \frac{\% \Delta TC}{\% \Delta Q} = \frac{MC}{AC}")
-    st.markdown(r"""
-    <p style='text-align: center;'>
-        If $E_C < 1$ (or $MC < AC$), <strong>Economies of Scale</strong> exist.<br>
-        If $E_C = 1$ (or $MC = AC$), <strong>Constant Costs</strong> exist.<br>
-        If $E_C > 1$ (or $MC > AC$), <strong>Diseconomies of Scale</strong> exist.
-    </p>
-    """, unsafe_allow_html=True)
+    st.markdown("#### 📐 Fundamental Identity of the Price-Taking Firm")
+    st.latex(r"P = AR = MR = \text{Individual Firm Demand } (d)")
 
-# --- SECTION 2: ECONOMIES & DISECONOMIES OF SCOPE ---
-elif nav_selection == "🔀 Economies & Diseconomies of Scope":
-    st.markdown('<div class="section-header">🔀 Economies & Diseconomies of Scope</div>', unsafe_allow_html=True)
+# --- SECTION 2: SHORT-RUN EQUILIBRIUM & SHUTDOWN RULES ---
+elif nav_selection == "⚡ Short-Run Equilibrium & Shutdown Rules":
+    st.markdown('<div class="section-header">⚡ Short-Run Profit Maximization & Shutdown Rules</div>', unsafe_allow_html=True)
     
     st.markdown(r"""
     <div class="concept-note">
-    <h3>🔀 Understanding Scope Dynamics</h3>
-    <p>While <em>Scale</em> measures cost savings from volume in a single product, <strong>Scope</strong> measures cost savings achieved by producing <strong>multiple distinct products joint-together</strong> using shared infrastructure, operational assets, or capabilities.</p>
+    <h3>⚙️ Profit Maximization Condition</h3>
+    <p>In the short run, capital is fixed while variable inputs (like labor) can adjust. The firm maximizes economic profit ($\pi$) where marginal revenue equals marginal cost, provided $MC$ is rising.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("#### 📐 Degree of Economies of Scope Formula ($S$)")
-    st.latex(r"S = \frac{TC(Q_1, 0) + TC(0, Q_2) - TC(Q_1, Q_2)}{TC(Q_1, Q_2)}")
+    st.markdown("#### 📐 Profit Maximization Rule")
+    st.latex(r"M\pi = MR - MC = 0 \implies P = MC(q^*) \quad \text{where } \frac{dMC}{dq} > 0")
     
-    col_scope_1, col_scope_2 = st.columns(2)
-    with col_scope_1:
+    col_sr_1, col_sr_2 = st.columns(2)
+    with col_sr_1:
         st.markdown(r"""
         <div class="case-study">
-        <h4>✅ Scope Economies ($S > 0$)</h4>
-        <p>Joint production is <strong>cheaper</strong> than standalone production.</p>
+        <h4>📈 Short-Run Profitability States</h4>
         <ul>
-            <li><strong>Shared Technological Platforms:</strong> Car manufacturers using one underlying chassis for sedans and SUVs.</li>
-            <li><strong>By-Product Utilization:</strong> Sawmills utilizing timber for wood products and converting residual sawdust into particleboard.</li>
-            <li><strong>Shared Distribution & Marketing:</strong> Using a single sales force or logistical network to distribute multiple product lines.</li>
+            <li><strong>Economic Profit ($\pi > 0$):</strong> $P > ATC(q^*)$</li>
+            <li><strong>Break-Even ($\pi = 0$):</strong> $P = \min ATC$</li>
+            <li><strong>Operating Loss ($\pi < 0$):</strong> $AVC(q^*) \le P < ATC(q^*)$ (Loss is less than Fixed Cost)</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-    with col_scope_2:
+    with col_sr_2:
         st.markdown(r"""
         <div class="concept-note" style="border-left-color: #EF4444;">
-        <h4 style="color: #F87171;">❌ Scope Diseconomies ($S < 0$)</h4>
-        <p>Joint production is <strong>more expensive</strong> than standalone production.</p>
-        <ul>
-            <li><strong>Operational Interference:</strong> Running custom high-precision manufacturing in the same line as high-speed mass production leads to machine setup bottlenecks.</li>
-            <li><strong>Managerial Complexity:</strong> Managing fundamentally opposing business models under one roof dilutes operational focus.</li>
-        </ul>
+        <h4 style="color: #F87171;">🛑 Short-Run Shutdown Rule</h4>
+        <p>A firm will <strong>shut down operations immediately</strong> ($q^* = 0$) if total revenue cannot even cover variable costs:</p>
+        <p style="text-align: center; font-weight: bold; font-size: 1.1rem; color: #F87171;">
+            $P < \min AVC$
+        </p>
+        <p>If $P \ge \min AVC$, the firm continues producing in the short run to minimize losses by covering all variable costs and a portion of fixed costs.</p>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.markdown("### 🧮 Interactive Scope Economies Calculator")
-    sc_col1, sc_col2 = st.columns([1, 1.2])
+# --- SECTION 3: LONG-RUN EQUILIBRIUM & INDUSTRY EFFICIENCY ---
+elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
+    st.markdown('<div class="section-header">🔄 Long-Run Dynamics & Economic Efficiency</div>', unsafe_allow_html=True)
     
-    with sc_col1:
-        cost_p1 = st.number_input("Standalone Cost for Product 1 ($TC(Q_1, 0)$):", min_value=1.0, value=100000.0, step=5000.0)
-        cost_p2 = st.number_input("Standalone Cost for Product 2 ($TC(0, Q_2)$):", min_value=1.0, value=80000.0, step=5000.0)
-        cost_joint = st.number_input("Joint Production Cost ($TC(Q_1, Q_2)$):", min_value=1.0, value=150000.0, step=5000.0)
+    st.markdown(r"""
+    <div class="concept-note">
+    <h3>🔄 Free Entry and Exit Dynamics</h3>
+    <p>In the long run, all inputs are variable and firms can freely enter or exit the market. Unconstrained entry and exit eliminate positive or negative economic profits across the industry.</p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    col_lr_1, col_lr_2 = st.columns(2)
+    with col_lr_1:
+        st.markdown(r"""
+        <div class="case-study">
+        <h4>➡️ Short-Run Profit $\implies$ Market Entry</h4>
+        <p>When $P > \min ATC$ in the short run:</p>
+        <ol>
+            <li>Incumbent firms earn positive economic profit ($\pi > 0$).</li>
+            <li>New firms enter the industry.</li>
+            <li>Market supply curve shifts <strong>right</strong> ($S \to S'$).</li>
+            <li>Market price drops until $P^* = \min ATC$ and $\pi = 0$.</li>
+        </ol>
+        </div>
+        """, unsafe_allow_html=True)
         
-    with sc_col2:
-        s_value = (cost_p1 + cost_p2 - cost_joint) / cost_joint
-        savings_pct = round(s_value * 100, 2)
+    with col_lr_2:
+        st.markdown(r"""
+        <div class="concept-note" style="border-left-color: #EF4444;">
+        <h4 style="color: #F87171;">⬅️ Short-Run Loss $\implies$ Market Exit</h4>
+        <p>When $P < \min ATC$ in the short run:</p>
+        <ol>
+            <li>Incumbent firms incur economic losses ($\pi < 0$).</li>
+            <li>Firms exit the industry over time.</li>
+            <li>Market supply curve shifts <strong>left</strong> ($S \to S''$).</li>
+            <li>Market price rises until $P^* = \min ATC$ and $\pi = 0$.</li>
+        </ol>
+        </div>
+        """, unsafe_allow_html=True)
         
-        if s_value > 0:
-            status_text = f"✅ Positive Economies of Scope ($S = {round(s_value, 4)}$)"
-            sub_text = f"Joint production saves **{savings_pct}%** compared to standalone operations."
-        elif s_value < 0:
-            status_text = f"❌ Diseconomies of Scope ($S = {round(s_value, 4)}$)"
-            sub_text = f"Joint production costs **{abs(savings_pct)}%** more than producing separately."
+    st.markdown("---")
+    st.markdown("#### 🏛️ Economic Efficiency Benchmarks")
+    st.latex(r"P = MC = \min LRATC")
+    
+    eff_c1, eff_c2 = st.columns(2)
+    with eff_c1:
+        st.markdown("""
+        <div class="metric-card">
+            <h3>🎯 Allocative Efficiency</h3>
+            <div class="metric-value">P = MC</div>
+            <p style="color: #94A3B8; font-size: 0.85rem;">Price reflects marginal benefit to consumers. Total surplus (Consumer + Producer) is maximized with zero deadweight loss.</p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    with eff_c2:
+        st.markdown("""
+        <div class="metric-card">
+            <h3>⚙️ Productive Efficiency</h3>
+            <div class="metric-value">P = min LRATC</div>
+            <p style="color: #94A3B8; font-size: 0.85rem;">Goods are produced at the lowest possible per-unit cost in the long run. Resources are utilized at maximum productivity.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- SECTION 4: INTERACTIVE FIRM & MARKET SIMULATOR ---
+elif nav_selection == "🧮 Interactive Firm & Market Simulator":
+    st.markdown('<div class="section-header">🧮 Interactive Firm Production & Cost Simulator</div>', unsafe_allow_html=True)
+    st.markdown("Model a price-taking firm with cost function $TC(q) = FC + a \cdot q + b \cdot q^2$.")
+    
+    sim_col1, sim_col2 = st.columns([1, 1.2])
+    
+    with sim_col1:
+        price = st.number_input("Market Price ($P$):", min_value=1.0, max_value=200.0, value=50.0, step=5.0)
+        fixed_cost = st.number_input("Fixed Cost ($FC$):", min_value=10.0, max_value=1000.0, value=100.0, step=10.0)
+        param_a = st.number_input("Linear Variable Cost Coeff ($a$):", min_value=0.0, max_value=50.0, value=10.0, step=1.0)
+        param_b = st.number_input("Quadratic Cost Coeff ($b$):", min_value=0.1, max_value=5.0, value=1.0, step=0.1)
+        
+        # Mathematical Derivations:
+        # TC(q) = FC + a*q + b*q^2
+        # VC(q) = a*q + b*q^2
+        # MC(q) = a + 2*b*q
+        # AVC(q) = a + b*q
+        # ATC(q) = FC/q + a + b*q
+        
+        min_avc = param_a  # min AVC occurs as q -> 0 for quadratic VC
+        min_atc = param_a + 2 * np.sqrt(fixed_cost * param_b)
+        q_atc_min = np.sqrt(fixed_cost / param_b)
+        
+        # Profit Maximization: P = MC = a + 2*b*q => q* = (P - a) / (2*b)
+        if price < min_avc:
+            q_opt = 0.0
+            status = "🛑 SHUT DOWN IMMEDIATELY (P < min AVC)"
+            status_color = "#EF4444"
         else:
-            status_text = "⚖️ Neutral Scope Effect ($S = 0$)"
-            sub_text = "No cost difference between joint and separate production."
-            
+            q_opt = max(0.0, (price - param_a) / (2 * param_b))
+            if price > min_atc:
+                status = "🟢 OPERATING WITH ECONOMIC PROFIT (P > min ATC)"
+                status_color = "#10B981"
+            elif abs(price - min_atc) < 1e-3:
+                status = "⚖️ BREAK-EVEN / LONG-RUN EQUILIBRIUM (P = min ATC)"
+                status_color = "#FBBF24"
+            else:
+                status = "🟡 OPERATING AT LOSS IN SHORT RUN (min AVC <= P < min ATC)"
+                status_color = "#F59E0B"
+                
+        tr = price * q_opt
+        tc = fixed_cost + param_a * q_opt + param_b * (q_opt ** 2) if q_opt > 0 else fixed_cost
+        profit = tr - tc if q_opt > 0 else -fixed_cost
+        
+    with sim_col2:
         st.markdown(f"""
         <div class="metric-card">
-            <h3>Degree of Scope Measure (S)</h3>
-            <div class="metric-value">{round(s_value, 4)}</div>
-            <p style="color: #60A5FA; font-size: 0.95rem;">{status_text}</p>
-            <p style="color: #94A3B8; font-size: 0.85rem;">{sub_text}</p>
-        </div>
-        """, unsafe_allow_html=True)
-
-# --- SECTION 3: LEARNING CURVE & EXPERIENCE DYNAMICS ---
-elif nav_selection == "📈 Learning Curve & Experience Dynamics":
-    st.markdown('<div class="section-header">📈 Learning Curve & Experience Dynamics</div>', unsafe_allow_html=True)
-    
-    st.markdown(r"""
-    <div class="concept-note">
-    <h3>📈 Learning Curve (Experience Effect)</h3>
-    <p><strong>Scale vs. Learning Distinguishability:</strong> Scale economies depend on the <em>rate of production per time period</em> ($Q$). The <strong>Learning Curve</strong> depends on the <em>cumulative past output</em> ($N$) produced over time.</p>
-    <p>As cumulative output doubles, labor input per unit drops by a predictable percentage (the <strong>Learning Rate</strong>).</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("#### 📐 Power-Law Learning Curve Equation")
-    st.latex(r"L(N) = A \cdot N^{-b}")
-    st.markdown(r"""
-    <p style='font-size:0.9rem;'>Where $L(N)$ is the labor requirement for unit $N$, $A$ is the labor requirement for the 1st unit, $N$ is cumulative output, and $b$ is the learning elasticity parameter ($b = \frac{-\log(\text{Learning Rate})}{\log(2)}$).</p>
-    """, unsafe_allow_html=True)
-    
-    st.markdown("---")
-    st.markdown("### 🧮 Interactive Learning Curve Cost Simulator")
-    
-    lc_col1, lc_col2 = st.columns([1, 1.2])
-    with lc_col1:
-        base_hours = st.number_input("Labor Hours for 1st Unit ($A$):", min_value=10.0, max_value=5000.0, value=100.0, step=10.0)
-        learn_pct = st.slider("Learning Rate (% labor hours retained upon doubling cumulative output):", min_value=50, max_value=95, value=80, step=5)
-        target_units = st.slider("Select Cumulative Unit Number ($N$):", min_value=1, max_value=128, value=16, step=1)
-        
-        b_param = - (np.log(learn_pct / 100.0) / np.log(2.0))
-        hours_nth = base_hours * (target_units ** (-b_param))
-        
-    with lc_col2:
-        st.markdown(f"""
-        <div class="metric-card">
-            <h3>Labor Requirement for Unit #{target_units}</h3>
-            <div class="metric-value">{round(hours_nth, 2)} Hours</div>
-            <p style="color: #64748B; font-size: 0.85rem;">Elasticity Parameter ($b$): {round(b_param, 4)}</p>
+            <h3>Optimal Output ($q^*$)</h3>
+            <div class="metric-value">{round(q_opt, 2)} Units</div>
+            <p style="color: {status_color}; font-weight: 600; font-size: 0.95rem;">{status}</p>
         </div>
         """, unsafe_allow_html=True)
         
-        doublings = [1, 2, 4, 8, 16, 32, 64, 128]
-        table_data = []
-        for d in doublings:
-            h = base_hours * (d ** (-b_param))
-            table_data.append({
-                "Cumulative Output (N)": d, 
-                "Labor Hours / Unit": round(h, 2), 
-                "Cost Reduction vs Unit #1": f"{round((1 - h/base_hours)*100, 1)}%"
-            })
+        metrics_df = pd.DataFrame([
+            {"Metric": "Market Price (P)", "Value": f"${round(price, 2)}"},
+            {"Metric": "Optimal Output (q*)", "Value": f"{round(q_opt, 2)} units"},
+            {"Metric": "Total Revenue (TR)", "Value": f"${round(tr, 2)}"},
+            {"Metric": "Total Cost (TC)", "Value": f"${round(tc, 2)}"},
+            {"Metric": "Economic Profit / Loss (π)", "Value": f"${round(profit, 2)}"},
+            {"Metric": "Break-Even Price (min ATC)", "Value": f"${round(min_atc, 2)} at q={round(q_atc_min, 2)}"},
+            {"Metric": "Shutdown Price Threshold (min AVC)", "Value": f"${round(min_avc, 2)}"}
+        ])
         
-        st.dataframe(pd.DataFrame(table_data), use_container_width=True)
+        st.dataframe(metrics_df, use_container_width=True)
 
-# --- SECTION 4: KNOWLEDGE CHECK DECK ---
+# --- SECTION 5: KNOWLEDGE CHECK DECK ---
 elif nav_selection == "📝 Knowledge Check Deck":
-    st.markdown('<div class="section-header">📝 Scale, Scope & Learning Knowledge Evaluation</div>', unsafe_allow_html=True)
-    st.markdown("Test your operational understanding of scale economies, scope economies, and learning curves.")
+    st.markdown('<div class="section-header">📝 Perfect Competition Knowledge Evaluation</div>', unsafe_allow_html=True)
+    st.markdown("Test your economic knowledge of market structures, short-run profit rules, and long-run adjustments.")
     
-    with st.form("operations_quiz"):
-        st.markdown("### 1. Scale Elasticity Parameter Interpretation")
+    with st.form("competition_quiz"):
+        st.markdown("### 1. Demand Curve Faced by a Price Taker")
         q1 = st.radio(
-            "If a plant's cost elasticity parameter Ec = (MC / AC) is equal to 0.75, which operational state is the plant experiencing?",
+            "What is the elasticity of the demand curve faced by an individual firm in a perfectly competitive market?",
             options=[
-                "A) Diseconomies of Scale (LRAC is rising)",
-                "B) Minimum Efficient Scale (LRAC is at its absolute floor)",
-                "C) Economies of Scale (LRAC is declining as output increases)",
-                "D) Scope Diseconomies"
+                "A) Perfectly Inelastic (Vertical)",
+                "B) Unit Elastic",
+                "C) Perfectly Elastic (Horizontal at market price)",
+                "D) Downward Sloping with finite price elasticity"
             ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 2. Scale vs. Learning Distinction")
+        st.markdown("### 2. Short-Run Shutdown Decision")
         q2 = st.radio(
-            "What is the key difference between Economies of Scale and the Learning Curve?",
+            "Under what condition should a competitive firm shut down immediately in the short run?",
             options=[
-                "A) Scale depends on cumulative production over time; Learning depends on current output rate per period.",
-                "B) Scale depends on output rate per period (Q); Learning depends on cumulative volume (N) over time.",
-                "C) Scale applies only to labor, while Learning applies only to capital.",
-                "D) Scale causes costs to rise, while Learning causes costs to drop."
+                "A) Market Price falls below Average Total Cost (P < ATC)",
+                "B) Market Price falls below Average Variable Cost (P < AVC)",
+                "C) Total Profit becomes equal to zero (π = 0)",
+                "D) Marginal Cost is equal to Marginal Revenue (MC = MR)"
             ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 3. Degree of Economies of Scope Calculation")
+        st.markdown("### 3. Long-Run Competitive Equilibrium")
         q3 = st.radio(
-            "A company produces Product A separately for $90k and Product B separately for $50k. Producing both together costs $120k. What is the degree of scope economy?",
+            "In the long run, free entry and exit ensure that every firm in a competitive industry earns:",
             options=[
-                "A) S = -0.167 (Diseconomies of Scope)",
-                "B) S = 0.167 (Positive Economies of Scope)",
-                "C) S = 0.833 (Scale Economies)",
-                "D) S = 0.000 (Neutral Scope)"
+                "A) Positive economic profit (π > 0)",
+                "B) Zero economic profit (P = min ATC)",
+                "C) Zero accounting profit",
+                "D) Monopoly rents"
             ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 4. Learning Curve Calculation")
+        st.markdown("### 4. Economic Efficiency Conditions")
         q4 = st.radio(
-            "A factory operates on an 80% Learning Curve. If Unit #1 required 100 hours, how many labor hours will Unit #4 require?",
+            "Which pair of equations represents allocative and productive efficiency respectively in long-run competitive equilibrium?",
             options=[
-                "A) 80 hours",
-                "B) 64 hours",
-                "C) 50 hours",
-                "D) 40 hours"
+                "A) Allocative: P = MC ; Productive: P = min ATC",
+                "B) Allocative: P = min ATC ; Productive: P = MC",
+                "C) Allocative: MR = MC ; Productive: TR = TC",
+                "D) Allocative: P > MC ; Productive: P = AVC"
             ], index=None
         )
         
@@ -393,19 +434,19 @@ elif nav_selection == "📝 Knowledge Check Deck":
         if eval_quiz:
             score_acc = 0.0
             
-            if q1 == "C) Economies of Scale (LRAC is declining as output increases)":
+            if q1 == "C) Perfectly Elastic (Horizontal at market price)":
                 score_acc += 25.0; st.session_state.ans1_ok = True
             else: st.session_state.ans1_ok = False
                 
-            if q2 == "B) Scale depends on output rate per period (Q); Learning depends on cumulative volume (N) over time.":
+            if q2 == "B) Market Price falls below Average Variable Cost (P < AVC)":
                 score_acc += 25.0; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
                 
-            if q3 == "B) S = 0.167 (Positive Economies of Scope)":
+            if q3 == "B) Zero economic profit (P = min ATC)":
                 score_acc += 25.0; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
 
-            if q4 == "B) 64 hours":
+            if q4 == "A) Allocative: P = MC ; Productive: P = min ATC":
                 score_acc += 25.0; st.session_state.ans4_ok = True
             else: st.session_state.ans4_ok = False
                 
@@ -418,13 +459,13 @@ elif nav_selection == "📝 Knowledge Check Deck":
         st.markdown(f"### 🎉 Quiz Score: {round(st.session_state.knowledge_rating, 1)} / 100 Points")
         
         if not st.session_state.ans1_ok:
-            st.error("**Q1 Analysis:** When $E_C = MC/AC < 1$, Marginal Cost is below Average Cost, pulling the $LRAC$ curve downward (Economies of Scale).")
+            st.error("**Q1 Analysis:** An individual firm in perfect competition is a price taker, facing a horizontal (perfectly elastic) demand curve at $P^*$.")
         if not st.session_state.ans2_ok:
-            st.error("**Q2 Analysis:** Scale economies relate to production rate per period ($Q$). Learning curves relate to accumulated experience over time ($N$).")
+            st.error("**Q2 Analysis:** In the short run, if $P < AVC$, total revenue cannot cover variable costs, so shutting down minimizes loss to fixed costs.")
         if not st.session_state.ans3_ok:
-            st.error("**Q3 Analysis:** $S = (90k + 50k - 120k) / 120k = 20k / 120k = +0.167 > 0$, indicating positive cost savings from joint production.")
+            st.error("**Q3 Analysis:** Free entry/exit drives economic profit down to zero ($\pi = 0$) in the long run, where $P = \min ATC$.")
         if not st.session_state.ans4_ok:
-            st.error("**Q4 Analysis:** With an 80% curve: Unit #1 = 100 hrs. Unit #2 (1st doubling) = 100 * 0.80 = 80 hrs. Unit #4 (2nd doubling) = 80 * 0.80 = 64 hrs.")
+            st.error("**Q4 Analysis:** Allocative efficiency occurs where $P = MC$ (price equals marginal cost), and productive efficiency occurs where $P = \min ATC$.")
 
 # =====================================================================
 # SYSTEM FOOTER DATA TERMINAL
@@ -433,10 +474,10 @@ st.markdown("---")
 foot_c1, foot_c2, foot_c3 = st.columns(3)
 
 with foot_c1:
-    st.caption("🎓 Scale, Scope & Learning Dynamics Engine")
+    st.caption("🎓 Perfectly Competitive Market Dynamics Engine")
 
 with foot_c2:
-    st.caption("🚀 Operations Strategy Module Active")
+    st.caption("🚀 Microeconomics & Operations Strategy Module")
 
 with foot_c3:
     st.caption(f"⏰ System Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
