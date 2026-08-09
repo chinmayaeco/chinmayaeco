@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 from datetime import datetime
 
 # =====================================================================
@@ -139,7 +138,7 @@ with st.sidebar:
             "📌 Market Foundations & Price Taking",
             "⚡ Short-Run Equilibrium & Shutdown Rules",
             "🔄 Long-Run Equilibrium & Industry Efficiency",
-            "🧮 Interactive Firm & Market Simulator",
+            "🧮 Simple Firm Profit & Shutdown Simulator",
             "📝 Knowledge Check Deck"
         ]
     )
@@ -184,10 +183,10 @@ if nav_selection == "📌 Market Foundations & Price Taking":
         st.markdown(r"""
         <div class="case-study">
         <h4>🎯 The Firm as a Price Taker</h4>
-        <p>Because products are identical and sellers are small relative to the market, an individual firm faces a <strong>perfectly elastic horizontal demand curve</strong> at the prevailing market price ($P^*$).</p>
+        <p>Because products are identical and sellers are small relative to the market, an individual firm faces a <strong>perfectly elastic horizontal demand curve</strong> at the prevailing market price ($P$).</p>
         <ul>
-            <li>If a firm charges $P > P^*$, demand falls to <strong>zero</strong>.</li>
-            <li>If a firm charges $P \le P^*$, it can sell all output it produces without dropping the price.</li>
+            <li>If a firm charges $P > P_{\text{market}}$, demand falls to <strong>zero</strong>.</li>
+            <li>If a firm charges $P \le P_{\text{market}}$, it can sell all output it produces at the market price.</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -195,17 +194,17 @@ if nav_selection == "📌 Market Foundations & Price Taking":
     with col_found_b:
         st.markdown(r"""
         <div class="concept-note" style="border-left-color: #10B981;">
-        <h4 style="color: #34D399;">📊 Revenue Identities under Price Taking</h4>
-        <p>When price ($P$) is constant regardless of output quantity ($q$):</p>
+        <h4 style="color: #34D399;">📊 Revenue Formulas for Price Takers</h4>
+        <p>When price ($P$) is fixed by the market:</p>
         <ul>
-            <li><strong>Total Revenue:</strong> $TR(q) = P \cdot q$</li>
-            <li><strong>Average Revenue:</strong> $AR(q) = \frac{TR}{q} = P$</li>
-            <li><strong>Marginal Revenue:</strong> $MR(q) = \frac{dTR}{dq} = P$</li>
+            <li><strong>Total Revenue (TR):</strong> $TR = P \times Q$</li>
+            <li><strong>Average Revenue (AR):</strong> $AR = \frac{TR}{Q} = P$</li>
+            <li><strong>Marginal Revenue (MR):</strong> $MR = \frac{\Delta TR}{\Delta Q} = P$</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-    st.markdown("#### 📐 Fundamental Identity of the Price-Taking Firm")
+    st.markdown("#### 📐 Fundamental Identity of a Price-Taking Firm")
     st.latex(r"P = AR = MR = \text{Individual Firm Demand } (d)")
 
 # --- SECTION 2: SHORT-RUN EQUILIBRIUM & SHUTDOWN RULES ---
@@ -215,12 +214,12 @@ elif nav_selection == "⚡ Short-Run Equilibrium & Shutdown Rules":
     st.markdown(r"""
     <div class="concept-note">
     <h3>⚙️ Profit Maximization Condition</h3>
-    <p>In the short run, capital is fixed while variable inputs (like labor) can adjust. The firm maximizes economic profit ($\pi$) where marginal revenue equals marginal cost, provided $MC$ is rising.</p>
+    <p>In the short run, fixed costs exist and cannot be avoided immediately. The firm maximizes profit by producing the quantity ($Q$) where <strong>Price equals Marginal Cost ($P = MC$)</strong>.</p>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("#### 📐 Profit Maximization Rule")
-    st.latex(r"M\pi = MR - MC = 0 \implies P = MC(q^*) \quad \text{where } \frac{dMC}{dq} > 0")
+    st.latex(r"MR = MC \implies P = MC")
     
     col_sr_1, col_sr_2 = st.columns(2)
     with col_sr_1:
@@ -228,9 +227,9 @@ elif nav_selection == "⚡ Short-Run Equilibrium & Shutdown Rules":
         <div class="case-study">
         <h4>📈 Short-Run Profitability States</h4>
         <ul>
-            <li><strong>Economic Profit ($\pi > 0$):</strong> $P > ATC(q^*)$</li>
-            <li><strong>Break-Even ($\pi = 0$):</strong> $P = \min ATC$</li>
-            <li><strong>Operating Loss ($\pi < 0$):</strong> $AVC(q^*) \le P < ATC(q^*)$ (Loss is less than Fixed Cost)</li>
+            <li><strong>Economic Profit ($\text{Profit} > 0$):</strong> $P > ATC$</li>
+            <li><strong>Break-Even ($\text{Profit} = 0$):</strong> $P = ATC$</li>
+            <li><strong>Operating Loss ($\text{Profit} < 0$):</strong> $AVC \le P < ATC$ (Operating covers variable costs and partial fixed costs)</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -239,11 +238,11 @@ elif nav_selection == "⚡ Short-Run Equilibrium & Shutdown Rules":
         st.markdown(r"""
         <div class="concept-note" style="border-left-color: #EF4444;">
         <h4 style="color: #F87171;">🛑 Short-Run Shutdown Rule</h4>
-        <p>A firm will <strong>shut down operations immediately</strong> ($q^* = 0$) if total revenue cannot even cover variable costs:</p>
+        <p>A firm will <strong>shut down operations immediately</strong> ($Q = 0$) if total revenue cannot even cover variable costs:</p>
         <p style="text-align: center; font-weight: bold; font-size: 1.1rem; color: #F87171;">
-            $P < \min AVC$
+            $P < AVC$
         </p>
-        <p>If $P \ge \min AVC$, the firm continues producing in the short run to minimize losses by covering all variable costs and a portion of fixed costs.</p>
+        <p>If $P \ge AVC$, the firm continues operating in the short run to minimize total losses.</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -254,7 +253,7 @@ elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
     st.markdown(r"""
     <div class="concept-note">
     <h3>🔄 Free Entry and Exit Dynamics</h3>
-    <p>In the long run, all inputs are variable and firms can freely enter or exit the market. Unconstrained entry and exit eliminate positive or negative economic profits across the industry.</p>
+    <p>In the long run, all costs are variable. Free entry and exit push the market price to the minimum point of Average Total Cost ($ATC$), eliminating all positive or negative economic profits across the industry.</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -262,13 +261,13 @@ elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
     with col_lr_1:
         st.markdown(r"""
         <div class="case-study">
-        <h4>➡️ Short-Run Profit $\implies$ Market Entry</h4>
-        <p>When $P > \min ATC$ in the short run:</p>
+        <h4>➡️ Short-Run Profit $\implies$ Entry</h4>
+        <p>When $P > ATC$:</p>
         <ol>
-            <li>Incumbent firms earn positive economic profit ($\pi > 0$).</li>
-            <li>New firms enter the industry.</li>
-            <li>Market supply curve shifts <strong>right</strong> ($S \to S'$).</li>
-            <li>Market price drops until $P^* = \min ATC$ and $\pi = 0$.</li>
+            <li>Firms earn positive economic profit.</li>
+            <li>New firms enter the market.</li>
+            <li>Market supply increases, pushing price down.</li>
+            <li>Price falls until $P = \text{Minimum } ATC$ ($\text{Profit} = 0$).</li>
         </ol>
         </div>
         """, unsafe_allow_html=True)
@@ -276,20 +275,20 @@ elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
     with col_lr_2:
         st.markdown(r"""
         <div class="concept-note" style="border-left-color: #EF4444;">
-        <h4 style="color: #F87171;">⬅️ Short-Run Loss $\implies$ Market Exit</h4>
-        <p>When $P < \min ATC$ in the short run:</p>
+        <h4 style="color: #F87171;">⬅️ Short-Run Loss $\implies$ Exit</h4>
+        <p>When $P < ATC$:</p>
         <ol>
-            <li>Incumbent firms incur economic losses ($\pi < 0$).</li>
-            <li>Firms exit the industry over time.</li>
-            <li>Market supply curve shifts <strong>left</strong> ($S \to S''$).</li>
-            <li>Market price rises until $P^* = \min ATC$ and $\pi = 0$.</li>
+            <li>Firms incur economic losses.</li>
+            <li>Existing firms exit the market.</li>
+            <li>Market supply decreases, pushing price up.</li>
+            <li>Price rises until $P = \text{Minimum } ATC$ ($\text{Profit} = 0$).</li>
         </ol>
         </div>
         """, unsafe_allow_html=True)
         
     st.markdown("---")
     st.markdown("#### 🏛️ Economic Efficiency Benchmarks")
-    st.latex(r"P = MC = \min LRATC")
+    st.latex(r"P = MC = \text{Minimum } ATC")
     
     eff_c1, eff_c2 = st.columns(2)
     with eff_c1:
@@ -297,7 +296,7 @@ elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
         <div class="metric-card">
             <h3>🎯 Allocative Efficiency</h3>
             <div class="metric-value">P = MC</div>
-            <p style="color: #94A3B8; font-size: 0.85rem;">Price reflects marginal benefit to consumers. Total surplus (Consumer + Producer) is maximized with zero deadweight loss.</p>
+            <p style="color: #94A3B8; font-size: 0.85rem;">Price equals marginal cost. Consumers pay exactly what it costs to produce the last unit, eliminating deadweight loss.</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -305,73 +304,66 @@ elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
         st.markdown("""
         <div class="metric-card">
             <h3>⚙️ Productive Efficiency</h3>
-            <div class="metric-value">P = min LRATC</div>
-            <p style="color: #94A3B8; font-size: 0.85rem;">Goods are produced at the lowest possible per-unit cost in the long run. Resources are utilized at maximum productivity.</p>
+            <div class="metric-value">P = Minimum ATC</div>
+            <p style="color: #94A3B8; font-size: 0.85rem;">Goods are produced at the lowest possible per-unit cost in the long run.</p>
         </div>
         """, unsafe_allow_html=True)
 
-# --- SECTION 4: INTERACTIVE FIRM & MARKET SIMULATOR ---
-elif nav_selection == "🧮 Interactive Firm & Market Simulator":
-    st.markdown('<div class="section-header">🧮 Interactive Firm Production & Cost Simulator</div>', unsafe_allow_html=True)
-    st.markdown("Model a price-taking firm with cost function $TC(q) = FC + a \cdot q + b \cdot q^2$.")
+# --- SECTION 4: SIMPLE FIRM PROFIT & SHUTDOWN SIMULATOR ---
+elif nav_selection == "🧮 Simple Firm Profit & Shutdown Simulator":
+    st.markdown('<div class="section-header">🧮 Simple Firm Profit & Shutdown Simulator</div>', unsafe_allow_html=True)
+    st.markdown("Analyze short-run firm decisions using a linear cost model without complex calculus.")
     
     sim_col1, sim_col2 = st.columns([1, 1.2])
     
     with sim_col1:
-        price = st.number_input("Market Price ($P$):", min_value=1.0, max_value=200.0, value=50.0, step=5.0)
-        fixed_cost = st.number_input("Fixed Cost ($FC$):", min_value=10.0, max_value=1000.0, value=100.0, step=10.0)
-        param_a = st.number_input("Linear Variable Cost Coeff ($a$):", min_value=0.0, max_value=50.0, value=10.0, step=1.0)
-        param_b = st.number_input("Quadratic Cost Coeff ($b$):", min_value=0.1, max_value=5.0, value=1.0, step=0.1)
+        price = st.number_input("Market Price per Unit ($P$):", min_value=1.0, max_value=200.0, value=50.0, step=5.0)
+        units_produced = st.number_input("Target Units Produced ($Q$):", min_value=1, max_value=1000, value=100, step=10)
+        fixed_cost = st.number_input("Total Fixed Cost ($TFC$):", min_value=0.0, max_value=5000.0, value=1500.0, step=100.0)
+        vc_per_unit = st.number_input("Variable Cost per Unit ($AVC$):", min_value=1.0, max_value=150.0, value=35.0, step=5.0)
         
-        # Mathematical Derivations:
-        # TC(q) = FC + a*q + b*q^2
-        # VC(q) = a*q + b*q^2
-        # MC(q) = a + 2*b*q
-        # AVC(q) = a + b*q
-        # ATC(q) = FC/q + a + b*q
+        # Linear Calculations
+        total_revenue = price * units_produced
+        total_vc = vc_per_unit * units_produced
+        total_cost = fixed_cost + total_vc
+        profit = total_revenue - total_cost
         
-        min_avc = param_a  # min AVC occurs as q -> 0 for quadratic VC
-        min_atc = param_a + 2 * np.sqrt(fixed_cost * param_b)
-        q_atc_min = np.sqrt(fixed_cost / param_b)
+        atc_per_unit = total_cost / units_produced
+        afc_per_unit = fixed_cost / units_produced
         
-        # Profit Maximization: P = MC = a + 2*b*q => q* = (P - a) / (2*b)
-        if price < min_avc:
-            q_opt = 0.0
-            status = "🛑 SHUT DOWN IMMEDIATELY (P < min AVC)"
+        # Decision Logic
+        if price < vc_per_unit:
+            status = "🛑 SHUT DOWN IMMEDIATELY"
+            reason = f"Price (${price:.2f}) is below Variable Cost per unit (${vc_per_unit:.2f}). Operating increases total loss."
             status_color = "#EF4444"
+            operating_loss = fixed_cost
         else:
-            q_opt = max(0.0, (price - param_a) / (2 * param_b))
-            if price > min_atc:
-                status = "🟢 OPERATING WITH ECONOMIC PROFIT (P > min ATC)"
+            if price >= atc_per_unit:
+                status = "🟢 OPERATING WITH ECONOMIC PROFIT"
+                reason = f"Price (${price:.2f}) covers total per-unit cost (${atc_per_unit:.2f})."
                 status_color = "#10B981"
-            elif abs(price - min_atc) < 1e-3:
-                status = "⚖️ BREAK-EVEN / LONG-RUN EQUILIBRIUM (P = min ATC)"
-                status_color = "#FBBF24"
             else:
-                status = "🟡 OPERATING AT LOSS IN SHORT RUN (min AVC <= P < min ATC)"
-                status_color = "#F59E0B"
+                status = "🟡 OPERATING AT SHORT-RUN LOSS"
+                reason = f"Price covers Variable Costs (${vc_per_unit:.2f}) and pays down part of Fixed Costs."
+                status_color = "#FBBF24"
                 
-        tr = price * q_opt
-        tc = fixed_cost + param_a * q_opt + param_b * (q_opt ** 2) if q_opt > 0 else fixed_cost
-        profit = tr - tc if q_opt > 0 else -fixed_cost
-        
     with sim_col2:
         st.markdown(f"""
         <div class="metric-card">
-            <h3>Optimal Output ($q^*$)</h3>
-            <div class="metric-value">{round(q_opt, 2)} Units</div>
-            <p style="color: {status_color}; font-weight: 600; font-size: 0.95rem;">{status}</p>
+            <h3>Decision State</h3>
+            <div class="metric-value" style="color: {status_color}; font-size: 1.4rem;">{status}</div>
+            <p style="color: #E2E8F0; font-size: 0.9rem; margin-top: 0.5rem;">{reason}</p>
         </div>
         """, unsafe_allow_html=True)
         
         metrics_df = pd.DataFrame([
-            {"Metric": "Market Price (P)", "Value": f"${round(price, 2)}"},
-            {"Metric": "Optimal Output (q*)", "Value": f"{round(q_opt, 2)} units"},
-            {"Metric": "Total Revenue (TR)", "Value": f"${round(tr, 2)}"},
-            {"Metric": "Total Cost (TC)", "Value": f"${round(tc, 2)}"},
-            {"Metric": "Economic Profit / Loss (π)", "Value": f"${round(profit, 2)}"},
-            {"Metric": "Break-Even Price (min ATC)", "Value": f"${round(min_atc, 2)} at q={round(q_atc_min, 2)}"},
-            {"Metric": "Shutdown Price Threshold (min AVC)", "Value": f"${round(min_avc, 2)}"}
+            {"Financial Metric": "Total Revenue (TR)", "Value": f"${total_revenue:,.2f}"},
+            {"Financial Metric": "Total Variable Cost (TVC)", "Value": f"${total_vc:,.2f}"},
+            {"Financial Metric": "Total Fixed Cost (TFC)", "Value": f"${fixed_cost:,.2f}"},
+            {"Financial Metric": "Total Cost (TC)", "Value": f"${total_cost:,.2f}"},
+            {"Financial Metric": "Net Economic Profit / (Loss)", "Value": f"${profit:,.2f}"},
+            {"Financial Metric": "Average Total Cost (ATC)", "Value": f"${atc_per_unit:,.2f} per unit"},
+            {"Financial Metric": "Average Variable Cost (AVC)", "Value": f"${vc_per_unit:,.2f} per unit"}
         ])
         
         st.dataframe(metrics_df, use_container_width=True)
@@ -400,7 +392,7 @@ elif nav_selection == "📝 Knowledge Check Deck":
             options=[
                 "A) Market Price falls below Average Total Cost (P < ATC)",
                 "B) Market Price falls below Average Variable Cost (P < AVC)",
-                "C) Total Profit becomes equal to zero (π = 0)",
+                "C) Total Profit becomes equal to zero",
                 "D) Marginal Cost is equal to Marginal Revenue (MC = MR)"
             ], index=None
         )
@@ -410,9 +402,9 @@ elif nav_selection == "📝 Knowledge Check Deck":
         q3 = st.radio(
             "In the long run, free entry and exit ensure that every firm in a competitive industry earns:",
             options=[
-                "A) Positive economic profit (π > 0)",
-                "B) Zero economic profit (P = min ATC)",
-                "C) Zero accounting profit",
+                "A) Positive economic profit",
+                "B) Zero economic profit (P = Minimum ATC)",
+                "C) Zero total revenue",
                 "D) Monopoly rents"
             ], index=None
         )
@@ -422,8 +414,8 @@ elif nav_selection == "📝 Knowledge Check Deck":
         q4 = st.radio(
             "Which pair of equations represents allocative and productive efficiency respectively in long-run competitive equilibrium?",
             options=[
-                "A) Allocative: P = MC ; Productive: P = min ATC",
-                "B) Allocative: P = min ATC ; Productive: P = MC",
+                "A) Allocative: P = MC ; Productive: P = Minimum ATC",
+                "B) Allocative: P = Minimum ATC ; Productive: P = MC",
                 "C) Allocative: MR = MC ; Productive: TR = TC",
                 "D) Allocative: P > MC ; Productive: P = AVC"
             ], index=None
@@ -442,11 +434,11 @@ elif nav_selection == "📝 Knowledge Check Deck":
                 score_acc += 25.0; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
                 
-            if q3 == "B) Zero economic profit (P = min ATC)":
+            if q3 == "B) Zero economic profit (P = Minimum ATC)":
                 score_acc += 25.0; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
 
-            if q4 == "A) Allocative: P = MC ; Productive: P = min ATC":
+            if q4 == "A) Allocative: P = MC ; Productive: P = Minimum ATC":
                 score_acc += 25.0; st.session_state.ans4_ok = True
             else: st.session_state.ans4_ok = False
                 
@@ -459,13 +451,13 @@ elif nav_selection == "📝 Knowledge Check Deck":
         st.markdown(f"### 🎉 Quiz Score: {round(st.session_state.knowledge_rating, 1)} / 100 Points")
         
         if not st.session_state.ans1_ok:
-            st.error("**Q1 Analysis:** An individual firm in perfect competition is a price taker, facing a horizontal (perfectly elastic) demand curve at $P^*$.")
+            st.error("**Q1 Analysis:** An individual firm in perfect competition is a price taker, facing a horizontal (perfectly elastic) demand curve at the market price.")
         if not st.session_state.ans2_ok:
-            st.error("**Q2 Analysis:** In the short run, if $P < AVC$, total revenue cannot cover variable costs, so shutting down minimizes loss to fixed costs.")
+            st.error("**Q2 Analysis:** In the short run, if P < AVC, total revenue cannot cover variable costs, so shutting down minimizes loss to fixed costs.")
         if not st.session_state.ans3_ok:
-            st.error("**Q3 Analysis:** Free entry/exit drives economic profit down to zero ($\pi = 0$) in the long run, where $P = \min ATC$.")
+            st.error("**Q3 Analysis:** Free entry/exit drives economic profit down to zero in the long run, where P = Minimum ATC.")
         if not st.session_state.ans4_ok:
-            st.error("**Q4 Analysis:** Allocative efficiency occurs where $P = MC$ (price equals marginal cost), and productive efficiency occurs where $P = \min ATC$.")
+            st.error("**Q4 Analysis:** Allocative efficiency occurs where P = MC (price equals marginal cost), and productive efficiency occurs where P = Minimum ATC.")
 
 # =====================================================================
 # SYSTEM FOOTER DATA TERMINAL
