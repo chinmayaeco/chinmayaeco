@@ -6,8 +6,8 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Perfect Competition Dynamics Engine",
-    page_icon="⚖️",
+    page_title="Monopoly Dynamics Engine",
+    page_icon="👑",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -26,7 +26,7 @@ def check_password():
 
     if "password_correct" not in st.session_state:
         st.markdown("<h1 style='text-align: center; color: #3B82F6;'>🔒 Operations Engine Security</h1>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Perfect Competition Engine.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center;'>Enter credential key to deploy the Monopoly Engine.</p>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1, 1.5, 1])
         with col2:
             st.text_input("Security Password", type="password", on_change=password_entered, key="password")
@@ -131,14 +131,14 @@ init_system_state()
 # SIDEBAR CONTROL DECK
 # =====================================================================
 with st.sidebar:
-    st.markdown("### ⚖️ Competition Hub")
+    st.markdown("### 👑 Monopoly Hub")
     nav_selection = st.radio(
         "Navigation Hub:",
         options=[
-            "📌 Market Foundations & Price Taking",
-            "⚡ Short-Run Equilibrium & Shutdown Rules",
-            "🔄 Long-Run Equilibrium & Industry Efficiency",
-            "🧮 Simple Firm Profit & Shutdown Simulator",
+            "📌 Market Foundations & Price Searching",
+            "⚡ Profit Maximization & Price Discrimination",
+            "🔄 Market Inefficiency & Deadweight Loss",
+            "🧮 Monopoly Profit & Pricing Power Simulator",
             "📝 Knowledge Check Deck"
         ]
     )
@@ -150,9 +150,9 @@ score_container = st.container()
 with score_container:
     st.markdown(f"""
     <div class="score-banner">
-        <h2>Perfect Competition Mastery Index: {round(st.session_state.knowledge_rating, 1)} / 100</h2>
+        <h2>Monopoly Mastery Index: {round(st.session_state.knowledge_rating, 1)} / 100</h2>
         <p style='color: #FBBF24; margin: 0.25rem 0 0 0;'>
-            📝 Competitive Dynamics Evaluation Active
+            📝 Monopolistic Market Dynamics Evaluation Active
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -161,19 +161,19 @@ with score_container:
 # INTERACTIVE ROUTING ARCHITECTURE
 # =====================================================================
 
-# --- SECTION 1: MARKET FOUNDATIONS & PRICE TAKING ---
-if nav_selection == "📌 Market Foundations & Price Taking":
-    st.markdown('<div class="section-header">📌 Foundations of Perfect Competition</div>', unsafe_allow_html=True)
+# --- SECTION 1: MARKET FOUNDATIONS & PRICE SEARCHING ---
+if nav_selection == "📌 Market Foundations & Price Searching":
+    st.markdown('<div class="section-header">📌 Foundations of Monopoly Power</div>', unsafe_allow_html=True)
     
     st.markdown(r"""
     <div class="concept-note">
-    <h3>🏛️ Core Assumptions of Perfect Competition</h3>
-    <p>A <strong>Perfectly Competitive Market</strong> is an idealized market structure where price is determined purely by aggregate market demand and market supply. Individual firms are <strong>price takers</strong> with zero market power.</p>
+    <h3>🏛️ Core Assumptions of Monopoly</h3>
+    <p>A <strong>Monopoly</strong> is a market structure characterized by a single seller of a unique product with no close substitutes. The single firm <strong>is</strong> the industry, granting it significant market power as a <strong>price maker</strong>.</p>
     <ul>
-        <li><strong>Many Buyers and Sellers:</strong> No single economic actor can influence the market price.</li>
-        <li><strong>Homogeneous Products:</strong> Goods offered by sellers are perfect substitutes.</li>
-        <li><strong>Free Entry and Exit:</strong> No barriers to entry or exit in the long run.</li>
-        <li><strong>Perfect Information:</strong> Buyers and sellers have full knowledge of prices, quality, and technology.</li>
+        <li><strong>Single Seller:</strong> A single firm controls 100% (or dominant majority) of the market supply.</li>
+        <li><strong>Unique Product:</strong> No close substitutes exist; consumers must accept the product or forgo it.</li>
+        <li><strong>High Barriers to Entry:</strong> Legal (patents/licenses), natural (economies of scale), or strategic barriers protect pure profits long-term.</li>
+        <li><strong>Imperfect Information / Trade Secrets:</strong> Proprietary production technologies or resource control prevent market duplication.</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
@@ -182,11 +182,11 @@ if nav_selection == "📌 Market Foundations & Price Taking":
     with col_found_a:
         st.markdown(r"""
         <div class="case-study">
-        <h4>🎯 The Firm as a Price Taker</h4>
-        <p>Because products are identical and sellers are small relative to the market, an individual firm faces a <strong>perfectly elastic horizontal demand curve</strong> at the prevailing market price ($P$).</p>
+        <h4>🎯 The Firm as a Price Maker</h4>
+        <p>Because the firm faces the <strong>entire market demand curve</strong> (downward-sloping), to sell a larger quantity ($Q$), it must lower its price ($P$) on <em>all</em> units sold (assuming single-price pricing).</p>
         <ul>
-            <li>If a firm charges $P > P_{\text{market}}$, demand falls to <strong>zero</strong>.</li>
-            <li>If a firm charges $P \le P_{\text{market}}$, it can sell all output it produces at the market price.</li>
+            <li>Demand curve is downward-sloping: $P = f(Q)$.</li>
+            <li>Marginal Revenue ($MR$) lies <strong>below</strong> Average Revenue ($AR = P$) for all $Q > 0$.</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
@@ -194,66 +194,66 @@ if nav_selection == "📌 Market Foundations & Price Taking":
     with col_found_b:
         st.markdown(r"""
         <div class="concept-note" style="border-left-color: #10B981;">
-        <h4 style="color: #34D399;">📊 Revenue Formulas for Price Takers</h4>
-        <p>When price ($P$) is fixed by the market:</p>
+        <h4 style="color: #34D399;">📊 Revenue Mechanics for Monopolists</h4>
+        <p>Assuming a linear demand function $P = a - bQ$:</p>
         <ul>
-            <li><strong>Total Revenue (TR):</strong> $TR = P \times Q$</li>
-            <li><strong>Average Revenue (AR):</strong> $AR = \frac{TR}{Q} = P$</li>
-            <li><strong>Marginal Revenue (MR):</strong> $MR = \frac{\Delta TR}{\Delta Q} = P$</li>
+            <li><strong>Total Revenue (TR):</strong> $TR = P \times Q = aQ - bQ^2$</li>
+            <li><strong>Average Revenue (AR):</strong> $AR = \frac{TR}{Q} = P = a - bQ$</li>
+            <li><strong>Marginal Revenue (MR):</strong> $MR = \frac{dTR}{dQ} = a - 2bQ$</li>
         </ul>
         </div>
         """, unsafe_allow_html=True)
         
-    st.markdown("#### 📐 Fundamental Identity of a Price-Taking Firm")
-    st.latex(r"P = AR = MR = \text{Individual Firm Demand } (d)")
+    st.markdown("#### 📐 Fundamental Inequality of a Monopoly")
+    st.latex(r"P = AR > MR \quad \text{for all } Q > 0")
 
-# --- SECTION 2: SHORT-RUN EQUILIBRIUM & SHUTDOWN RULES ---
-elif nav_selection == "⚡ Short-Run Equilibrium & Shutdown Rules":
-    st.markdown('<div class="section-header">⚡ Short-Run Profit Maximization & Shutdown Rules</div>', unsafe_allow_html=True)
+# --- SECTION 2: PROFIT MAXIMIZATION & PRICE DISCRIMINATION ---
+elif nav_selection == "⚡ Profit Maximization & Price Discrimination":
+    st.markdown('<div class="section-header">⚡ Profit Maximization & Price Discrimination</div>', unsafe_allow_html=True)
     
     st.markdown(r"""
     <div class="concept-note">
-    <h3>⚙️ Profit Maximization Condition</h3>
-    <p>In the short run, fixed costs exist and cannot be avoided immediately. The firm maximizes profit by producing the quantity ($Q$) where <strong>Price equals Marginal Cost ($P = MC$)</strong>.</p>
+    <h3>⚙️ Profit Maximization Mechanism</h3>
+    <p>A profit-maximizing monopolist sets production where <strong>Marginal Revenue equals Marginal Cost ($MR = MC$)</strong> to find optimal output $Q^*$, then projects up to the <strong>Demand curve</strong> to set optimal price $P^*$.</p>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("#### 📐 Profit Maximization Rule")
-    st.latex(r"MR = MC \implies P = MC")
+    st.markdown("#### 📐 Profit Maximization and Markup Rule")
+    st.latex(r"MR = MC \implies P^* \left(1 - \frac{1}{|E_d|}\right) = MC")
     
     col_sr_1, col_sr_2 = st.columns(2)
     with col_sr_1:
         st.markdown(r"""
         <div class="case-study">
-        <h4>📈 Short-Run Profitability States</h4>
-        <ul>
-            <li><strong>Economic Profit ($\text{Profit} > 0$):</strong> $P > ATC$</li>
-            <li><strong>Break-Even ($\text{Profit} = 0$):</strong> $P = ATC$</li>
-            <li><strong>Operating Loss ($\text{Profit} < 0$):</strong> $AVC \le P < ATC$ (Operating covers variable costs and partial fixed costs)</li>
-        </ul>
+        <h4>📈 Lerner Index of Monopoly Power</h4>
+        <p>The degree of market power is quantified by the firm's ability to charge a markup over marginal cost:</p>
+        <p style="text-align: center; font-weight: bold; font-size: 1.1rem; color: #F59E0B;">
+            $L = \frac{P - MC}{P} = \frac{1}{|E_d|}$
+        </p>
+        <p>Higher price inelasticity of demand ($|E_d| \to 0$) yields greater markup potential.</p>
         </div>
         """, unsafe_allow_html=True)
         
     with col_sr_2:
         st.markdown(r"""
-        <div class="concept-note" style="border-left-color: #EF4444;">
-        <h4 style="color: #F87171;">🛑 Short-Run Shutdown Rule</h4>
-        <p>A firm will <strong>shut down operations immediately</strong> ($Q = 0$) if total revenue cannot even cover variable costs:</p>
-        <p style="text-align: center; font-weight: bold; font-size: 1.1rem; color: #F87171;">
-            $P < AVC$
-        </p>
-        <p>If $P \ge AVC$, the firm continues operating in the short run to minimize total losses.</p>
+        <div class="concept-note" style="border-left-color: #8B5CF6;">
+        <h4 style="color: #A78BFA;">🎯 Degrees of Price Discrimination</h4>
+        <ul>
+            <li><strong>1st Degree (Perfect):</strong> Charges each consumer their exact willingness to pay. Captures 100% of consumer surplus ($MR = P$).</li>
+            <li><strong>2nd Degree (Quantity Block):</strong> Charges different rates depending on volume/quantity consumed.</li>
+            <li><strong>3rd Degree (Segmented):</strong> Segments markets by elasticity ($MR_1 = MR_2 = MC$).</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
 
-# --- SECTION 3: LONG-RUN EQUILIBRIUM & INDUSTRY EFFICIENCY ---
-elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
-    st.markdown('<div class="section-header">🔄 Long-Run Dynamics & Economic Efficiency</div>', unsafe_allow_html=True)
+# --- SECTION 3: MARKET INEFFICIENCY & DEADWEIGHT LOSS ---
+elif nav_selection == "🔄 Market Inefficiency & Deadweight Loss":
+    st.markdown('<div class="section-header">🔄 Social Cost of Monopoly & Inefficiency</div>', unsafe_allow_html=True)
     
     st.markdown(r"""
     <div class="concept-note">
-    <h3>🔄 Free Entry and Exit Dynamics</h3>
-    <p>In the long run, all costs are variable. Free entry and exit push the market price to the minimum point of Average Total Cost ($ATC$), eliminating all positive or negative economic profits across the industry.</p>
+    <h3>📉 Deadweight Loss & Economic Welfare</h3>
+    <p>Because a single-price monopolist restricts output ($Q_m < Q_c$) and charges a higher price ($P_m > P_c$), price exceeds marginal cost ($P > MC$). This creates a structural loss in total social surplus known as <strong>Deadweight Loss (DWL)</strong>.</p>
     </div>
     """, unsafe_allow_html=True)
     
@@ -261,92 +261,98 @@ elif nav_selection == "🔄 Long-Run Equilibrium & Industry Efficiency":
     with col_lr_1:
         st.markdown(r"""
         <div class="case-study">
-        <h4>➡️ Short-Run Profit $\implies$ Entry</h4>
-        <p>When $P > ATC$:</p>
-        <ol>
-            <li>Firms earn positive economic profit.</li>
-            <li>New firms enter the market.</li>
-            <li>Market supply increases, pushing price down.</li>
-            <li>Price falls until $P = \text{Minimum } ATC$ ($\text{Profit} = 0$).</li>
-        </ol>
+        <h4>⚖️ Competitive vs. Monopoly Equilibrium</h4>
+        <ul>
+            <li><strong>Perfect Competition:</strong> $P_c = MC$, maximizing Total Social Surplus.</li>
+            <li><strong>Monopoly:</strong> Restricts output to $Q_m$ where $MR = MC$, setting price $P_m > MC$.</li>
+            <li><strong>Welfare Transfer:</strong> Consumer surplus is partially converted into producer surplus (monopoly profit) and partially destroyed as DWL.</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
         
     with col_lr_2:
         st.markdown(r"""
         <div class="concept-note" style="border-left-color: #EF4444;">
-        <h4 style="color: #F87171;">⬅️ Short-Run Loss $\implies$ Exit</h4>
-        <p>When $P < ATC$:</p>
-        <ol>
-            <li>Firms incur economic losses.</li>
-            <li>Existing firms exit the market.</li>
-            <li>Market supply decreases, pushing price up.</li>
-            <li>Price rises until $P = \text{Minimum } ATC$ ($\text{Profit} = 0$).</li>
-        </ol>
+        <h4 style="color: #F87171;">🏛️ Natural Monopoly & Regulation</h4>
+        <p>When long-run average costs ($LRATC$) continuously decline over market demand due to massive economies of scale, a single firm operates most efficiently.</p>
+        <ul>
+            <li><strong>Unregulated:</strong> Sets $MR = MC$, earns high profits, creates DWL.</li>
+            <li><strong>Marginal Cost Pricing ($P = MC$):</strong> Efficient output, but firm requires government subsidies (operates at a loss).</li>
+            <li><strong>Average Cost Pricing ($P = ATC$):</strong> Zero economic profit, covers costs without subsidies.</li>
+        </ul>
         </div>
         """, unsafe_allow_html=True)
         
     st.markdown("---")
-    st.markdown("#### 🏛️ Economic Efficiency Benchmarks")
-    st.latex(r"P = MC = \text{Minimum } ATC")
+    st.markdown("#### 🏛️ Structural Inefficiency Metrics")
+    st.latex(r"P > MC \implies \text{Allocatively Inefficient} \quad \text{and} \quad P > \text{Minimum } ATC \implies \text{Productively Inefficient}")
     
     eff_c1, eff_c2 = st.columns(2)
     with eff_c1:
         st.markdown("""
         <div class="metric-card">
-            <h3>🎯 Allocative Efficiency</h3>
-            <div class="metric-value">P = MC</div>
-            <p style="color: #94A3B8; font-size: 0.85rem;">Price equals marginal cost. Consumers pay exactly what it costs to produce the last unit, eliminating deadweight loss.</p>
+            <h3>❌ Allocative Inefficiency</h3>
+            <div class="metric-value">P > MC</div>
+            <p style="color: #94A3B8; font-size: 0.85rem;">Price exceeds the marginal cost of production, underallocating resources to the good and causing deadweight loss.</p>
         </div>
         """, unsafe_allow_html=True)
         
     with eff_c2:
         st.markdown("""
         <div class="metric-card">
-            <h3>⚙️ Productive Efficiency</h3>
-            <div class="metric-value">P = Minimum ATC</div>
-            <p style="color: #94A3B8; font-size: 0.85rem;">Goods are produced at the lowest possible per-unit cost in the long run.</p>
+            <h3>❌ Productive Inefficiency</h3>
+            <div class="metric-value">P > Minimum ATC</div>
+            <p style="color: #94A3B8; font-size: 0.85rem;">Output is not produced at the absolute minimum point of the Average Total Cost curve, wasting productive capacity.</p>
         </div>
         """, unsafe_allow_html=True)
 
-# --- SECTION 4: SIMPLE FIRM PROFIT & SHUTDOWN SIMULATOR ---
-elif nav_selection == "🧮 Simple Firm Profit & Shutdown Simulator":
-    st.markdown('<div class="section-header">🧮 Simple Firm Profit & Shutdown Simulator</div>', unsafe_allow_html=True)
-    st.markdown("Analyze short-run firm decisions using a linear cost model without complex calculus.")
+# --- SECTION 4: MONOPOLY PROFIT & PRICING POWER SIMULATOR ---
+elif nav_selection == "🧮 Monopoly Profit & Pricing Power Simulator":
+    st.markdown('<div class="section-header">🧮 Monopoly Profit & Pricing Power Simulator</div>', unsafe_allow_html=True)
+    st.markdown("Simulate linear monopoly optimization using demand curve ($P = a - bQ$) and constant marginal cost assumptions.")
     
     sim_col1, sim_col2 = st.columns([1, 1.2])
     
     with sim_col1:
-        price = st.number_input("Market Price per Unit ($P$):", min_value=1.0, max_value=200.0, value=50.0, step=5.0)
-        units_produced = st.number_input("Target Units Produced ($Q$):", min_value=1, max_value=1000, value=100, step=10)
-        fixed_cost = st.number_input("Total Fixed Cost ($TFC$):", min_value=0.0, max_value=5000.0, value=1500.0, step=100.0)
-        vc_per_unit = st.number_input("Variable Cost per Unit ($AVC$):", min_value=1.0, max_value=150.0, value=35.0, step=5.0)
+        intercept_a = st.number_input("Demand Price Intercept ($a$):", min_value=10.0, max_value=500.0, value=100.0, step=10.0)
+        slope_b = st.number_input("Demand Slope Parameter ($b$):", min_value=0.1, max_value=10.0, value=0.5, step=0.1)
+        fixed_cost = st.number_input("Total Fixed Cost ($TFC$):", min_value=0.0, max_value=5000.0, value=1000.0, step=100.0)
+        marginal_cost = st.number_input("Constant Marginal Cost ($MC$):", min_value=1.0, max_value=200.0, value=20.0, step=5.0)
         
-        # Linear Calculations
-        total_revenue = price * units_produced
-        total_vc = vc_per_unit * units_produced
-        total_cost = fixed_cost + total_vc
-        profit = total_revenue - total_cost
-        
-        atc_per_unit = total_cost / units_produced
-        afc_per_unit = fixed_cost / units_produced
-        
-        # Decision Logic
-        if price < vc_per_unit:
-            status = "🛑 SHUT DOWN IMMEDIATELY"
-            reason = f"Price (${price:.2f}) is below Variable Cost per unit (${vc_per_unit:.2f}). Operating increases total loss."
-            status_color = "#EF4444"
-            operating_loss = fixed_cost
+        # Linear Monopolist Calculations
+        # Demand: P = a - b*Q
+        # TR = a*Q - b*Q^2 -> MR = a - 2*b*Q
+        # Profit Max: MR = MC -> a - 2*b*Q = MC -> Q_m = (a - MC) / (2*b)
+        if intercept_a > marginal_cost:
+            q_monopoly = (intercept_a - marginal_cost) / (2 * slope_b)
+            p_monopoly = intercept_a - (slope_b * q_monopoly)
+            
+            # Competitive benchmark
+            q_comp = (intercept_a - marginal_cost) / slope_b
+            p_comp = marginal_cost
+            
+            total_revenue = p_monopoly * q_monopoly
+            total_vc = marginal_cost * q_monopoly
+            total_cost = fixed_cost + total_vc
+            profit = total_revenue - total_cost
+            
+            # Deadweight Loss = 0.5 * (P_m - MC) * (Q_c - Q_m)
+            dwl = 0.5 * (p_monopoly - marginal_cost) * (q_comp - q_monopoly)
+            lerner_index = (p_monopoly - marginal_cost) / p_monopoly
+            
+            status = "👑 MONOPOLY OPTIMUM REACHED"
+            reason = f"Restricting output to Q={q_monopoly:.1f} maximizes monopoly profit while charging P=${p_monopoly:.2f}."
+            status_color = "#10B981"
         else:
-            if price >= atc_per_unit:
-                status = "🟢 OPERATING WITH ECONOMIC PROFIT"
-                reason = f"Price (${price:.2f}) covers total per-unit cost (${atc_per_unit:.2f})."
-                status_color = "#10B981"
-            else:
-                status = "🟡 OPERATING AT SHORT-RUN LOSS"
-                reason = f"Price covers Variable Costs (${vc_per_unit:.2f}) and pays down part of Fixed Costs."
-                status_color = "#FBBF24"
-                
+            q_monopoly = 0.0
+            p_monopoly = 0.0
+            profit = -fixed_cost
+            dwl = 0.0
+            lerner_index = 0.0
+            status = "🛑 SHUTDOWN / UNFEASIBLE"
+            reason = "Marginal cost exceeds maximum willingness to pay (Intercept a)."
+            status_color = "#EF4444"
+            
     with sim_col2:
         st.markdown(f"""
         <div class="metric-card">
@@ -357,67 +363,68 @@ elif nav_selection == "🧮 Simple Firm Profit & Shutdown Simulator":
         """, unsafe_allow_html=True)
         
         metrics_df = pd.DataFrame([
-            {"Financial Metric": "Total Revenue (TR)", "Value": f"${total_revenue:,.2f}"},
-            {"Financial Metric": "Total Variable Cost (TVC)", "Value": f"${total_vc:,.2f}"},
-            {"Financial Metric": "Total Fixed Cost (TFC)", "Value": f"${fixed_cost:,.2f}"},
-            {"Financial Metric": "Total Cost (TC)", "Value": f"${total_cost:,.2f}"},
-            {"Financial Metric": "Net Economic Profit / (Loss)", "Value": f"${profit:,.2f}"},
-            {"Financial Metric": "Average Total Cost (ATC)", "Value": f"${atc_per_unit:,.2f} per unit"},
-            {"Financial Metric": "Average Variable Cost (AVC)", "Value": f"${vc_per_unit:,.2f} per unit"}
+            {"Monopoly Metric": "Optimal Output Quantity (Q_m)", "Value": f"{q_monopoly:,.2f} units"},
+            {"Monopoly Metric": "Optimal Market Price (P_m)", "Value": f"${p_monopoly:,.2f}"},
+            {"Monopoly Metric": "Competitive Benchmark Quantity (Q_c)", "Value": f"{q_comp:,.2f} units" if intercept_a > marginal_cost else "0.00"},
+            {"Monopoly Metric": "Total Revenue (TR)", "Value": f"${total_revenue:,.2f}" if intercept_a > marginal_cost else "$0.00"},
+            {"Monopoly Metric": "Total Cost (TC)", "Value": f"${total_cost:,.2f}" if intercept_a > marginal_cost else f"${fixed_cost:,.2f}"},
+            {"Monopoly Metric": "Net Economic Profit", "Value": f"${profit:,.2f}"},
+            {"Monopoly Metric": "Deadweight Loss (DWL)", "Value": f"${dwl:,.2f}"},
+            {"Monopoly Metric": "Lerner Power Index (L)", "Value": f"{lerner_index:.3f}"}
         ])
         
         st.dataframe(metrics_df, use_container_width=True)
 
 # --- SECTION 5: KNOWLEDGE CHECK DECK ---
 elif nav_selection == "📝 Knowledge Check Deck":
-    st.markdown('<div class="section-header">📝 Perfect Competition Knowledge Evaluation</div>', unsafe_allow_html=True)
-    st.markdown("Test your economic knowledge of market structures, short-run profit rules, and long-run adjustments.")
+    st.markdown('<div class="section-header">📝 Monopoly Structure Evaluation</div>', unsafe_allow_html=True)
+    st.markdown("Test your economic knowledge of market power, revenue curves, deadweight loss, and price discrimination.")
     
     with st.form("competition_quiz"):
-        st.markdown("### 1. Demand Curve Faced by a Price Taker")
+        st.markdown("### 1. Marginal Revenue of a Single-Price Monopolist")
         q1 = st.radio(
-            "What is the elasticity of the demand curve faced by an individual firm in a perfectly competitive market?",
+            "Why is marginal revenue (MR) strictly less than price (P) for a single-price monopolist?",
             options=[
-                "A) Perfectly Inelastic (Vertical)",
-                "B) Unit Elastic",
-                "C) Perfectly Elastic (Horizontal at market price)",
-                "D) Downward Sloping with finite price elasticity"
+                "A) Because marginal cost is always falling",
+                "B) To sell an additional unit, the firm must lower price on all preceding units",
+                "C) Monopolists are price takers bound by market equilibrium",
+                "D) Demand is perfectly elastic in monopoly markets"
             ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 2. Short-Run Shutdown Decision")
+        st.markdown("### 2. Profit Maximization Rule")
         q2 = st.radio(
-            "Under what condition should a competitive firm shut down immediately in the short run?",
+            "How does a monopolist determine its optimal price after finding MR = MC?",
             options=[
-                "A) Market Price falls below Average Total Cost (P < ATC)",
-                "B) Market Price falls below Average Variable Cost (P < AVC)",
-                "C) Total Profit becomes equal to zero",
-                "D) Marginal Cost is equal to Marginal Revenue (MC = MR)"
+                "A) Charges a price equal to Marginal Cost (P = MC)",
+                "B) Charges a price equal to Minimum Average Total Cost",
+                "C) Projects the optimal quantity up to the Demand Curve",
+                "D) Charges the highest possible price regardless of demand"
             ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 3. Long-Run Competitive Equilibrium")
+        st.markdown("### 3. Economic Efficiency & Social Surplus")
         q3 = st.radio(
-            "In the long run, free entry and exit ensure that every firm in a competitive industry earns:",
+            "Compared to a perfectly competitive market, an unregulated single-price monopoly results in:",
             options=[
-                "A) Positive economic profit",
-                "B) Zero economic profit (P = Minimum ATC)",
-                "C) Zero total revenue",
-                "D) Monopoly rents"
+                "A) Higher output, lower price, and zero deadweight loss",
+                "B) Lower output, higher price, and positive deadweight loss",
+                "C) Maximum allocative efficiency where P = MC",
+                "D) Total conversion of producer surplus into consumer surplus"
             ], index=None
         )
         
         st.markdown("---")
-        st.markdown("### 4. Economic Efficiency Conditions")
+        st.markdown("### 4. Perfect (1st Degree) Price Discrimination")
         q4 = st.radio(
-            "Which pair of equations represents allocative and productive efficiency respectively in long-run competitive equilibrium?",
+            "If a monopolist successfully engages in First-Degree (Perfect) Price Discrimination:",
             options=[
-                "A) Allocative: P = MC ; Productive: P = Minimum ATC",
-                "B) Allocative: P = Minimum ATC ; Productive: P = MC",
-                "C) Allocative: MR = MC ; Productive: TR = TC",
-                "D) Allocative: P > MC ; Productive: P = AVC"
+                "A) Deadweight loss increases to its maximum possible level",
+                "B) Consumer surplus is zero, and output equals the competitive level (P = MC)",
+                "C) Marginal revenue remains below price for all units",
+                "D) Total profits are reduced to zero"
             ], index=None
         )
         
@@ -426,19 +433,19 @@ elif nav_selection == "📝 Knowledge Check Deck":
         if eval_quiz:
             score_acc = 0.0
             
-            if q1 == "C) Perfectly Elastic (Horizontal at market price)":
+            if q1 == "B) To sell an additional unit, the firm must lower price on all preceding units":
                 score_acc += 25.0; st.session_state.ans1_ok = True
             else: st.session_state.ans1_ok = False
                 
-            if q2 == "B) Market Price falls below Average Variable Cost (P < AVC)":
+            if q2 == "C) Projects the optimal quantity up to the Demand Curve":
                 score_acc += 25.0; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
                 
-            if q3 == "B) Zero economic profit (P = Minimum ATC)":
+            if q3 == "B) Lower output, higher price, and positive deadweight loss":
                 score_acc += 25.0; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
 
-            if q4 == "A) Allocative: P = MC ; Productive: P = Minimum ATC":
+            if q4 == "B) Consumer surplus is zero, and output equals the competitive level (P = MC)":
                 score_acc += 25.0; st.session_state.ans4_ok = True
             else: st.session_state.ans4_ok = False
                 
@@ -451,13 +458,13 @@ elif nav_selection == "📝 Knowledge Check Deck":
         st.markdown(f"### 🎉 Quiz Score: {round(st.session_state.knowledge_rating, 1)} / 100 Points")
         
         if not st.session_state.ans1_ok:
-            st.error("**Q1 Analysis:** An individual firm in perfect competition is a price taker, facing a horizontal (perfectly elastic) demand curve at the market price.")
+            st.error("**Q1 Analysis:** Price must be cut on all previous units to increase sales volume under single pricing, making MR < P.")
         if not st.session_state.ans2_ok:
-            st.error("**Q2 Analysis:** In the short run, if P < AVC, total revenue cannot cover variable costs, so shutting down minimizes loss to fixed costs.")
+            st.error("**Q2 Analysis:** The monopolist uses MR = MC to determine optimal quantity Q*, then sets price using consumers' willingness to pay on the Demand curve.")
         if not st.session_state.ans3_ok:
-            st.error("**Q3 Analysis:** Free entry/exit drives economic profit down to zero in the long run, where P = Minimum ATC.")
+            st.error("**Q3 Analysis:** Monopolies restrict supply and inflate price relative to competitive markets, creating allocative inefficiency and deadweight loss.")
         if not st.session_state.ans4_ok:
-            st.error("**Q4 Analysis:** Allocative efficiency occurs where P = MC (price equals marginal cost), and productive efficiency occurs where P = Minimum ATC.")
+            st.error("**Q4 Analysis:** Perfect price discrimination eliminates consumer surplus and converts it to producer surplus while driving output up to the efficient level where MR = P = MC.")
 
 # =====================================================================
 # SYSTEM FOOTER DATA TERMINAL
@@ -466,10 +473,10 @@ st.markdown("---")
 foot_c1, foot_c2, foot_c3 = st.columns(3)
 
 with foot_c1:
-    st.caption("🎓 Perfectly Competitive Market Dynamics Engine")
+    st.caption("🎓 Monopoly Market Dynamics Engine")
 
 with foot_c2:
-    st.caption("🚀 Microeconomics & Operations Strategy Module")
+    st.caption("🚀 Microeconomics & Strategic Pricing Module")
 
 with foot_c3:
     st.caption(f"⏰ System Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
