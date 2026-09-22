@@ -195,16 +195,14 @@ init_system_state()
 # SIDEBAR CONTROL NAVIGATION
 # =====================================================================
 with st.sidebar:
-    st.markdown("### 🌐 Macroeconomic Portal")
+    st.markdown("### 🌐 Aggregates & Output Portal")
     nav_selection = st.radio(
         "Navigation Module:",
         options=[
-            "📌 National Output Foundations (GDP & Methods)",
-            "⚖️ The Conversion Nexus: Gross/Net, Dom/Nat, FC/MP",
-            "📉 GDP Deflator & Inflation Mechanics",
-            "📅 Base Year Selection Architecture",
-            "🧮 Macroeconomic Aggregates Simulator",
-            "📝 Macroeconomic Accounting Knowledge Deck"
+            "⚖️ Core Macroeconomic Aggregates (NDP, GNP, NNP)",
+            "🔀 Aggregate Bridge & Identities Matrix",
+            "🧮 Aggregate Derivation Engine & Visualizer",
+            "📝 Aggregate Mastery Assessment"
         ]
     )
 
@@ -215,9 +213,9 @@ score_container = st.container()
 with score_container:
     st.markdown(f"""
     <div class="score-banner">
-        <h2>National Income Accounting Mastery: {round(st.session_state.knowledge_rating, 1)} / 100</h2>
+        <h2>National Aggregates Accounting Mastery: {round(st.session_state.knowledge_rating, 1)} / 100</h2>
         <p style='color: #FCD34D; margin: 0.25rem 0 0 0;'>
-            🌐 Gross Domestic Product, Deflator Dynamics, Factor Cost Conversions & Base-Year Architecture
+            🌐 Gross vs Net (Depreciation) | Domestic vs National (NFIA) | Market Price vs Factor Cost (NIT)
         </p>
     </div>
     """, unsafe_allow_html=True)
@@ -226,64 +224,124 @@ with score_container:
 # INTERACTIVE MODULES
 # =====================================================================
 
-# --- MODULE 1: GDP FOUNDATIONS ---
-if nav_selection == "📌 National Output Foundations (GDP & Methods)":
-    st.markdown('<div class="section-header">📌 Gross Domestic Product & Measurement Approaches</div>', unsafe_allow_html=True)
+# --- MODULE 1: CORE AGGREGATES BREAKDOWN ---
+if nav_selection == "⚖️ Core Macroeconomic Aggregates (NDP, GNP, NNP)":
+    st.markdown('<div class="section-header">⚖️ Core National Aggregates: NDP, GNP, NNP & National Income</div>', unsafe_allow_html=True)
     
     st.markdown("""
     <div class="concept-note">
-    <h3>🌐 Defining Gross Domestic Product (GDP)</h3>
-    <p>Gross Domestic Product represents the total monetary value of all final goods and services produced within the territorial borders of a country over a defined duration (typically one fiscal year or quarter), before deductions for capital depreciation.</p>
-    <ul>
-        <li><strong>Final vs. Intermediate Output:</strong> Only goods at the endpoint of the production pipeline are incorporated to avoid catastrophic double-counting.</li>
-        <li><strong>Geographic Boundary:</strong> Includes all domestic production regardless of whether produced by domestic citizens or foreign multinational entities.</li>
-        <li><strong>Current Flow:</strong> Measures current production flows exclusively; pre-owned second-hand asset transfers and purely financial portfolio transactions are strictly excluded.</li>
-    </ul>
+        <h3>🌐 Deconstructing the Macroeconomic Ladder</h3>
+        <p>National income accounting derives primary economic indicators using three fundamental dualities:</p>
+        <ul>
+            <li><strong>Gross vs. Net:</strong> Mediated by <code>Depreciation</code> (Consumption of Fixed Capital).</li>
+            <li><strong>Domestic vs. National:</strong> Mediated by <code>NFIA</code> (Net Factor Income from Abroad).</li>
+            <li><strong>Market Price vs. Factor Cost:</strong> Mediated by <code>NIT</code> (Net Indirect Taxes = Indirect Taxes - Subsidies).</li>
+        </ul>
     </div>
     """, unsafe_allow_html=True)
 
-    col_a, col_b = st.columns(2)
-    with col_a:
+    # 1. NET DOMESTIC PRODUCT (NDP)
+    st.markdown("### 1. Net Domestic Product (NDP)")
+    ndp_col1, ndp_col2 = st.columns(2)
+
+    with ndp_col1:
         st.markdown("""
         <div class="case-study">
-        <h4>📦 The Expenditure Method</h4>
-        <p>Measures aggregate end-user expenditure across economic agents:</p>
-        <div class="formula-badge">GDP = C + I + G + (X - M)</div>
-        <ul>
-            <li><strong>C (Private Consumption):</strong> Household spending on durable goods, nondurables, and services.</li>
-            <li><strong>I (Gross Investment):</strong> Capital assets, infrastructure, and inventory accumulations.</li>
-            <li><strong>G (Government Spending):</strong> Public consumption and capital infrastructure spending.</li>
-            <li><strong>X - M (Net Exports):</strong> Domestic goods demanded abroad minus domestic demand for foreign imports.</li>
-        </ul>
+            <h4>📦 NDP at Market Price (NDP_MP)</h4>
+            <p>The net economic output produced strictly within national geographical borders after deducting capital consumption.</p>
+            <div class="formula-badge">NDP_MP = GDP_MP - Depreciation</div>
+            <ul>
+                <li><strong>Significance:</strong> Represents sustainable domestic production. Producing output while depleting physical assets without replacement erodes the capital base.</li>
+                <li><strong>Measurement:</strong> Depreciation is an accounting estimate, making NDP subject to differing national calculation standards.</li>
+            </ul>
         </div>
         """, unsafe_allow_html=True)
 
-    with col_b:
+    with ndp_col2:
         st.markdown("""
         <div class="concept-note" style="border-left-color: #10B981;">
-        <h4 style="color: #34D399;">💼 The Income & Value Added Methods</h4>
-        <p><strong>1. Income Method:</strong> Evaluates earnings distributed to primary production factors:</p>
-        <div class="formula-badge">GDP = Wages + Rent + Interest + Corporate Profits + Depreciation + Net Indirect Taxes</div>
-        <p><strong>2. Production (Value Added) Method:</strong> Sums value generated across industry links to negate cascading intermediate costs:</p>
-        <div class="formula-badge">Gross Value Added (GVA) = Gross Value of Output - Value of Intermediate Inputs</div>
+            <h4 style="color: #34D399;">💼 NDP at Factor Cost (NDP_FC)</h4>
+            <p>Commonly referred to as <strong>Domestic Factor Income</strong>. It measures the net return to domestic production factors within territorial borders.</p>
+            <div class="formula-badge">NDP_FC = NDP_MP - Net Indirect Taxes (NIT)</div>
+            <p><strong>Factor Component Equation:</strong></p>
+            <div class="formula-badge">NDP_FC = Compensation of Employees + Operating Surplus + Mixed Income</div>
         </div>
         """, unsafe_allow_html=True)
 
-# --- MODULE 2: AGGREGATE BRIDGE ---
-elif nav_selection == "⚖️ The Conversion Nexus: Gross/Net, Dom/Nat, FC/MP":
-    st.markdown('<div class="section-header">⚖️ The Three Fundamental Conceptual Bridges</div>', unsafe_allow_html=True)
+    # 2. GROSS NATIONAL PRODUCT (GNP)
+    st.markdown("### 2. Gross National Product (GNP)")
+    gnp_col1, gnp_col2 = st.columns(2)
 
-    st.markdown("""
-    National income accounting evaluates identical production totals through three structural translation axes:
-    """)
+    with gnp_col1:
+        st.markdown("""
+        <div class="case-study">
+            <h4>🌍 GNP at Market Price (GNP_MP)</h4>
+            <p>The total market value of all final production owned and generated by legal residents of an economy, irrespective of geography.</p>
+            <div class="formula-badge">GNP_MP = GDP_MP + NFIA</div>
+            <ul>
+                <li><strong>Factor Inflow (+):</strong> Compensation, investment returns, and profits earned by national residents and firms abroad.</li>
+                <li><strong>Factor Outflow (-):</strong> Income repatriated out of the economy by foreign workers and foreign capital.</li>
+                <li><strong>Comparative Rule:</strong> If foreign factor income outflows exceed domestic resident inflows abroad, <code>GDP &gt; GNP</code>.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with gnp_col2:
+        st.markdown("""
+        <div class="concept-note" style="border-left-color: #38BDF8;">
+            <h4 style="color: #38BDF8;">🏭 GNP at Factor Cost (GNP_FC)</h4>
+            <p>The total gross earnings received by normal residents before accounting for capital wear and tear, calculated at factor costs.</p>
+            <div class="formula-badge">GNP_FC = GNP_MP - Net Indirect Taxes (NIT)</div>
+            <div class="formula-badge">GNP_FC = GDP_FC + NFIA</div>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #94A3B8;">
+                Provides an assessment of the gross purchasing power and production claim generated by citizens before product tax distortion.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # 3. NET NATIONAL PRODUCT (NNP) & NATIONAL INCOME
+    st.markdown("### 3. Net National Product (NNP) & Pure National Income")
+    nnp_col1, nnp_col2 = st.columns(2)
+
+    with nnp_col1:
+        st.markdown("""
+        <div class="case-study">
+            <h4>🏷️ NNP at Market Price (NNP_MP)</h4>
+            <p>The net market value of final commodities produced by normal residents of an economy.</p>
+            <div class="formula-badge">NNP_MP = GNP_MP - Depreciation</div>
+            <div class="formula-badge">NNP_MP = NDP_MP + NFIA</div>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #94A3B8;">
+                Indicates the net quantity of goods and services available for consumption and net capital addition at current retail price levels.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with nnp_col2:
+        st.markdown("""
+        <div class="concept-note" style="border-left-color: #F59E0B;">
+            <h4 style="color: #FCD34D;">👑 NNP at Factor Cost (NNP_FC) — "National Income"</h4>
+            <p>The exact theoretical and technical definition of <strong>National Income (NI)</strong>.</p>
+            <div class="formula-badge">National Income (NI) = NNP_MP - Net Indirect Taxes</div>
+            <div class="formula-badge">National Income (NI) = NDP_FC + NFIA</div>
+            <ul>
+                <li>Excludes capital consumption allowance (depreciation).</li>
+                <li>Excludes production income earned by non-residents within domestic boundaries.</li>
+                <li>Excludes indirect sales/service taxes and adds back production subsidies.</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+
+# --- MODULE 2: AGGREGATE BRIDGE & IDENTITIES MATRIX ---
+elif nav_selection == "🔀 Aggregate Bridge & Identities Matrix":
+    st.markdown('<div class="section-header">🔀 Structural Conversion Nexus & Identities Matrix</div>', unsafe_allow_html=True)
 
     b1, b2, b3 = st.columns(3)
     with b1:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #38BDF8;">1. Gross vs. Net</h3>
+            <h3 style="color: #38BDF8;">Gross ⟷ Net</h3>
             <p style="color: #FCD34D; font-weight: 700; font-size: 1.1rem; margin: 0.6rem 0;">Depreciation Pivot</p>
-            <p style="font-size: 0.88rem; color: #94A3B8;">Deducts capital consumption from wear, tear, and technological obsolescence.</p>
+            <p style="font-size: 0.88rem; color: #94A3B8;">Accounts for the loss of value of capital goods through physical wear, tear, or obsolescence.</p>
             <div class="formula-badge" style="font-size: 0.85rem;">Net = Gross - Depreciation</div>
         </div>
         """, unsafe_allow_html=True)
@@ -291,9 +349,9 @@ elif nav_selection == "⚖️ The Conversion Nexus: Gross/Net, Dom/Nat, FC/MP":
     with b2:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #38BDF8;">2. Domestic vs. National</h3>
+            <h3 style="color: #38BDF8;">Domestic ⟷ National</h3>
             <p style="color: #FCD34D; font-weight: 700; font-size: 1.1rem; margin: 0.6rem 0;">NFIA Pivot</p>
-            <p style="font-size: 0.88rem; color: #94A3B8;">Adjusts for earnings of national citizens abroad minus foreigners inside domestic borders.</p>
+            <p style="font-size: 0.88rem; color: #94A3B8;">Factor income earned by residents abroad minus factor income paid to foreign owners domestically.</p>
             <div class="formula-badge" style="font-size: 0.85rem;">National = Domestic + NFIA</div>
         </div>
         """, unsafe_allow_html=True)
@@ -301,153 +359,90 @@ elif nav_selection == "⚖️ The Conversion Nexus: Gross/Net, Dom/Nat, FC/MP":
     with b3:
         st.markdown("""
         <div class="metric-card">
-            <h3 style="color: #38BDF8;">3. Factor Cost vs. Market Price</h3>
+            <h3 style="color: #38BDF8;">Market Price ⟷ Factor Cost</h3>
             <p style="color: #FCD34D; font-weight: 700; font-size: 1.1rem; margin: 0.6rem 0;">Fiscal Wedge (NIT)</p>
-            <p style="font-size: 0.88rem; color: #94A3B8;">Factors in government intervention via product taxes and subsidies.</p>
+            <p style="font-size: 0.88rem; color: #94A3B8;">Indirect taxes inflate market prices above factor payments; government subsidies lower market prices.</p>
             <div class="formula-badge" style="font-size: 0.85rem;">Market Price = Factor Cost + NIT</div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    trans_table = pd.DataFrame([
-        {"Base Metric": "GDP at Market Price (GDP_MP)", "Conversion Operation": "Starting Gross Domestic Output", "Resulting Metric": "GDP_MP"},
-        {"Base Metric": "GDP at Market Price (GDP_MP)", "Conversion Operation": "Deduct Depreciation", "Resulting Metric": "NDP at Market Price (NDP_MP)"},
-        {"Base Metric": "NDP at Market Price (NDP_MP)", "Conversion Operation": "Deduct Net Indirect Taxes (Taxes - Subsidies)", "Resulting Metric": "NDP at Factor Cost (NDP_FC)"},
-        {"Base Metric": "NDP at Factor Cost (NDP_FC)", "Conversion Operation": "Add Net Factor Income from Abroad (NFIA)", "Resulting Metric": "NNP at Factor Cost (National Income)"},
-        {"Base Metric": "GDP at Market Price (GDP_MP)", "Conversion Operation": "Add Net Factor Income from Abroad (NFIA)", "Resulting Metric": "GNP at Market Price (GNP_MP)"}
+    st.markdown("### 📋 Complete Macroeconomic Aggregates Matrix")
+    summary_matrix = pd.DataFrame([
+        {
+            "Aggregate Symbol": "GDP_MP",
+            "Nomenclature": "Gross Domestic Product at Market Price",
+            "Formula Definition": "C + I + G + (X - M)",
+            "Deduction / Addition": "Gross territory output"
+        },
+        {
+            "Aggregate Symbol": "NDP_MP",
+            "Nomenclature": "Net Domestic Product at Market Price",
+            "Formula Definition": "GDP_MP - Depreciation",
+            "Deduction / Addition": "Subtracts capital wear and tear"
+        },
+        {
+            "Aggregate Symbol": "GNP_MP",
+            "Nomenclature": "Gross National Product at Market Price",
+            "Formula Definition": "GDP_MP + NFIA",
+            "Deduction / Addition": "Swaps geographic border for resident ownership"
+        },
+        {
+            "Aggregate Symbol": "NNP_MP",
+            "Nomenclature": "Net National Product at Market Price",
+            "Formula Definition": "GNP_MP - Depreciation  |  NDP_MP + NFIA",
+            "Deduction / Addition": "Net resident production at market transaction price"
+        },
+        {
+            "Aggregate Symbol": "GDP_FC",
+            "Nomenclature": "Gross Domestic Product at Factor Cost",
+            "Formula Definition": "GDP_MP - NIT",
+            "Deduction / Addition": "Strips out indirect taxes and re-adds subsidies"
+        },
+        {
+            "Aggregate Symbol": "NDP_FC",
+            "Nomenclature": "Net Domestic Product at Factor Cost (Domestic Income)",
+            "Formula Definition": "NDP_MP - NIT  |  GDP_FC - Depreciation",
+            "Deduction / Addition": "Wages + Rent + Interest + Profit + Mixed Income"
+        },
+        {
+            "Aggregate Symbol": "GNP_FC",
+            "Nomenclature": "Gross National Product at Factor Cost",
+            "Formula Definition": "GNP_MP - NIT  |  GDP_FC + NFIA",
+            "Deduction / Addition": "Gross citizen earnings at factor production cost"
+        },
+        {
+            "Aggregate Symbol": "NNP_FC",
+            "Nomenclature": "Net National Product at Factor Cost (National Income)",
+            "Formula Definition": "NNP_MP - NIT  |  NDP_FC + NFIA",
+            "Deduction / Addition": "Official technical National Income (NI)"
+        }
     ])
-    st.dataframe(trans_table, use_container_width=True)
 
-# --- MODULE 3: GDP DEFLATOR ---
-elif nav_selection == "📉 GDP Deflator & Inflation Mechanics":
-    st.markdown('<div class="section-header">📉 GDP Deflator, Real Output & Price Adjustments</div>', unsafe_allow_html=True)
+    st.dataframe(summary_matrix, use_container_width=True, hide_index=True)
 
-    st.markdown("""
-    <div class="concept-note">
-    <h3>🔍 The Comprehensive Domestic Price Level Measure</h3>
-    <p>The GDP Deflator is an implicit price index that standardizes nominal economic expansion into pure physical output growth by stripping out inflationary distortions.</p>
-    <div class="formula-badge" style="font-size: 1.05rem;">GDP Deflator = (Nominal GDP / Real GDP) * 100</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("""
-        <div class="case-study">
-        <h4>⚡ Core Analytical Utilities</h4>
-        <ul>
-            <li><strong>Purifying Economic Expansion:</strong> Converts aggregate nominal metrics into Real GDP to identify if an economy is physically expanding or simply experiencing price inflation:
-                <br><strong style="color: #FCD34D;">Real GDP = (Nominal GDP / GDP Deflator) * 100</strong>
-            </li>
-            <li><strong>Universal Coverage:</strong> Unlike consumer price indices that monitor only household consumer bundles, the deflator encompasses capital goods, government purchases, and exported items.</li>
-            <li><strong>Dynamic Indexing:</strong> Acts as an automatically adjusting Paasche index where component weights shift naturally according to current production realities.</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("""
-        <div class="concept-note" style="border-left-color: #38BDF8;">
-        <h4>📊 Structural Comparison: GDP Deflator vs. CPI</h4>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.9rem;">
-            <tr style="border-bottom: 1px solid rgba(255,255,255,0.1); color: #FCD34D;">
-                <th style="text-align: left; padding: 6px;">Feature</th>
-                <th style="text-align: left; padding: 6px;">GDP Deflator</th>
-                <th style="text-align: left; padding: 6px;">Consumer Price Index (CPI)</th>
-            </tr>
-            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <td style="padding: 6px; font-weight: 600;">Coverage</td>
-                <td style="padding: 6px;">All domestic final goods</td>
-                <td style="padding: 6px;">Fixed consumer basket</td>
-            </tr>
-            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <td style="padding: 6px; font-weight: 600;">Imported Goods</td>
-                <td style="padding: 6px;">Strictly excluded</td>
-                <td style="padding: 6px;">Included (consumer items)</td>
-            </tr>
-            <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <td style="padding: 6px; font-weight: 600;">Capital Goods</td>
-                <td style="padding: 6px;">Included</td>
-                <td style="padding: 6px;">Strictly excluded</td>
-            </tr>
-            <tr>
-                <td style="padding: 6px; font-weight: 600;">Weight Structure</td>
-                <td style="padding: 6px;">Flexible (Current year)</td>
-                <td style="padding: 6px;">Fixed (Base year basket)</td>
-            </tr>
-        </table>
-        </div>
-        """, unsafe_allow_html=True)
-
-# --- MODULE 4: BASE YEAR SELECTION ---
-elif nav_selection == "📅 Base Year Selection Architecture":
-    st.markdown('<div class="section-header">📅 Base Year Selection Architecture & Rebasing Dynamics</div>', unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="concept-note">
-    <h3>🎯 Criteria for Selecting a National Accounting Base Year</h3>
-    <p>A base year provides the benchmark constant price structure used to evaluate Real GDP. Statistical bodies select benchmark years according to rigorous criteria to ensure realistic comparisons.</p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("""
-        <div class="case-study">
-        <h4>1. Economic Normalcy & Stability</h4>
-        <p>The chosen year must represent an uncorrupted macroeconomic equilibrium:</p>
-        <ul>
-            <li><strong>Absence of Shocks:</strong> Avoids periods influenced by wars, pandemic disruptions, financial panics, or trade embargoes.</li>
-            <li><strong>Price Stability:</strong> Years experiencing extreme hyperinflation or sharp deflationary spirals are disqualified.</li>
-            <li><strong>Normal Weather & Harvests:</strong> Critical for economies where agricultural yields impact total production volumes.</li>
-        </ul>
-        <h4>2. Data Depth & Survey Concurrence</h4>
-        <p>Requires comprehensive national censuses:</p>
-        <ul>
-            <li>Aligned with extensive household consumer expenditure surveys and business establishment censuses.</li>
-            <li>Provides statistical coverage for informal, unorganized, and service sector firms.</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-        st.markdown("""
-        <div class="concept-note" style="border-left-color: #EF4444;">
-        <h4 style="color: #F87171;">3. Modernization & The Substitution Bias</h4>
-        <p>Why national accounting authorities periodically revise and update the base year every five to ten years:</p>
-        <ul>
-            <li><strong>Incorporation of New Sectors:</strong> Captures structural shifts such as green energy, cloud infrastructure, and fintech services that did not exist in older base eras.</li>
-            <li><strong>Removing Obsolete Output:</strong> Prunes obsolete manufactured items whose transaction volumes have dropped toward zero.</li>
-            <li><strong>Preventing the Gerschenkron Effect:</strong> When an old base year is maintained too long, items experiencing rapid technological cost deflation (e.g., computers) look artificially valuable at ancient base prices, creating an upward distortion in calculated Real GDP.</li>
-        </ul>
-        </div>
-        """, unsafe_allow_html=True)
-
-# --- MODULE 5: MACRO SIMULATOR ---
-elif nav_selection == "🧮 Macroeconomic Aggregates Simulator":
-    st.markdown('<div class="section-header">🧮 Comprehensive National Accounting Engine</div>', unsafe_allow_html=True)
-    st.markdown("Adjust national production parameters to observe the instantaneous recalculation of aggregate metrics, market prices, and deflator values.")
+# --- MODULE 3: DERIVATION ENGINE & SIMULATOR ---
+elif nav_selection == "🧮 Aggregate Derivation Engine & Visualizer":
+    st.markdown('<div class="section-header">🧮 National Accounting Derivation Engine</div>', unsafe_allow_html=True)
+    st.markdown("Adjust primary macroeconomic parameters to observe real-time derivations across all 8 aggregates.")
 
     sim_c1, sim_c2 = st.columns([1, 1.25])
 
     with sim_c1:
-        st.markdown("#### Primary Economic Parameters (in Billions)")
-        gdp_val = st.slider("Nominal GDP at Market Price:", min_value=500.0, max_value=5000.0, value=2500.0, step=50.0)
-        dep_val = st.slider("Capital Depreciation:", min_value=20.0, max_value=600.0, value=280.0, step=10.0)
-        
-        st.markdown("#### Cross-Border Income Flows")
-        fi_in = st.slider("Factor Income Earned by Residents Abroad:", min_value=0.0, max_value=300.0, value=120.0, step=5.0)
-        fi_out = st.slider("Factor Income Paid to Non-Residents:", min_value=0.0, max_value=300.0, value=90.0, step=5.0)
+        st.markdown("#### Baseline Output (in Billions)")
+        gdp_val = st.slider("Nominal GDP at Market Price (GDP_MP):", min_value=500.0, max_value=5000.0, value=2500.0, step=50.0)
+        dep_val = st.slider("Capital Consumption Allowance (Depreciation):", min_value=20.0, max_value=600.0, value=250.0, step=10.0)
 
-        st.markdown("#### Government Fiscal Wedge")
-        ind_tax = st.slider("Indirect Taxes (GST, Excise, Customs):", min_value=10.0, max_value=500.0, value=260.0, step=10.0)
-        subs = st.slider("Production Subsidies:", min_value=0.0, max_value=200.0, value=80.0, step=5.0)
+        st.markdown("#### Factor Income Flows Across Borders")
+        fi_in = st.slider("Factor Income Earned by Domestic Residents Abroad:", min_value=0.0, max_value=300.0, value=140.0, step=5.0)
+        fi_out = st.slider("Factor Income Paid to Foreign Entities Domestically:", min_value=0.0, max_value=300.0, value=90.0, step=5.0)
 
-        st.markdown("#### Price Level Reference")
-        real_gdp_val = st.slider("Real GDP (Constant Base-Year Prices):", min_value=400.0, max_value=4000.0, value=2000.0, step=50.0)
+        st.markdown("#### Government Fiscal Intervention")
+        ind_tax = st.slider("Indirect Taxes (GST, Sales, Customs):", min_value=10.0, max_value=500.0, value=260.0, step=10.0)
+        subs = st.slider("Production Subsidies:", min_value=0.0, max_value=200.0, value=70.0, step=5.0)
 
-        # Derived calculations
+        # Computations
         nfia = fi_in - fi_out
         nit = ind_tax - subs
         ndp_mp = gdp_val - dep_val
@@ -455,119 +450,116 @@ elif nav_selection == "🧮 Macroeconomic Aggregates Simulator":
         nnp_mp = gnp_mp - dep_val
         gdp_fc = gdp_val - nit
         ndp_fc = ndp_mp - nit
-        nnp_fc = nnp_mp - nit  # National Income
-        deflator = (gdp_val / real_gdp_val) * 100.0
-        implicit_inf = deflator - 100.0
+        gnp_fc = gnp_mp - nit
+        nnp_fc = nnp_mp - nit
 
     with sim_c2:
         st.markdown("#### 📊 Derived National Accounting Aggregates")
 
-        row1_a, row1_b = st.columns(2)
-        with row1_a:
+        r1, r2 = st.columns(2)
+        with r1:
             st.markdown(f"""
             <div class="metric-card">
-                <h3>National Income (NNP at Factor Cost)</h3>
-                <div class="metric-value">{nnp_fc:,.2f}</div>
-                <p style="color: #94A3B8; font-size: 0.85rem;">Net resident earnings from production</p>
+                <h3>Domestic Income (NDP_FC)</h3>
+                <div class="metric-value">{ndp_fc:,.2f}</div>
+                <p style="color: #94A3B8; font-size: 0.85rem;">Factor earnings within borders</p>
             </div>
             """, unsafe_allow_html=True)
-        with row1_b:
+        with r2:
             st.markdown(f"""
             <div class="metric-card">
-                <h3>GDP Deflator (Price Index)</h3>
-                <div class="metric-value">{deflator:,.2f}</div>
-                <p style="color: #94A3B8; font-size: 0.85rem;">Implicit inflation: {implicit_inf:,.2f}%</p>
+                <h3>National Income (NNP_FC)</h3>
+                <div class="metric-value" style="color: #FCD34D;">{nnp_fc:,.2f}</div>
+                <p style="color: #94A3B8; font-size: 0.85rem;">Net earnings of normal residents</p>
             </div>
             """, unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        overview_df = pd.DataFrame([
-            {"Aggregate Term": "Gross Domestic Product at Market Price (GDP_MP)", "Formula Applied": "Base Reported Input", "Resulting Magnitude": f"{gdp_val:,.2f}"},
-            {"Aggregate Term": "Net Domestic Product at Market Price (NDP_MP)", "Formula Applied": "GDP_MP - Depreciation", "Resulting Magnitude": f"{ndp_mp:,.2f}"},
-            {"Aggregate Term": "Gross National Product at Market Price (GNP_MP)", "Formula Applied": "GDP_MP + NFIA", "Resulting Magnitude": f"{gnp_mp:,.2f}"},
-            {"Aggregate Term": "Net National Product at Market Price (NNP_MP)", "Formula Applied": "GNP_MP - Depreciation", "Resulting Magnitude": f"{nnp_mp:,.2f}"},
-            {"Aggregate Term": "Gross Domestic Product at Factor Cost (GDP_FC)", "Formula Applied": "GDP_MP - Net Indirect Taxes", "Resulting Magnitude": f"{gdp_fc:,.2f}"},
-            {"Aggregate Term": "Net Domestic Product at Factor Cost (NDP_FC)", "Formula Applied": "NDP_MP - Net Indirect Taxes", "Resulting Magnitude": f"{ndp_fc:,.2f}"},
-            {"Aggregate Term": "Net National Product at Factor Cost (NNP_FC / National Income)", "Formula Applied": "NNP_MP - Net Indirect Taxes", "Resulting Magnitude": f"{nnp_fc:,.2f}"},
-            {"Aggregate Term": "Net Factor Income from Abroad (NFIA)", "Formula Applied": "Factor Income In - Factor Income Out", "Resulting Magnitude": f"{nfia:,.2f}"},
-            {"Aggregate Term": "Net Indirect Taxes (NIT)", "Formula Applied": "Indirect Taxes - Subsidies", "Resulting Magnitude": f"{nit:,.2f}"}
+        derivation_table = pd.DataFrame([
+            {"Aggregate": "GDP_MP", "Operation": "Reported Gross Output", "Result (Billion $)": f"{gdp_val:,.2f}"},
+            {"Aggregate": "NDP_MP", "Operation": "GDP_MP - Depreciation", "Result (Billion $)": f"{ndp_mp:,.2f}"},
+            {"Aggregate": "GNP_MP", "Operation": "GDP_MP + NFIA", "Result (Billion $)": f"{gnp_mp:,.2f}"},
+            {"Aggregate": "NNP_MP", "Operation": "GNP_MP - Depreciation", "Result (Billion $)": f"{nnp_mp:,.2f}"},
+            {"Aggregate": "GDP_FC", "Operation": "GDP_MP - NIT", "Result (Billion $)": f"{gdp_fc:,.2f}"},
+            {"Aggregate": "NDP_FC", "Operation": "NDP_MP - NIT", "Result (Billion $)": f"{ndp_fc:,.2f}"},
+            {"Aggregate": "GNP_FC", "Operation": "GNP_MP - NIT", "Result (Billion $)": f"{gnp_fc:,.2f}"},
+            {"Aggregate": "NNP_FC (NI)", "Operation": "NNP_MP - NIT", "Result (Billion $)": f"{nnp_fc:,.2f}"}
         ])
-        st.dataframe(overview_df, use_container_width=True)
+        st.dataframe(derivation_table, use_container_width=True, hide_index=True)
 
-        # Comparative Visualization
-        chart_data = pd.DataFrame({
-            "Aggregate": ["GDP (MP)", "NDP (MP)", "GNP (MP)", "NNP (MP)", "National Income (NNP_FC)"],
-            "Magnitude": [gdp_val, ndp_mp, gnp_mp, nnp_mp, nnp_fc]
+        chart_df = pd.DataFrame({
+            "Aggregate": ["GDP (MP)", "NDP (MP)", "GNP (MP)", "NNP (MP)", "NDP (FC)", "NNP (FC)"],
+            "Magnitude": [gdp_val, ndp_mp, gnp_mp, nnp_mp, ndp_fc, nnp_fc]
         }).set_index("Aggregate")
-        st.bar_chart(chart_data)
+        st.bar_chart(chart_df)
 
-# --- MODULE 6: KNOWLEDGE DECK ---
-elif nav_selection == "📝 Macroeconomic Accounting Knowledge Deck":
-    st.markdown('<div class="section-header">📝 National Accounting Mastery Assessment</div>', unsafe_allow_html=True)
-    st.markdown("Evaluate your understanding of macroeconomic aggregates, deflator mechanics, and factor cost adjustments.")
+# --- MODULE 4: KNOWLEDGE DECK ---
+elif nav_selection == "📝 Aggregate Mastery Assessment":
+    st.markdown('<div class="section-header">📝 Macroeconomic Aggregates Assessment</div>', unsafe_allow_html=True)
+    st.markdown("Test your understanding of conversions between Gross, Net, Domestic, National, Factor Cost, and Market Price.")
 
-    with st.form("macro_quiz"):
-        st.markdown("### 1. Conceptual Distinction Between Domestic and National")
+    with st.form("aggregates_quiz"):
+        st.markdown("### 1. The Domestic-to-National Pivot")
         q1 = st.radio(
-            "Which factor differentiates Gross Domestic Product (GDP) from Gross National Product (GNP)?",
+            "Which factor explains the numerical difference between Gross Domestic Product (GDP) and Gross National Product (GNP)?",
             options=[
-                "A) Deductions made for capital depreciation over the fiscal year.",
+                "A) Consumption of fixed capital (Depreciation).",
                 "B) Net Factor Income from Abroad (NFIA).",
-                "C) Government subsidies minus indirect sales taxes.",
-                "D) Total consumer spending on domestic services."
+                "C) Net Indirect Taxes (Indirect Taxes minus Subsidies).",
+                "D) The GDP Deflator."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("### 2. Factor Cost vs Market Price Wedge")
+        st.markdown("### 2. Market Price vs. Factor Cost Conversion")
         q2 = st.radio(
-            "To convert an aggregate from Market Price to Factor Cost, which of the following operations is required?",
+            "To derive an aggregate at Factor Cost (FC) starting from Market Price (MP), which adjustment is made?",
             options=[
-                "A) Add Depreciation and subtract foreign factor earnings.",
-                "B) Add Indirect Taxes and subtract Production Subsidies.",
-                "C) Deduct Indirect Taxes and add Production Subsidies (Subtract Net Indirect Taxes).",
-                "D) Divide by the GDP Deflator and multiply by 100."
+                "A) Add Indirect Taxes and deduct Subsidies.",
+                "B) Deduct Indirect Taxes and add Subsidies (Subtract Net Indirect Taxes).",
+                "C) Add Depreciation and add NFIA.",
+                "D) Deduct NFIA and divide by the price index."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("### 3. The Definitional Scope of the GDP Deflator")
+        st.markdown("### 3. Depreciation and Capital Conservation")
         q3 = st.radio(
-            "What distinguishes the GDP Deflator from the Consumer Price Index (CPI)?",
+            "What distinguishes Net Domestic Product (NDP) from Gross Domestic Product (GDP)?",
             options=[
-                "A) The GDP deflator includes imported consumer goods while the CPI excludes them.",
-                "B) The GDP deflator tracks all domestically produced final goods and updates weights dynamically, whereas the CPI monitors a fixed consumption basket.",
-                "C) The GDP deflator is strictly an unweighted arithmetic mean of commodity prices.",
-                "D) The GDP deflator measures only intermediate wholesale materials."
+                "A) NDP excludes output produced by state-owned enterprises.",
+                "B) NDP deducts the monetary value of capital wear, tear, and obsolescence (Depreciation).",
+                "C) NDP includes intermediate consumption directly in final output.",
+                "D) NDP adjusts for imported consumption items."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("### 4. Base Year Selection Criteria")
+        st.markdown("### 4. Technical Definition of National Income")
         q4 = st.radio(
-            "Why do national statistical organizations deliberately avoid selecting a pandemic or economic crisis year as a base year?",
+            "In national income accounting, which aggregate is officially termed 'National Income'?",
             options=[
-                "A) A crisis year carries unusual relative price structures and abnormal production volumes that distort Real GDP growth estimates.",
-                "B) Base years can only be chosen in years ending in zero or five under international law.",
-                "C) Depreciation rates drop to zero during economic depressions.",
-                "D) Factor costs become identical to market prices during economic slowdowns."
+                "A) Gross National Product at Market Price (GNP_MP).",
+                "B) Net Domestic Product at Factor Cost (NDP_FC).",
+                "C) Net National Product at Factor Cost (NNP_FC).",
+                "D) Gross Domestic Product at Factor Cost (GDP_FC)."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("### 5. Identification of National Income")
+        st.markdown("### 5. Multi-Step Aggregate Derivation")
         q5 = st.radio(
-            "In macroeconomic national accounting, which metric represents the standard technical definition of National Income?",
+            "Given: GDP_MP = 1,000 | Depreciation = 100 | Indirect Taxes = 80 | Subsidies = 20 | NFIA = -40. What is National Income (NNP_FC)?",
             options=[
-                "A) Gross Domestic Product at Market Price (GDP_MP).",
-                "B) Net Domestic Product at Market Price (NDP_MP).",
-                "C) Net National Product at Factor Cost (NNP_FC).",
-                "D) Gross National Product at Factor Cost (GNP_FC)."
+                "A) 800",
+                "B) 860",
+                "C) 920",
+                "D) 780"
             ], index=None
         )
 
-        eval_quiz = st.form_submit_button("Submit Accounting Mastery Assessment", type="primary")
+        eval_quiz = st.form_submit_button("Submit Assessment", type="primary")
 
         if eval_quiz:
             score_acc = 0.0
@@ -576,19 +568,24 @@ elif nav_selection == "📝 Macroeconomic Accounting Knowledge Deck":
                 score_acc += 20.0; st.session_state.ans1_ok = True
             else: st.session_state.ans1_ok = False
 
-            if q2 == "C) Deduct Indirect Taxes and add Production Subsidies (Subtract Net Indirect Taxes).":
+            if q2 == "B) Deduct Indirect Taxes and add Subsidies (Subtract Net Indirect Taxes).":
                 score_acc += 20.0; st.session_state.ans2_ok = True
             else: st.session_state.ans2_ok = False
 
-            if q3 == "B) The GDP deflator tracks all domestically produced final goods and updates weights dynamically, whereas the CPI monitors a fixed consumption basket.":
+            if q3 == "B) NDP deducts the monetary value of capital wear, tear, and obsolescence (Depreciation).":
                 score_acc += 20.0; st.session_state.ans3_ok = True
             else: st.session_state.ans3_ok = False
 
-            if q4 == "A) A crisis year carries unusual relative price structures and abnormal production volumes that distort Real GDP growth estimates.":
+            if q4 == "C) Net National Product at Factor Cost (NNP_FC).":
                 score_acc += 20.0; st.session_state.ans4_ok = True
             else: st.session_state.ans4_ok = False
 
-            if q5 == "C) Net National Product at Factor Cost (NNP_FC).":
+            # Calculation for Q5:
+            # NDP_MP = 1000 - 100 = 900
+            # NNP_MP = NDP_MP + NFIA = 900 + (-40) = 860
+            # NIT = 80 - 20 = 60
+            # NNP_FC = NNP_MP - NIT = 860 - 60 = 800
+            if q5 == "A) 800":
                 score_acc += 20.0; st.session_state.ans5_ok = True
             else: st.session_state.ans5_ok = False
 
@@ -601,15 +598,15 @@ elif nav_selection == "📝 Macroeconomic Accounting Knowledge Deck":
         st.markdown(f"### Assessment Score: {round(st.session_state.knowledge_rating, 1)} / 100 Points")
 
         if not st.session_state.ans1_ok:
-            st.error("Q1 Analysis: Domestic refers to geographical production boundaries, while National reflects resident ownership. The bridge between them is Net Factor Income from Abroad (NFIA).")
+            st.error("Q1 Analysis: The difference between Domestic and National output is Net Factor Income from Abroad (NFIA).")
         if not st.session_state.ans2_ok:
-            st.error("Q2 Analysis: Market Price includes the net fiscal wedge. Transitioning to Factor Cost requires deducting Indirect Taxes and adding Subsidies (deducting NIT).")
+            st.error("Q2 Analysis: Transitioning to Factor Cost requires deducting indirect taxes and adding subsidies (subtracting NIT).")
         if not st.session_state.ans3_ok:
-            st.error("Q3 Analysis: The GDP Deflator encompasses all domestic production (including capital and government goods) with flexible weights, whereas the CPI focuses exclusively on a consumer basket that includes imports.")
+            st.error("Q3 Analysis: Gross minus Net equals Depreciation (Consumption of Fixed Capital).")
         if not st.session_state.ans4_ok:
-            st.error("Q4 Analysis: A base year must reflect macroeconomic stability to avoid skewing long-term real growth rates through distorted relative prices.")
+            st.error("Q4 Analysis: National Income is technically defined as Net National Product at Factor Cost (NNP_FC).")
         if not st.session_state.ans5_ok:
-            st.error("Q5 Analysis: By definition in economic theory, National Income is Net National Product at Factor Cost (NNP_FC).")
+            st.error("Q5 Analysis: NNP_FC = GDP_MP - Depreciation + NFIA - NIT = 1000 - 100 + (-40) - (80 - 20) = 900 - 40 - 60 = 800.")
 
 # =====================================================================
 # SYSTEM FOOTER
@@ -618,10 +615,10 @@ st.markdown("---")
 foot_c1, foot_c2, foot_c3 = st.columns(3)
 
 with foot_c1:
-    st.caption("🌐 National Accounting & Aggregates Architecture")
+    st.caption("🌐 Macroeconomic Aggregates & Identities Architecture")
 
 with foot_c2:
-    st.caption("📈 GDP Deflator & Price Adjustment Mechanics")
+    st.caption("📈 NDP, GNP, NNP & Factor Cost Translation")
 
 with foot_c3:
     st.caption(f"⏰ Platform Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
