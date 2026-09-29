@@ -15,7 +15,7 @@ st.set_page_config(
 )
 
 # =====================================================================
-# CORE DESIGN SYSTEM (MIDNIGHT SAPPHIRE & EMERALD ACCENTS)
+# CORE DESIGN SYSTEM
 # =====================================================================
 st.markdown("""
 <style>
@@ -41,25 +41,6 @@ st.markdown("""
         margin: 0 !important; 
         font-weight: 700; 
         font-size: 1.6rem; 
-    }
-
-    .stContainer, .stForm {
-        background: rgba(15, 39, 68, 0.55) !important;
-        border: 1px solid rgba(56, 189, 248, 0.15) !important;
-        border-radius: 14px; 
-        padding: 1.75rem; 
-        margin-bottom: 1.5rem; 
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3); 
-        backdrop-filter: blur(14px);
-    }
-
-    .section-header {
-        color: #34D399; 
-        font-weight: 700; 
-        font-size: 1.45rem; 
-        margin-bottom: 1.25rem;
-        padding-bottom: 0.75rem; 
-        border-bottom: 1px solid rgba(52, 211, 153, 0.25);
     }
 
     .metric-card {
@@ -89,7 +70,6 @@ st.markdown("""
         padding: 0.65rem 1.8rem !important; 
         border-radius: 8px !important;
         font-weight: 600 !important; 
-        transition: all 0.2s ease !important;
     }
 
     .stMarkdown, p, li { 
@@ -150,7 +130,7 @@ with score_container:
 # MODULE 1: POLICY SIMULATOR
 # =====================================================================
 if nav_selection == "🎛️ Loanable Funds Policy Simulator":
-    st.markdown('<div class="section-header">🎛️ Macroeconomic Policy Shock Simulator: Saving, Investment & Equilibrium Rates</div>', unsafe_allow_html=True)
+    st.markdown("### 🎛️ Macroeconomic Policy Shock Simulator: Saving, Investment & Equilibrium Rates")
     st.markdown("""
     Evaluate how fiscal shocks, private thriftiness shifts, capital productivity taxes, and open-economy capital flows 
     determine the real interest rate ($r^*$) and total volume of capital accumulation ($S^* = I^*$).
@@ -160,22 +140,15 @@ if nav_selection == "🎛️ Loanable Funds Policy Simulator":
 
     with sim_c1:
         st.markdown("#### 🏛️ Fiscal & Structural Controls")
-        g_deficit = st.slider("Fiscal Deficit ($G - T$, Crowding-Out Pressure):", min_value=-200.0, max_value=400.0, value=100.0, step=10.0)
+        g_deficit = st.slider("Fiscal Deficit (G - T, Crowding-Out Pressure):", min_value=-200.0, max_value=400.0, value=100.0, step=10.0)
         private_thrift = st.slider("Marginal Propensity to Save Shift (Autonomous Saving):", min_value=-150.0, max_value=250.0, value=50.0, step=10.0)
-        biz_confidence = st.slider("Capital Productivity & Animal Spirits (Autonomous $I$):", min_value=200.0, max_value=800.0, value=500.0, step=25.0)
-        nco_inflow = st.slider("Net Capital Inflow from Abroad ($Net Imports / NFI$):", min_value=-100.0, max_value=200.0, value=0.0, step=10.0)
+        biz_confidence = st.slider("Capital Productivity & Animal Spirits (Autonomous I):", min_value=200.0, max_value=800.0, value=500.0, step=25.0)
+        nco_inflow = st.slider("Net Capital Inflow from Abroad (Net Imports / NFI):", min_value=-100.0, max_value=200.0, value=0.0, step=10.0)
         
         st.markdown("#### 📐 Elasticity Parameters")
-        s_slope = st.slider("Interest Elasticity of Saving ($dS/dr$):", min_value=10.0, max_value=80.0, value=35.0, step=5.0)
-        i_slope = st.slider("Interest Sensitivity of Investment ($dI/dr$):", min_value=15.0, max_value=90.0, value=45.0, step=5.0)
+        s_slope = st.slider("Interest Elasticity of Saving (dS/dr):", min_value=10.0, max_value=80.0, value=35.0, step=5.0)
+        i_slope = st.slider("Interest Sensitivity of Investment (dI/dr):", min_value=15.0, max_value=90.0, value=45.0, step=5.0)
 
-        # Theoretical Equilibrium Solver:
-        # Supply of Funds: S_total = S_private_autonomous + s_slope * r - g_deficit + nco_inflow
-        # Demand for Funds: I_total = biz_confidence - i_slope * r
-        # Setting S_total = I_total:
-        # (private_thrift - g_deficit + nco_inflow) + s_slope * r = biz_confidence - i_slope * r
-        # r * (s_slope + i_slope) = biz_confidence - (private_thrift - g_deficit + nco_inflow)
-        
         numerator = biz_confidence - (private_thrift - g_deficit + nco_inflow)
         denominator = s_slope + i_slope
         r_eq = max(0.25, numerator / denominator)
@@ -210,7 +183,6 @@ if nav_selection == "🎛️ Loanable Funds Policy Simulator":
             </div>
             """, unsafe_allow_html=True)
 
-        # Plot Loanable Funds Curves
         rates = np.linspace(0.5, 15.0, 100)
         s_curve = (private_thrift - g_deficit + nco_inflow) + (s_slope * rates)
         i_curve = biz_confidence - (i_slope * rates)
@@ -239,11 +211,11 @@ if nav_selection == "🎛️ Loanable Funds Policy Simulator":
 # MODULE 2: ASSESSMENT DECK
 # =====================================================================
 elif nav_selection == "📝 Rigorous Macroeconomic Assessment":
-    st.markdown('<div class="section-header">📝 Master Examination: Saving-Investment Dynamics & Interest Rates</div>', unsafe_allow_html=True)
+    st.markdown("### 📝 Master Examination: Saving-Investment Dynamics & Interest Rates")
     st.markdown("Carefully evaluate the theoretical interactions below. Watch out for classical assumptions versus Keynesian paradoxes and Ricardian conditions.")
 
     with st.form("macro_advanced_quiz"):
-        st.markdown("### 1. The Paradox of Thrift in Short vs. Long Run")
+        st.markdown("#### 1. The Paradox of Thrift in Short vs. Long Run")
         q1 = st.radio(
             "In an economy operating with demand-constrained output and fixed investment sensitivity (Keynesian cross), "
             "an exogenous increase in the autonomous propensity to save causes which of the following equilibrium outcomes for total realized national saving?",
@@ -256,9 +228,9 @@ elif nav_selection == "📝 Rigorous Macroeconomic Assessment":
         )
 
         st.markdown("---")
-        st.markdown("### 2. Fiscal Deficits, Ricardian Equivalence & Interest Rates")
+        st.markdown("#### 2. Fiscal Deficits, Ricardian Equivalence & Interest Rates")
         q2 = st.radio(
-            "Suppose a government reduces lump-sum taxes today financed entirely by issuing sovereign debt, keeping government expenditures ($G$) completely constant. "
+            "Suppose a government reduces lump-sum taxes today financed entirely by issuing sovereign debt, keeping government expenditures (G) completely constant. "
             "Under strict Barro-Ricardo Equivalence with rational agents possessing infinite horizons (or operational intergenerational bequests):",
             options=[
                 "A) The supply curve for loanable funds shifts leftward due to the public deficit, driving the real interest rate upward.",
@@ -269,38 +241,38 @@ elif nav_selection == "📝 Rigorous Macroeconomic Assessment":
         )
 
         st.markdown("---")
-        st.markdown("### 3. Fisher Effect and Neutrality Under Inflation Expectations")
+        st.markdown("#### 3. Fisher Effect and Neutrality Under Inflation Expectations")
         q3 = st.radio(
-            "Assume the Mundell-Tobin effect is operative in money markets. When anticipated inflation ($\pi^e$) increases, "
-            "how does the nominal interest rate ($i$) and the real interest rate ($r$) adjust relative to the strict classical Fisher hypothesis ($i = r + \pi^e$ with constant $r$)?",
+            "Assume the Mundell-Tobin effect is operative in money markets. When anticipated inflation increases, "
+            "how does the nominal interest rate and the real interest rate adjust relative to the strict classical Fisher hypothesis?",
             options=[
                 "A) Nominal interest rates rise more than point-for-point with inflation because risk premiums expand.",
                 "B) The nominal interest rate rises by less than one-for-one with anticipated inflation, causing the equilibrium real interest rate to fall as wealth shifts from real money balances to real capital assets.",
                 "C) The real interest rate increases because lenders demand compensation for capital depreciation caused by nominal bracket creep.",
-                "D) The real and nominal rates move identically upward by exactly $2 \times \pi^e$ due to compounding term premiums."
+                "D) The real and nominal rates move identically upward due to compounding term premiums."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("### 4. Open-Economy Capital Flows and Crowding Out")
+        st.markdown("#### 4. Open-Economy Capital Flows and Crowding Out")
         q4 = st.radio(
-            "Consider a small open economy with perfect capital mobility and flexible exchange rates. When the national government runs an expansionary fiscal deficit ($G \uparrow$):",
+            "Consider a small open economy with perfect capital mobility and flexible exchange rates. When the national government runs an expansionary fiscal deficit (G increases):",
             options=[
-                "A) Domestic real interest rates spike drastically above world rates ($r > r^*$), causing a severe collapse in domestic investment.",
-                "B) The domestic real rate remains tethered to the world rate ($r = r^*$); upward rate pressure appreciates the domestic currency, completely crowding out net exports ($NX$) rather than domestic investment ($I$).",
+                "A) Domestic real interest rates spike drastically above world rates, causing a severe collapse in domestic investment.",
+                "B) The domestic real rate remains tethered to the world rate; upward rate pressure appreciates the domestic currency, completely crowding out net exports rather than domestic investment.",
                 "C) Domestic saving surges via compulsory net factor imports, keeping the trade balance in surplus.",
                 "D) Domestic investment drops to zero as foreign capital flight drains the domestic loanable funds pool."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("### 5. Elasticity Extremes and Liquidity Trap")
+        st.markdown("#### 5. Elasticity Extremes and Liquidity Trap")
         q5 = st.radio(
-            "In an economy trapped at the effective lower bound (liquidity trap) where the money market equilibrium yield on short-term safe assets is zero, "
+            "In an economy trapped at the effective lower bound (liquidity trap) where the yield on short-term safe assets is zero, "
             "which statement regarding the Saving-Investment clearing mechanism is theoretically correct?",
             options=[
                 "A) Real interest rates will automatically adjust downward to negative levels without price deflation to clear the capital market.",
-                "B) The classical loanable funds model fails to guarantee equilibrium at full employment because expected deflation raises the ex-ante real interest rate ($r = i - \pi^e > 0$), widening the excess supply of saving.",
+                "B) The classical loanable funds model fails to guarantee equilibrium at full employment because expected deflation raises the ex-ante real interest rate, widening the excess supply of saving.",
                 "C) Private investment expands infinitely because the nominal cost of borrowing funds is virtually zero.",
                 "D) National saving collapses to zero because negative real returns eliminate any intertemporal incentive to defer consumption."
             ], index=None
@@ -311,36 +283,31 @@ elif nav_selection == "📝 Rigorous Macroeconomic Assessment":
         if eval_quiz:
             score_acc = 0.0
 
-            # Question 1: Paradox of thrift keynesian result
             if q1 == "B) Realized saving remains unchanged (or declines if investment depends positively on income via an accelerator), while aggregate equilibrium output contracts.":
                 score_acc += 20.0
                 st.session_state.ans1_ok = True
             else:
                 st.session_state.ans1_ok = False
 
-            # Question 2: Barro-Ricardo equivalence invariance
             if q2 == "B) National saving is unaffected because private saving increases dollar-for-dollar to offset the public dissaving, leaving the real interest rate unchanged.":
                 score_acc += 20.0
                 st.session_state.ans2_ok = True
             else:
                 st.session_state.ans2_ok = False
 
-            # Question 3: Mundell-Tobin effect deviation from strict Fisher
             if q3 == "B) The nominal interest rate rises by less than one-for-one with anticipated inflation, causing the equilibrium real interest rate to fall as wealth shifts from real money balances to real capital assets.":
                 score_acc += 20.0
                 st.session_state.ans3_ok = True
             else:
                 st.session_state.ans3_ok = False
 
-            # Question 4: Mundell-Fleming small open economy crowding out
-            if q4 == "B) The domestic real rate remains tethered to the world rate ($r = r^*$); upward rate pressure appreciates the domestic currency, completely crowding out net exports ($NX$) rather than domestic investment ($I$).":
+            if q4 == "B) The domestic real rate remains tethered to the world rate; upward rate pressure appreciates the domestic currency, completely crowding out net exports rather than domestic investment.":
                 score_acc += 20.0
                 st.session_state.ans4_ok = True
             else:
                 st.session_state.ans4_ok = False
 
-            # Question 5: Liquidity trap and Fisherian debt deflation / uncoordinated saving
-            if q5 == "B) The classical loanable funds model fails to guarantee equilibrium at full employment because expected deflation raises the ex-ante real interest rate ($r = i - \pi^e > 0$), widening the excess supply of saving.":
+            if q5 == "B) The classical loanable funds model fails to guarantee equilibrium at full employment because expected deflation raises the ex-ante real interest rate, widening the excess supply of saving.":
                 score_acc += 20.0
                 st.session_state.ans5_ok = True
             else:
@@ -355,15 +322,15 @@ elif nav_selection == "📝 Rigorous Macroeconomic Assessment":
         st.markdown(f"### Assessment Score: **{round(st.session_state.knowledge_rating, 1)} / 100 Points**")
 
         if not st.session_state.ans1_ok:
-            st.error("**Q1 Breakdown (Paradox of Thrift):** In demand-determined models where $I$ is autonomous or fixed, equilibrium requires $S = I$. An individual desire to save more shifts the saving function upward, but aggregate income drops until actual saving equals the unchanged investment level. If an investment accelerator is included, realized saving drops.")
+            st.error("**Q1 Breakdown (Paradox of Thrift):** In demand-determined models where I is autonomous or fixed, equilibrium requires S = I. An individual desire to save more shifts the saving function upward, but aggregate income drops until actual saving equals the unchanged investment level.")
         if not st.session_state.ans2_ok:
-            st.error("**Q2 Breakdown (Ricardian Equivalence):** Under Ricardian assumptions, consumers realize current debt-financed tax cuts imply higher future taxes of identical present value. They save 100% of the tax cut to pay future taxes, so $\Delta S_{private} = -\Delta S_{public}$, leaving national saving and real interest rates completely unchanged.")
+            st.error("**Q2 Breakdown (Ricardian Equivalence):** Under Ricardian assumptions, consumers realize current debt-financed tax cuts imply higher future taxes of identical present value. They save 100% of the tax cut to pay future taxes, leaving national saving and real interest rates completely unchanged.")
         if not st.session_state.ans3_ok:
-            st.error("**Q3 Breakdown (Mundell-Tobin Effect):** Expected inflation increases the opportunity cost of holding money, causing agents to rebalance their portfolios into physical capital. This portfolio shift depresses the marginal product of capital and lowers the equilibrium real interest rate, meaning nominal rates rise by *less* than one-for-one with $\pi^e$.")
+            st.error("**Q3 Breakdown (Mundell-Tobin Effect):** Expected inflation increases the opportunity cost of holding money, causing agents to rebalance their portfolios into physical capital. This portfolio shift depresses the marginal product of capital and lowers the equilibrium real interest rate.")
         if not st.session_state.ans4_ok:
-            st.error("**Q4 Breakdown (Open Economy Crowding Out):** In a small open economy with perfect capital mobility ($r = r^*$), fiscal deficits attract foreign capital, causing exchange rate appreciation. The appreciation wipes out net exports ($NX$) until $Y$ returns to equilibrium. Thus, $NX$ is crowded out, not private investment $I$.")
+            st.error("**Q4 Breakdown (Open Economy Crowding Out):** In a small open economy with perfect capital mobility, fiscal deficits attract foreign capital, causing exchange rate appreciation. The appreciation wipes out net exports (NX) until equilibrium returns, sparing domestic investment.")
         if not st.session_state.ans5_ok:
-            st.error("**Q5 Breakdown (Liquidity Trap & Fisher Wedge):** At the Zero Lower Bound ($i = 0$), if prices or wages fall, expected deflation ($\pi^e < 0$) causes the ex-ante real rate ($r = 0 - (-\pi^e) = |\pi^e|$) to rise, exacerbating the deficiency of investment relative to full-employment saving.")
+            st.error("**Q5 Breakdown (Liquidity Trap & Fisher Wedge):** At the Zero Lower Bound (i = 0), if prices fall, expected deflation causes the ex-ante real rate to rise, exacerbating the deficiency of investment relative to full-employment saving.")
 
 # =====================================================================
 # FOOTER
@@ -373,6 +340,6 @@ f1, f2, f3 = st.columns(3)
 with f1:
     st.caption("📈 Capital Theory & Macro Allocations")
 with f2:
-    st.caption("⚖️ Loanable Funds vs. Liquidity Preference Engine")
+    st.caption("⚖️ Loanable Funds Engine")
 with f3:
     st.caption(f"⏰ Platform Timestamp: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
