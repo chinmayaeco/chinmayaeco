@@ -4,36 +4,37 @@ import numpy as np
 from datetime import datetime
 
 # =====================================================================
-# CONFIGURATION & GLOBAL PALETTE
+# PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Macroeconomic Capital & Policy Simulator",
-    page_icon="⚡",
+    page_title="Saving, Investment & Interest Rate Lab",
+    page_icon="🇮🇳",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Design: Midnight Obsidian + Emerald + Electric Cyan
+# Custom Styling (Dark Slate & Emerald Theme)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     * { font-family: 'Plus Jakarta Sans', sans-serif; }
     
     .stApp {
-        background: radial-gradient(circle at 15% 15%, #0d1b2a 0%, #050c14 60%, #010408 100%);
+        background: radial-gradient(circle at 15% 15%, #0B192C 0%, #06101E 60%, #020617 100%);
         color: #E2E8F0;
     }
     
-    .header-box {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(14, 165, 233, 0.12) 100%);
-        border: 1px solid rgba(56, 189, 248, 0.25);
+    .score-banner {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
+        border: 1px solid rgba(52, 211, 153, 0.3);
         border-radius: 12px;
-        padding: 1.3rem;
+        padding: 1.25rem;
         margin-bottom: 1.5rem;
+        text-align: center;
     }
     
     .metric-panel {
-        background: rgba(13, 27, 42, 0.7);
+        background: rgba(15, 23, 42, 0.7);
         border: 1px solid rgba(56, 189, 248, 0.2);
         border-radius: 10px;
         padding: 1rem;
@@ -44,20 +45,19 @@ st.markdown("""
         font-size: 0.85rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
     }
     .metric-val {
         color: #38BDF8;
-        font-size: 1.7rem;
+        font-size: 1.6rem;
         font-weight: 800;
-        margin-top: 0.3rem;
+        margin-top: 0.25rem;
     }
     
     .stButton > button, .stFormSubmitButton > button {
         background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
         color: white !important;
         border: none !important;
-        padding: 0.65rem 1.6rem !important;
+        padding: 0.6rem 1.6rem !important;
         font-weight: 700 !important;
         border-radius: 8px !important;
     }
@@ -67,6 +67,10 @@ st.markdown("""
 # =====================================================================
 # SESSION STATE ENGINE
 # =====================================================================
+if "sim_points" not in st.session_state:
+    st.session_state.sim_points = 0
+if "sim_completed" not in st.session_state:
+    st.session_state.sim_completed = False
 if "quiz_score" not in st.session_state:
     st.session_state.quiz_score = 0
 if "quiz_submitted" not in st.session_state:
@@ -74,238 +78,256 @@ if "quiz_submitted" not in st.session_state:
 if "eval_records" not in st.session_state:
     st.session_state.eval_records = {}
 
+# Calculate Unified Score
+total_final_score = st.session_state.sim_points + st.session_state.quiz_score
+
 # =====================================================================
 # SIDEBAR NAVIGATION
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 🏛️ Macroeconomic Nexus")
+    st.markdown("## 🇮🇳 Macroeconomic Portal")
     module = st.radio(
-        "Select Operating Plane:",
-        ["⚡ Policy Simulation Lab", "🎯 High-Stakes Assessment Deck"]
+        "Navigation:",
+        ["📈 Step 1: Policy Simulator (50 Pts)", "📝 Step 2: Knowledge Assessment (50 Pts)"]
     )
     st.markdown("---")
-    st.markdown("**Core Framework:**")
-    st.caption("• Classical Loanable Funds Clearing\n• Fiscal Deficit Crowding-Out\n• Fisherian Interest Mechanics\n• Keynesian Liquidity Traps")
+    st.markdown("### 🏆 Combined Scoreboard")
+    st.markdown(f"**Simulation Lab:** {st.session_state.sim_points} / 50")
+    st.markdown(f"**MCQ Assessment:** {st.session_state.quiz_score} / 50")
+    st.markdown(f"### **Total Mastery:** {total_final_score} / 100")
+    if total_final_score == 100:
+        st.success("🌟 Perfect Macroeconomic Score!")
 
 # =====================================================================
-# MODULE 1: SIMULATION LAB
+# GLOBAL SCORE BANNER
 # =====================================================================
-if module == "⚡ Policy Simulation Lab":
+st.markdown(f"""
+<div class="score-banner">
+    <h2 style="color: #34D399; margin: 0;">Aggregate Macro Performance: {total_final_score} / 100</h2>
+    <p style="color: #94A3B8; margin: 0.25rem 0 0 0;">
+        Simulation Lab: <b>{st.session_state.sim_points}/50 Pts</b> | Conceptual MCQs: <b>{st.session_state.quiz_score}/50 Pts</b>
+    </p>
+</div>
+""", unsafe_allow_html=True)
+
+# =====================================================================
+# MODULE 1: SIMULATION LAB (50 POINTS)
+# =====================================================================
+if module == "📈 Step 1: Policy Simulator (50 Pts)":
+    st.markdown("### 📈 Simple Loanable Funds & Policy Rate Simulator")
     st.markdown("""
-    <div class="header-box">
-        <h2 style="color: #38BDF8; margin: 0;">Loanable Funds Equilibrium & Crowding-Out Engine</h2>
-        <p style="color: #94A3B8; margin: 0.3rem 0 0 0;">
-            Simulate the interaction between National Saving (Supply) and Physical Investment Demand under varying macroeconomic regimes.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    Explore how household savings, corporate investment appetite, government borrowing, and the RBI policy benchmark 
+    determine the real interest rate and total capital cleared in India's financial system.
+    """)
 
-    col_ctrl, col_viz = st.columns([1, 1.3], gap="medium")
+    col1, col2 = st.columns([1, 1.3], gap="medium")
 
-    with col_ctrl:
-        st.subheader("🛠️ Policy Shock Vectors")
+    with col1:
+        st.subheader("🛠️ Macro Levers")
         
-        fiscal_deficit = st.slider(
-            "Fiscal Deficit (G - T):", 
-            min_value=-150.0, max_value=300.0, value=60.0, step=10.0, 
-            help="Positive = Budget Deficit; Negative = Surplus."
+        household_savings = st.slider(
+            "1. Household Savings Base (₹ Crore):",
+            min_value=20000, max_value=80000, value=45000, step=2500,
+            help="Higher savings expand the pool of loanable funds."
         )
         
-        autonomous_saving = st.slider(
-            "Autonomous Private Thriftiness (S₀):", 
-            min_value=50.0, max_value=400.0, value=200.0, step=10.0,
-            help="Structural shift in private baseline propensity to save."
+        corp_investment = st.slider(
+            "2. Corporate Investment Demand (₹ Crore):",
+            min_value=20000, max_value=80000, value=50000, step=2500,
+            help="Businesses borrowing funds to build factories, infrastructure, and machinery."
         )
         
-        capital_productivity = st.slider(
-            "Capital Productivity & Optimism (I₀):", 
-            min_value=200.0, max_value=600.0, value=400.0, step=10.0,
-            help="Autonomous firm willingness to invest given technological returns."
+        govt_borrowing = st.slider(
+            "3. Govt. Fiscal Deficit Borrowing (₹ Crore):",
+            min_value=0, max_value=30000, value=10000, step=1000,
+            help="Government competing for private savings to fund the deficit."
         )
         
-        nco_inflows = st.slider(
-            "Net Foreign Capital Inflow (Imports - Exports):", 
-            min_value=-100.0, max_value=200.0, value=20.0, step=10.0,
-            help="Net inflow of international loanable capital."
+        rbi_repo_bias = st.slider(
+            "4. RBI Benchmark Repo Anchor (%):",
+            min_value=3.5, max_value=8.5, value=6.5, step=0.25,
+            help="Base cost of money influenced by central bank policy."
         )
 
-        st.subheader("📈 Structural Elasticities")
-        s_elasticity = st.slider("Interest Elasticity of Saving (dS/dr):", 10.0, 60.0, 30.0, 5.0)
-        i_elasticity = st.slider("Interest Elasticity of Investment (dI/dr):", 10.0, 60.0, 35.0, 5.0)
+        # Theoretical Equilibrium Solver
+        # Net funds available = Household Savings - Govt Borrowing + sensitivity * r
+        # Investment demand = Corporate Investment - sensitivity * r
+        # Clearing: rate adjusts to balance funds
+        excess_demand = corp_investment - (household_savings - govt_borrowing)
+        r_eq = rbi_repo_bias + (excess_demand / 12000.0)
+        r_eq = round(max(3.0, min(14.0, r_eq)), 2)
+        cleared_funds = int(max(10000, corp_investment - (r_eq - rbi_repo_bias) * 1800))
 
-        # Baseline parameters
-        base_s0, base_i0, base_def = 200.0, 400.0, 0.0
-        r_base = (base_i0 - (base_s0 - base_def)) / (s_elasticity + i_elasticity)
-        vol_base = base_i0 - (i_elasticity * r_base)
+        st.markdown("---")
+        st.markdown("#### 🎯 Policy Mission: Stabilize the Economy")
+        st.caption("Adjust sliders so that the **Market Interest Rate settles between 6.50% and 7.50%** and **Cleared Capital is at least ₹45,000 Crore**.")
+        
+        if st.button("Evaluate Simulation Policy"):
+            if 6.50 <= r_eq <= 7.50 and cleared_funds >= 45000:
+                st.session_state.sim_points = 50
+                st.session_state.sim_completed = True
+                st.success("✅ Excellent policy coordination! Equilibrium achieved. Awarded: 50 / 50 Pts.")
+            else:
+                st.session_state.sim_points = 25
+                st.session_state.sim_completed = True
+                st.warning("⚠️ Partial target achieved. Rate or capital volume out of the ideal stabilization band. Awarded: 25 / 50 Pts.")
+            st.rerun()
 
-        effective_saving_intercept = (autonomous_saving - fiscal_deficit + nco_inflows)
-        r_eq = (capital_productivity - effective_saving_intercept) / (s_elasticity + i_elasticity)
-        r_eq = max(0.2, r_eq)
-        vol_eq = max(10.0, capital_productivity - (i_elasticity * r_eq))
-
-        investment_displacement = vol_base - vol_eq
-
-    with col_viz:
-        st.subheader("📊 Dynamic Market Clearance")
+    with col2:
+        st.subheader("📊 Indian Financial Market Clearance")
         
         m1, m2, m3 = st.columns(3)
         with m1:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Equilibrium Rate (r*)</div>
+                <div class="metric-title">Equilibrium Interest Rate</div>
                 <div class="metric-val">{r_eq:.2f}%</div>
             </div>
             """, unsafe_allow_html=True)
         with m2:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Cleared Volume (S* = I*)</div>
-                <div class="metric-val" style="color: #10B981;">${vol_eq:,.1f}B</div>
+                <div class="metric-title">Cleared Investment (S = I)</div>
+                <div class="metric-val" style="color: #10B981;">₹{cleared_funds:,} Cr</div>
             </div>
             """, unsafe_allow_html=True)
         with m3:
-            displacement_color = "#F87171" if investment_displacement > 0 else "#34D399"
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Capital Displaced</div>
-                <div class="metric-val" style="color: {displacement_color};">${abs(investment_displacement):,.1f}B</div>
+                <div class="metric-title">Govt. Absorption</div>
+                <div class="metric-val" style="color: #F87171;">₹{govt_borrowing:,} Cr</div>
             </div>
             """, unsafe_allow_html=True)
 
-        rates = np.linspace(1.0, 12.0, 50)
-        s_curve = effective_saving_intercept + (s_elasticity * rates)
-        i_curve = capital_productivity - (i_elasticity * rates)
+        # Plot Supply and Demand for Funds
+        rates = np.linspace(3.0, 14.0, 30)
+        net_savings_curve = (household_savings - govt_borrowing) + (rates - rbi_repo_bias) * 3500
+        investment_curve = corp_investment - (rates - rbi_repo_bias) * 3500
 
-        chart_data = pd.DataFrame({
-            "Real Interest Rate (r%)": np.round(rates, 2),
-            "National Saving Supply [S]": s_curve,
-            "Investment Demand [I]": i_curve
-        }).set_index("Real Interest Rate (r%)")
+        chart_df = pd.DataFrame({
+            "Interest Rate (%)": np.round(rates, 2),
+            "Available Funds / Savings (₹ Cr)": net_savings_curve,
+            "Investment Demand (₹ Cr)": investment_curve
+        }).set_index("Interest Rate (%)")
 
-        st.line_chart(chart_data)
-        st.caption(f"📍 Current Equilibrium Point: r* = {r_eq:.2f}% | Cleared Volume = ${vol_eq:,.1f}B")
+        st.line_chart(chart_df)
+        st.caption(f"📍 Market Equilibrium: r* = {r_eq:.2f}% | Cleared Capital = ₹{cleared_funds:,} Crore")
 
 # =====================================================================
-# MODULE 2: HIGH-STAKES ASSESSMENT DECK
+# MODULE 2: MCQ ASSESSMENT (50 POINTS)
 # =====================================================================
-elif module == "🎯 High-Stakes Assessment Deck":
-    st.markdown("""
-    <div class="header-box">
-        <h2 style="color: #38BDF8; margin: 0;">Advanced Macroeconomic Evaluation</h2>
-        <p style="color: #94A3B8; margin: 0.3rem 0 0 0;">
-            Rigorous scenarios on saving-investment coordination, portfolio substitution, and open-market interactions.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+elif module == "📝 Step 2: Knowledge Assessment (50 Pts)":
+    st.markdown("### 📝 Concepts in Saving, Investment & Interest Rates")
+    st.markdown("Answer these 5 core questions (10 points each). Your score will directly add to your final total.")
 
-    with st.form("hardcore_macro_quiz"):
-        st.markdown("#### Question 1: The Paradox of Thrift with Induced Investment")
+    with st.form("simple_macro_quiz"):
+        st.markdown("#### 1. Real vs. Nominal Interest Rate")
         q1 = st.radio(
-            "In a Keynesian macroeconomic framework where investment is not merely autonomous but also depends positively on aggregate income (I = I₀ + dY), "
-            "what is the impact of an exogenous increase in the private marginal propensity to save?",
+            "If an Indian commercial bank offers an interest rate of 8% on fixed deposits, and expected inflation is 5%, what is the real interest rate?",
             [
-                "A) Realized aggregate saving increases because higher saving reduces the real interest rate in the money market.",
-                "B) Realized national saving remains strictly invariant, as saving must balance autonomous investment at the new equilibrium output.",
-                "C) Realized aggregate national saving paradoxically falls, while aggregate output contracts by more than in the fixed-investment case.",
-                "D) Aggregate output declines, but realized national saving rises to equalize the increased steady-state capital stock."
+                "A) 13%",
+                "B) 3%",
+                "C) 1.6%",
+                "D) 8%"
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### Question 2: Barro-Ricardo Equivalence & Public Debt Dynamics")
+        st.markdown("#### 2. Determinants of Business Investment")
         q2 = st.radio(
-            "Under the assumptions of Ricardian Equivalence (infinite horizons, non-distortionary taxes, perfect capital markets), "
-            "if the government enacts a temporary debt-financed tax cut while holding the path of public expenditures constant:",
+            "When interest rates rise across commercial banks, what typically happens to planned business investment?",
             [
-                "A) The supply of loanable funds contracts because the government borrows from the public, driving the real interest rate higher.",
-                "B) Private saving expands by exactly the amount of the tax cut, neutralizing the public dissaving and keeping the real rate unchanged.",
-                "C) Real interest rates decrease because consumer liquidity surges, driving up commercial bank reserve holdings.",
-                "D) Aggregate demand expands via permanent income wealth effects, triggering demand-pull inflation."
+                "A) It decreases because borrowing costs for machinery and expansions increase.",
+                "B) It increases because higher interest rates mean businesses make more revenue.",
+                "C) It remains constant because investment depends solely on export demand.",
+                "D) It increases because banks give discounts to corporate borrowers."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### Question 3: The Mundell-Tobin Effect & The Fisher Identity")
+        st.markdown("#### 3. Government Borrowing and Crowding-Out")
         q3 = st.radio(
-            "According to the Mundell-Tobin effect, how does an increase in anticipated inflation (πᵉ) alter the classical Fisher equation (i = r + πᵉ)?",
+            "What does 'crowding out' refer to in the loanable funds market?",
             [
-                "A) The nominal rate (i) rises by more than 1:1 with πᵉ because lenders demand an inflation risk premium.",
-                "B) The nominal rate rises by less than 1:1 with πᵉ because rising inflation lowers real money balances, inducing households to hold physical capital, which depresses the equilibrium real rate (r).",
-                "C) The real rate (r) remains strictly fixed because money is neutral in the long run across all asset structures.",
-                "D) The real rate (r) spikes upward because inflation accelerates the capital depreciation rate."
+                "A) When too many commercial banks open branches in the same city.",
+                "B) When heavy government borrowing drives up interest rates, leaving fewer funds for private investment.",
+                "C) When foreign investors take over all government bonds.",
+                "D) When consumers spend all their savings on imported retail goods."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### Question 4: Open-Economy Fiscal Transmission (Mundell-Fleming)")
+        st.markdown("#### 4. The Incentive to Save")
         q4 = st.radio(
-            "In a small open economy characterized by perfect capital mobility and floating exchange rates, "
-            "what is the true mechanism of 'crowding out' following an expansionary fiscal deficit (G > T)?",
+            "From a classical economic perspective, an increase in the real interest rate provides households with:",
             [
-                "A) Domestic real interest rates rise above the world rate (r > r*), choking off domestic corporate capital expenditures.",
-                "B) Domestic interest rates remain pinned to the world interest rate (r = r*); the exchange rate appreciates, crowding out Net Exports (NX) completely.",
-                "C) Capital flight occurs, causing the currency to sharply depreciate and driving inflation to statutory maximums.",
-                "D) Domestic saving surges via compulsory import taxes, generating a permanent trade surplus."
+                "A) A greater reward for delaying current consumption and saving for the future.",
+                "B) A strong incentive to borrow more money for personal travel.",
+                "C) A reason to stop placing funds in bank accounts.",
+                "D) An automatic reduction in total income taxes."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### Question 5: Capital Market Clearing at the Zero Lower Bound")
+        st.markdown("#### 5. Saving and Investment Identity")
         q5 = st.radio(
-            "In an economy trapped at the Zero Lower Bound (nominal rate i = 0) with lingering deflation (π < 0), "
-            "why can the market for loanable funds fail to automatically clear at full employment?",
+            "In a closed domestic economy without foreign trade, what equality must hold true in macroeconomic equilibrium?",
             [
-                "A) The nominal interest rate cannot turn negative, meaning expected deflation forces the ex-ante real rate (r = i - πᵉ) to remain elevated, suppressing investment below full-employment saving.",
-                "B) At the zero lower bound, private investment demand becomes infinitely interest-elastic, depleting the banking sector.",
-                "C) Household saving collapses to zero because zero nominal yields eliminate any financial incentive to defer consumption.",
-                "D) The central bank loses the legal authority to conduct quantitative asset purchases."
+                "A) National Saving = Total Domestic Investment",
+                "B) Government Spending = Household Savings",
+                "C) Bank Deposits = Total Tax Revenue",
+                "D) Corporate Profit = Currency in Circulation"
             ], index=None
         )
 
-        submitted = st.form_submit_button("Submit Assessment & Reveal Diagnostics")
+        submit_quiz = st.form_submit_button("Submit Assessment & Calculate Final Score")
 
-        if submitted:
-            correct_answers = {
-                "q1": "C) Realized aggregate national saving paradoxically falls, while aggregate output contracts by more than in the fixed-investment case.",
-                "q2": "B) Private saving expands by exactly the amount of the tax cut, neutralizing the public dissaving and keeping the real rate unchanged.",
-                "q3": "B) The nominal rate rises by less than 1:1 with πᵉ because rising inflation lowers real money balances, inducing households to hold physical capital, which depresses the equilibrium real rate (r).",
-                "q4": "B) Domestic interest rates remain pinned to the world interest rate (r = r*); the exchange rate appreciates, crowding out Net Exports (NX) completely.",
-                "q5": "A) The nominal interest rate cannot turn negative, meaning expected deflation forces the ex-ante real rate (r = i - πᵉ) to remain elevated, suppressing investment below full-employment saving."
+        if submit_quiz:
+            correct_keys = {
+                "q1": "B) 3%",
+                "q2": "A) It decreases because borrowing costs for machinery and expansions increase.",
+                "q3": "B) When heavy government borrowing drives up interest rates, leaving fewer funds for private investment.",
+                "q4": "A) A greater reward for delaying current consumption and saving for the future.",
+                "q5": "A) National Saving = Total Domestic Investment"
             }
-            
+
             records = {
-                "q1": (q1 == correct_answers["q1"]),
-                "q2": (q2 == correct_answers["q2"]),
-                "q3": (q3 == correct_answers["q3"]),
-                "q4": (q4 == correct_answers["q4"]),
-                "q5": (q5 == correct_answers["q5"])
+                "q1": (q1 == correct_keys["q1"]),
+                "q2": (q2 == correct_keys["q2"]),
+                "q3": (q3 == correct_keys["q3"]),
+                "q4": (q4 == correct_keys["q4"]),
+                "q5": (q5 == correct_keys["q5"])
             }
 
-            st.session_state.quiz_score = sum(records.values()) * 20
+            st.session_state.quiz_score = sum(records.values()) * 10
             st.session_state.quiz_submitted = True
             st.session_state.eval_records = records
             st.rerun()
 
     if st.session_state.quiz_submitted:
         st.markdown("---")
-        score = st.session_state.quiz_score
-        color = "#10B981" if score >= 80 else ("#F59E0B" if score >= 40 else "#EF4444")
-        st.markdown(f"### Performance Grade: <span style='color: {color};'>{score} / 100</span>", unsafe_allow_html=True)
+        st.markdown(f"### Assessment Score: **{st.session_state.quiz_score} / 50 Points**")
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("**Q1 Clarification (Paradox of Thrift):** In the presence of an induced investment function (I = I₀ + dY), higher thrift cuts output, which directly reduces investment. Because realized S must equal realized I in equilibrium, total realized saving must *fall*, not just stay constant.")
+            st.error("❌ **Q1 Review:** Fisher Equation: Real Interest Rate = Nominal Rate (8%) - Inflation (5%) = 3%.")
         if not rec.get("q2", False):
-            st.error("**Q2 Clarification (Ricardian Equivalence):** Rational forward-looking agents realize debt issued today is future taxes in disguise. Hence, the marginal propensity to consume out of a debt-financed tax rebate is 0. Private saving rises by 100% of the cut, fully offsetting public dissaving.")
+            st.error("❌ **Q2 Review:** Higher interest rates make capital loans more expensive, lowering planned capital expenditures.")
         if not rec.get("q3", False):
-            st.error("**Q3 Clarification (Mundell-Tobin Effect):** Anticipated inflation penalizes cash holdings. Wealth is shifted out of money balances into physical productive capital, driving up the capital-labor ratio, reducing the marginal product of capital, and reducing the equilibrium real rate.")
+            st.error("❌ **Q3 Review:** Crowding out occurs when state deficits absorb loanable funds and raise interest rates, displacing private firms.")
         if not rec.get("q4", False):
-            st.error("**Q4 Clarification (Mundell-Fleming Crowding-Out):** Perfect capital mobility ties domestic interest rates to world rates (r = r*). Fiscal expansion triggers incipient capital inflows that appreciate the exchange rate, totally displacing Net Exports rather than domestic investment.")
+            st.error("❌ **Q4 Review:** Higher real interest rates reward saving by providing a greater intertemporal return.")
         if not rec.get("q5", False):
-            st.error("**Q5 Clarification (Zero Lower Bound Trap):** When i = 0, deflation (πᵉ < 0) implies r = 0 - (-|πᵉ|) = +|πᵉ| > 0. The real rate is mechanically wedged above zero, preventing investment from expanding to clear the excess supply of savings.")
+            st.error("❌ **Q5 Review:** In a closed economy, aggregate equilibrium requires National Saving (S) = Investment (I).")
 
 # =====================================================================
 # FOOTER
 # =====================================================================
 st.markdown("---")
-st.caption(f"⚡ Policy & Capital Clearing Engine | Platform System Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+f1, f2, f3 = st.columns(3)
+with f1:
+    st.caption("🇮🇳 Indian Macroeconomic Education Module")
+with f2:
+    st.caption("💰 Saving, Investment & Interest Rates")
+with f3:
+    st.caption(f"⏰ System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
