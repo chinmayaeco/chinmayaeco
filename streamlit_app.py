@@ -7,7 +7,7 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Saving, Investment & Interest Rate Lab",
+    page_title="Macro Lab: Money Velocity, Inflation & AD-AS",
     page_icon="🇮🇳",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -48,7 +48,7 @@ st.markdown("""
     }
     .metric-val {
         color: #38BDF8;
-        font-size: 1.6rem;
+        font-size: 1.5rem;
         font-weight: 800;
         margin-top: 0.25rem;
     }
@@ -78,7 +78,6 @@ if "quiz_submitted" not in st.session_state:
 if "eval_records" not in st.session_state:
     st.session_state.eval_records = {}
 
-# Calculate Unified Score
 total_final_score = st.session_state.sim_points + st.session_state.quiz_score
 
 # =====================================================================
@@ -87,13 +86,16 @@ total_final_score = st.session_state.sim_points + st.session_state.quiz_score
 with st.sidebar:
     st.markdown("## 🇮🇳 Macroeconomic Portal")
     module = st.radio(
-        "Navigation:",
-        ["📈 Step 1: Policy Simulator (50 Pts)", "📝 Step 2: Knowledge Assessment (50 Pts)"]
+        "Select Module:",
+        [
+            "📈 Module 1: AD-AS & Money Velocity Simulator (50 Pts)",
+            "📝 Module 2: Macro Mastery Assessment (50 Pts)"
+        ]
     )
     st.markdown("---")
     st.markdown("### 🏆 Combined Scoreboard")
     st.markdown(f"**Simulation Lab:** {st.session_state.sim_points} / 50")
-    st.markdown(f"**MCQ Assessment:** {st.session_state.quiz_score} / 50")
+    st.markdown(f"**Assessment:** {st.session_state.quiz_score} / 50")
     st.markdown(f"### **Total Mastery:** {total_final_score} / 100")
     if total_final_score == 100:
         st.success("🌟 Perfect Macroeconomic Score!")
@@ -103,7 +105,7 @@ with st.sidebar:
 # =====================================================================
 st.markdown(f"""
 <div class="score-banner">
-    <h2 style="color: #34D399; margin: 0;">Aggregate Macro Performance: {total_final_score} / 100</h2>
+    <h2 style="color: #34D399; margin: 0;">Macro Equilibrium & Monetarist Tracker: {total_final_score} / 100</h2>
     <p style="color: #94A3B8; margin: 0.25rem 0 0 0;">
         Simulation Lab: <b>{st.session_state.sim_points}/50 Pts</b> | Conceptual MCQs: <b>{st.session_state.quiz_score}/50 Pts</b>
     </p>
@@ -113,170 +115,181 @@ st.markdown(f"""
 # =====================================================================
 # MODULE 1: SIMULATION LAB (50 POINTS)
 # =====================================================================
-if module == "📈 Step 1: Policy Simulator (50 Pts)":
-    st.markdown("### 📈 Simple Loanable Funds & Policy Rate Simulator")
+if module == "📈 Module 1: AD-AS & Money Velocity Simulator (50 Pts)":
+    st.markdown("### 📈 Velocity of Money, Inflation, and AD–AS Equilibrium")
     st.markdown("""
-    Explore how household savings, corporate investment appetite, government borrowing, and the RBI policy benchmark 
-    determine the real interest rate and total capital cleared in India's financial system.
+    Model the **Classical Equation of Exchange** ($M \\cdot V = P \\cdot Y$) and short-run macroeconomic clearing. 
+    Analyze how shifts in broad money supply ($M_3$), transaction velocity ($V$), and supply-side energy/input shocks 
+    affect the **General Price Level ($P$)** and **Real GDP ($Y$)**.
     """)
 
     col1, col2 = st.columns([1, 1.3], gap="medium")
 
     with col1:
-        st.subheader("🛠️ Macro Levers")
-        
-        household_savings = st.slider(
-            "1. Household Savings Base (₹ Crore):",
-            min_value=20000, max_value=80000, value=45000, step=2500,
-            help="Higher savings expand the pool of loanable funds."
-        )
-        
-        corp_investment = st.slider(
-            "2. Corporate Investment Demand (₹ Crore):",
-            min_value=20000, max_value=80000, value=50000, step=2500,
-            help="Businesses borrowing funds to build factories, infrastructure, and machinery."
-        )
-        
-        govt_borrowing = st.slider(
-            "3. Govt. Fiscal Deficit Borrowing (₹ Crore):",
-            min_value=0, max_value=30000, value=10000, step=1000,
-            help="Government competing for private savings to fund the deficit."
-        )
-        
-        rbi_repo_bias = st.slider(
-            "4. RBI Benchmark Repo Anchor (%):",
-            min_value=3.5, max_value=8.5, value=6.5, step=0.25,
-            help="Base cost of money influenced by central bank policy."
+        st.subheader("🛠️ Macroeconomic Levers")
+
+        money_supply = st.slider(
+            "1. Money Stock (M3 Supply Index):",
+            min_value=80.0, max_value=220.0, value=120.0, step=5.0,
+            help="Total broad money stock circulating in the economy."
         )
 
-        # Theoretical Equilibrium Solver
-        # Net funds available = Household Savings - Govt Borrowing + sensitivity * r
-        # Investment demand = Corporate Investment - sensitivity * r
-        # Clearing: rate adjusts to balance funds
-        excess_demand = corp_investment - (household_savings - govt_borrowing)
-        r_eq = rbi_repo_bias + (excess_demand / 12000.0)
-        r_eq = round(max(3.0, min(14.0, r_eq)), 2)
-        cleared_funds = int(max(10000, corp_investment - (r_eq - rbi_repo_bias) * 1800))
+        velocity = st.slider(
+            "2. Velocity of Circulation (V):",
+            min_value=1.0, max_value=2.5, value=1.5, step=0.05,
+            help="Number of times an average rupee turns over for final transactions per year."
+        )
+
+        supply_shock = st.slider(
+            "3. Supply Shock Index (Oil / Agricultural Costs):",
+            min_value=-25.0, max_value=25.0, value=0.0, step=1.0,
+            help="Adverse (positive value) or favorable (negative value) cost shocks shifting SRAS."
+        )
+
+        potential_output = 140.0  # LRAS benchmark (Potential Real GDP)
+
+        # Theoretical Solver:
+        # Nominal GDP = M * V
+        # AD: P = (M * V) / Y  ==> In linear SR approximation:
+        # AD: P = a_ad - b_ad * Y, where a_ad scales with (M * V)
+        # SRAS: P = P_base + c_as * (Y - Y_pot) + supply_shock
+        # Equilibrium clearance:
+        nominal_gdp = money_supply * velocity
+        
+        # Solving linear clearing for visualization:
+        # AD: Y = (M * V) / P
+        # SRAS curve: P = 100 + 0.6 * (Y - potential_output) + supply_shock
+        # Solving quadratic or linear approximation:
+        # Approximate equilibrium around base price 100:
+        y_eq = potential_output + ((nominal_gdp - (100.0 + supply_shock) * potential_output) / 
+                                   (100.0 + 0.6 * potential_output + 1.2 * nominal_gdp / potential_output))
+        y_eq = round(max(90.0, min(180.0, y_eq)), 2)
+        p_eq = round(nominal_gdp / y_eq, 2)
+        inflation_gap = round(((p_eq - 100.0) / 100.0) * 100, 2)
+        output_gap = round(((y_eq - potential_output) / potential_output) * 100, 2)
 
         st.markdown("---")
-        st.markdown("#### 🎯 Policy Mission: Stabilize the Economy")
-        st.caption("Adjust sliders so that the **Market Interest Rate settles between 6.50% and 7.50%** and **Cleared Capital is at least ₹45,000 Crore**.")
-        
-        if st.button("Evaluate Simulation Policy"):
-            if 6.50 <= r_eq <= 7.50 and cleared_funds >= 45000:
+        st.markdown("#### 🎯 Policy Target: The 'Goldilocks' Balance")
+        st.caption(
+            "Calibrate $M$ and manage velocity so that **Price Index ($P$) is between 100 and 110** "
+            "and **Real Output ($Y$) is at or above Potential Output (140.0)** without overheating."
+        )
+
+        if st.button("Evaluate Stabilization Policy"):
+            if 100.0 <= p_eq <= 110.0 and y_eq >= 140.0:
                 st.session_state.sim_points = 50
                 st.session_state.sim_completed = True
-                st.success("✅ Excellent policy coordination! Equilibrium achieved. Awarded: 50 / 50 Pts.")
+                st.success("✅ Target met! Price stability maintained at full employment potential. Awarded: 50 / 50 Pts.")
             else:
                 st.session_state.sim_points = 25
                 st.session_state.sim_completed = True
-                st.warning("⚠️ Partial target achieved. Rate or capital volume out of the ideal stabilization band. Awarded: 25 / 50 Pts.")
+                st.warning("⚠️ Stagflationary or overheating divergence detected. Policy levers need fine-tuning. Awarded: 25 / 50 Pts.")
             st.rerun()
 
     with col2:
-        st.subheader("📊 Indian Financial Market Clearance")
-        
+        st.subheader("📊 Output-Inflation Clearance")
+
         m1, m2, m3 = st.columns(3)
         with m1:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Equilibrium Interest Rate</div>
-                <div class="metric-val">{r_eq:.2f}%</div>
+                <div class="metric-title">Price Level (P)</div>
+                <div class="metric-val">{p_eq:.2f}</div>
             </div>
             """, unsafe_allow_html=True)
         with m2:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Cleared Investment (S = I)</div>
-                <div class="metric-val" style="color: #10B981;">₹{cleared_funds:,} Cr</div>
+                <div class="metric-title">Real GDP (Y)</div>
+                <div class="metric-val" style="color: #10B981;">{y_eq:.1f}</div>
             </div>
             """, unsafe_allow_html=True)
         with m3:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Govt. Absorption</div>
-                <div class="metric-val" style="color: #F87171;">₹{govt_borrowing:,} Cr</div>
+                <div class="metric-title">Nominal GDP (M·V)</div>
+                <div class="metric-val" style="color: #F87171;">₹{nominal_gdp:.0f}</div>
             </div>
             """, unsafe_allow_html=True)
 
-        # Plot Supply and Demand for Funds
-        rates = np.linspace(3.0, 14.0, 30)
-        net_savings_curve = (household_savings - govt_borrowing) + (rates - rbi_repo_bias) * 3500
-        investment_curve = corp_investment - (rates - rbi_repo_bias) * 3500
+        # Plot AD, SRAS, and LRAS curves
+        y_range = np.linspace(100.0, 180.0, 40)
+        ad_curve = nominal_gdp / y_range
+        sras_curve = 100.0 + 0.6 * (y_range - potential_output) + supply_shock
 
         chart_df = pd.DataFrame({
-            "Interest Rate (%)": np.round(rates, 2),
-            "Available Funds / Savings (₹ Cr)": net_savings_curve,
-            "Investment Demand (₹ Cr)": investment_curve
-        }).set_index("Interest Rate (%)")
+            "Real Output (Y)": np.round(y_range, 1),
+            "Aggregate Demand (AD)": np.round(ad_curve, 2),
+            "Short-Run Aggregate Supply (SRAS)": np.round(sras_curve, 2)
+        }).set_index("Real Output (Y)")
 
         st.line_chart(chart_df)
-        st.caption(f"📍 Market Equilibrium: r* = {r_eq:.2f}% | Cleared Capital = ₹{cleared_funds:,} Crore")
+        st.caption(f"📍 Equilibrium: Price Level P* = {p_eq:.2f} | Real Output Y* = {y_eq:.1f} | Output Gap = {output_gap:+.2f}%")
 
 # =====================================================================
 # MODULE 2: MCQ ASSESSMENT (50 POINTS)
 # =====================================================================
-elif module == "📝 Step 2: Knowledge Assessment (50 Pts)":
-    st.markdown("### 📝 Concepts in Saving, Investment & Interest Rates")
-    st.markdown("Answer these 5 core questions (10 points each). Your score will directly add to your final total.")
+elif module == "📝 Module 2: Macro Mastery Assessment (50 Pts)":
+    st.markdown("### 📝 Concepts in Velocity, Price Levels, AD, and AS")
+    st.markdown("Test your understanding of the monetary transmission mechanism and aggregate equilibrium (10 points each).")
 
-    with st.form("simple_macro_quiz"):
-        st.markdown("#### 1. Real vs. Nominal Interest Rate")
+    with st.form("macro_ad_as_quiz"):
+        st.markdown("#### 1. The Quantity Theory of Money")
         q1 = st.radio(
-            "If an Indian commercial bank offers an interest rate of 8% on fixed deposits, and expected inflation is 5%, what is the real interest rate?",
+            "According to the Equation of Exchange ($M \\cdot V = P \\cdot Y$), if real output ($Y$) and velocity ($V$) are constant in the long run, a 7% increase in the money supply ($M$) directly leads to:",
             [
-                "A) 13%",
-                "B) 3%",
-                "C) 1.6%",
-                "D) 8%"
+                "A) A 7% increase in the price level (P).",
+                "B) A 7% decrease in the interest rate with zero inflation.",
+                "C) A 14% increase in real production capacity.",
+                "D) A permanent decline in velocity."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 2. Determinants of Business Investment")
+        st.markdown("#### 2. Determinants of Velocity")
         q2 = st.radio(
-            "When interest rates rise across commercial banks, what typically happens to planned business investment?",
+            "How does rapid adoption of digital payment infrastructure (like UPI in India) typically influence the transaction velocity of money ($V$)?",
             [
-                "A) It decreases because borrowing costs for machinery and expansions increase.",
-                "B) It increases because higher interest rates mean businesses make more revenue.",
-                "C) It remains constant because investment depends solely on export demand.",
-                "D) It increases because banks give discounts to corporate borrowers."
+                "A) It drives velocity to zero because physical cash is unused.",
+                "B) It tends to increase velocity by lowering transaction friction and clearing balances faster.",
+                "C) It has no relationship with money movement.",
+                "D) It decreases velocity because households hoard more bank deposits."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 3. Government Borrowing and Crowding-Out")
+        st.markdown("#### 3. Aggregate Demand Downward Slope")
         q3 = st.radio(
-            "What does 'crowding out' refer to in the loanable funds market?",
+            "Why does the Aggregate Demand (AD) curve slope downward with respect to the price level?",
             [
-                "A) When too many commercial banks open branches in the same city.",
-                "B) When heavy government borrowing drives up interest rates, leaving fewer funds for private investment.",
-                "C) When foreign investors take over all government bonds.",
-                "D) When consumers spend all their savings on imported retail goods."
+                "A) Higher prices cause firms to supply higher volumes of manufactured goods.",
+                "B) The wealth effect, interest rate effect, and net export effect reduce real expenditures as prices rise.",
+                "C) Central banks always cut rates when prices increase.",
+                "D) Consumer preferences shift exclusively to luxury goods."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 4. The Incentive to Save")
+        st.markdown("#### 4. Supply Shocks and Stagflation")
         q4 = st.radio(
-            "From a classical economic perspective, an increase in the real interest rate provides households with:",
+            "If crude oil prices sharply escalate (a negative/adverse aggregate supply shock), what is the short-run effect on the AD–AS framework?",
             [
-                "A) A greater reward for delaying current consumption and saving for the future.",
-                "B) A strong incentive to borrow more money for personal travel.",
-                "C) A reason to stop placing funds in bank accounts.",
-                "D) An automatic reduction in total income taxes."
+                "A) The SRAS curve shifts left/upward, causing higher price levels and lower real output (stagflation).",
+                "B) The AD curve shifts right, lowering unemployment without price changes.",
+                "C) Both real output and the price level fall simultaneously.",
+                "D) Potential output (LRAS) expands immediately."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 5. Saving and Investment Identity")
+        st.markdown("#### 5. Long-Run Classical Aggregate Supply")
         q5 = st.radio(
-            "In a closed domestic economy without foreign trade, what equality must hold true in macroeconomic equilibrium?",
+            "Why is the Long-Run Aggregate Supply (LRAS) curve represented as a vertical line at potential GDP ($Y^*$)?",
             [
-                "A) National Saving = Total Domestic Investment",
-                "B) Government Spending = Household Savings",
-                "C) Bank Deposits = Total Tax Revenue",
-                "D) Corporate Profit = Currency in Circulation"
+                "A) In the long run, wages and prices are fully flexible, meaning real output is dictated by technology, capital, and labor, not the price level.",
+                "B) Governments set fixed price caps on all final retail products.",
+                "C) Central banks prevent nominal wages from adjusting.",
+                "D) Money supply cannot grow faster than the population rate."
             ], index=None
         )
 
@@ -284,11 +297,11 @@ elif module == "📝 Step 2: Knowledge Assessment (50 Pts)":
 
         if submit_quiz:
             correct_keys = {
-                "q1": "B) 3%",
-                "q2": "A) It decreases because borrowing costs for machinery and expansions increase.",
-                "q3": "B) When heavy government borrowing drives up interest rates, leaving fewer funds for private investment.",
-                "q4": "A) A greater reward for delaying current consumption and saving for the future.",
-                "q5": "A) National Saving = Total Domestic Investment"
+                "q1": "A) A 7% increase in the price level (P).",
+                "q2": "B) It tends to increase velocity by lowering transaction friction and clearing balances faster.",
+                "q3": "B) The wealth effect, interest rate effect, and net export effect reduce real expenditures as prices rise.",
+                "q4": "A) The SRAS curve shifts left/upward, causing higher price levels and lower real output (stagflation).",
+                "q5": "A) In the long run, wages and prices are fully flexible, meaning real output is dictated by technology, capital, and labor, not the price level."
             }
 
             records = {
@@ -310,15 +323,15 @@ elif module == "📝 Step 2: Knowledge Assessment (50 Pts)":
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("❌ **Q1 Review:** Fisher Equation: Real Interest Rate = Nominal Rate (8%) - Inflation (5%) = 3%.")
+            st.error("❌ **Q1 Review:** Under classical neutrality ($M \\cdot V = P \\cdot Y$), with $V$ and $Y$ fixed, money growth maps 1:1 to price level growth.")
         if not rec.get("q2", False):
-            st.error("❌ **Q2 Review:** Higher interest rates make capital loans more expensive, lowering planned capital expenditures.")
+            st.error("❌ **Q2 Review:** Financial technologies reduce cash drag and transaction settlement times, boosting the velocity of circulation.")
         if not rec.get("q3", False):
-            st.error("❌ **Q3 Review:** Crowding out occurs when state deficits absorb loanable funds and raise interest rates, displacing private firms.")
+            st.error("❌ **Q3 Review:** The AD curve slopes downward due to the Pigou wealth effect, Keynesian interest rate effect, and Mundell-Fleming exchange rate/net export effect.")
         if not rec.get("q4", False):
-            st.error("❌ **Q4 Review:** Higher real interest rates reward saving by providing a greater intertemporal return.")
+            st.error("❌ **Q4 Review:** Adverse cost-push shocks shift the SRAS curve leftward/upward, reducing output and driving up prices (stagflation).")
         if not rec.get("q5", False):
-            st.error("❌ **Q5 Review:** In a closed economy, aggregate equilibrium requires National Saving (S) = Investment (I).")
+            st.error("❌ **Q5 Review:** LRAS is vertical because nominal price changes do not alter real production capabilities when factor markets clear.")
 
 # =====================================================================
 # FOOTER
@@ -328,6 +341,6 @@ f1, f2, f3 = st.columns(3)
 with f1:
     st.caption("🇮🇳 Indian Macroeconomic Education Module")
 with f2:
-    st.caption("💰 Saving, Investment & Interest Rates")
+    st.caption("⚡ Velocity, Inflation & AD-AS Mechanics")
 with f3:
     st.caption(f"⏰ System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
