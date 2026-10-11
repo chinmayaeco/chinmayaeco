@@ -7,13 +7,13 @@ from datetime import datetime
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Macro Lab: Money Velocity, Inflation & AD-AS",
-    page_icon="🇮🇳",
+    page_title="Macro Lab: Goods Market Equilibrium & The IS Curve",
+    page_icon="🏛️",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom Styling (Dark Slate & Emerald Theme)
+# Custom Styling (Dark Slate & Amber Theme)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
@@ -25,8 +25,8 @@ st.markdown("""
     }
     
     .score-banner {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
-        border: 1px solid rgba(52, 211, 153, 0.3);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
+        border: 1px solid rgba(251, 191, 36, 0.3);
         border-radius: 12px;
         padding: 1.25rem;
         margin-bottom: 1.5rem;
@@ -54,7 +54,7 @@ st.markdown("""
     }
     
     .stButton > button, .stFormSubmitButton > button {
-        background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
         color: white !important;
         border: none !important;
         padding: 0.6rem 1.6rem !important;
@@ -84,12 +84,12 @@ total_final_score = st.session_state.sim_points + st.session_state.quiz_score
 # SIDEBAR NAVIGATION
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 🇮🇳 Macroeconomic Portal")
+    st.markdown("## 🏛️ Goods Market Portal")
     module = st.radio(
         "Select Module:",
         [
-            "📈 Module 1: AD-AS & Money Velocity Simulator (50 Pts)",
-            "📝 Module 2: Macro Mastery Assessment (50 Pts)"
+            "📈 Module 1: Saving, Investment & IS Simulator (50 Pts)",
+            "📝 Module 2: IS Curve Mastery Assessment (50 Pts)"
         ]
     )
     st.markdown("---")
@@ -98,14 +98,14 @@ with st.sidebar:
     st.markdown(f"**Assessment:** {st.session_state.quiz_score} / 50")
     st.markdown(f"### **Total Mastery:** {total_final_score} / 100")
     if total_final_score == 100:
-        st.success("🌟 Perfect Macroeconomic Score!")
+        st.success("🌟 Perfect Goods Market Mastery!")
 
 # =====================================================================
 # GLOBAL SCORE BANNER
 # =====================================================================
 st.markdown(f"""
 <div class="score-banner">
-    <h2 style="color: #34D399; margin: 0;">Macro Equilibrium & Monetarist Tracker: {total_final_score} / 100</h2>
+    <h2 style="color: #FBBF24; margin: 0;">Goods Market & IS Equilibrium Tracker: {total_final_score} / 100</h2>
     <p style="color: #94A3B8; margin: 0.25rem 0 0 0;">
         Simulation Lab: <b>{st.session_state.sim_points}/50 Pts</b> | Conceptual MCQs: <b>{st.session_state.quiz_score}/50 Pts</b>
     </p>
@@ -115,181 +115,197 @@ st.markdown(f"""
 # =====================================================================
 # MODULE 1: SIMULATION LAB (50 POINTS)
 # =====================================================================
-if module == "📈 Module 1: AD-AS & Money Velocity Simulator (50 Pts)":
-    st.markdown("### 📈 Velocity of Money, Inflation, and AD–AS Equilibrium")
+if module == "📈 Module 1: Saving, Investment & IS Simulator (50 Pts)":
+    st.markdown("### 📈 Goods Market Clearing: Saving = Investment & The IS Curve")
     st.markdown("""
-    Model the **Classical Equation of Exchange** ($M \\cdot V = P \\cdot Y$) and short-run macroeconomic clearing. 
-    Analyze how shifts in broad money supply ($M_3$), transaction velocity ($V$), and supply-side energy/input shocks 
-    affect the **General Price Level ($P$)** and **Real GDP ($Y$)**.
+    Explore the equilibrium where **Total Leakages equal Total Injections** ($S + T = I + G$).
+    
+    The goods market clears along the **IS curve**, given by:
+    $$Y = \\frac{1}{1 - c(1 - t)} \\cdot \\left[ c_0 - c \\cdot T_0 + I_0 - d \\cdot r + G \\right]$$
     """)
 
     col1, col2 = st.columns([1, 1.3], gap="medium")
 
     with col1:
-        st.subheader("🛠️ Macroeconomic Levers")
+        st.subheader("🛠️ Behavioral & Policy Levers")
 
-        money_supply = st.slider(
-            "1. Money Stock (M3 Supply Index):",
-            min_value=80.0, max_value=220.0, value=120.0, step=5.0,
-            help="Total broad money stock circulating in the economy."
+        mpc = st.slider(
+            "1. Marginal Propensity to Consume (c):",
+            min_value=0.50, max_value=0.90, value=0.75, step=0.05,
+            help="Fraction of disposable income consumed. Determines the multiplier k = 1 / [1 - c(1 - t)]."
         )
 
-        velocity = st.slider(
-            "2. Velocity of Circulation (V):",
-            min_value=1.0, max_value=2.5, value=1.5, step=0.05,
-            help="Number of times an average rupee turns over for final transactions per year."
+        interest_rate = st.slider(
+            "2. Real Interest Rate (r %):",
+            min_value=1.0, max_value=12.0, value=5.0, step=0.5,
+            help="Cost of borrowing. Higher rates decrease interest-sensitive investment spending."
         )
 
-        supply_shock = st.slider(
-            "3. Supply Shock Index (Oil / Agricultural Costs):",
-            min_value=-25.0, max_value=25.0, value=0.0, step=1.0,
-            help="Adverse (positive value) or favorable (negative value) cost shocks shifting SRAS."
+        gov_spending = st.slider(
+            "3. Government Purchases (G):",
+            min_value=100.0, max_value=500.0, value=250.0, step=25.0,
+            help="Autonomous fiscal injection that shifts the IS curve rightward."
         )
 
-        potential_output = 140.0  # LRAS benchmark (Potential Real GDP)
+        inv_sensitivity = st.slider(
+            "4. Investment Sensitivity to Interest Rate (d):",
+            min_value=10.0, max_value=60.0, value=30.0, step=5.0,
+            help="Responsiveness of capital expenditure to changes in borrowing rates."
+        )
 
-        # Theoretical Solver:
-        # Nominal GDP = M * V
-        # AD: P = (M * V) / Y  ==> In linear SR approximation:
-        # AD: P = a_ad - b_ad * Y, where a_ad scales with (M * V)
-        # SRAS: P = P_base + c_as * (Y - Y_pot) + supply_shock
-        # Equilibrium clearance:
-        nominal_gdp = money_supply * velocity
+        # Behavioral & policy parameters
+        c0 = 120.0       # Autonomous consumption
+        tax_rate = 0.20  # Flat income tax (t = 20%)
+        t0 = 20.0        # Lump-sum tax
+        i0 = 300.0       # Autonomous investment confidence
+
+        # Multiplier & IS Engine
+        multiplier = 1.0 / (1.0 - mpc * (1.0 - tax_rate))
         
-        # Solving linear clearing for visualization:
-        # AD: Y = (M * V) / P
-        # SRAS curve: P = 100 + 0.6 * (Y - potential_output) + supply_shock
-        # Solving quadratic or linear approximation:
-        # Approximate equilibrium around base price 100:
-        y_eq = potential_output + ((nominal_gdp - (100.0 + supply_shock) * potential_output) / 
-                                   (100.0 + 0.6 * potential_output + 1.2 * nominal_gdp / potential_output))
-        y_eq = round(max(90.0, min(180.0, y_eq)), 2)
-        p_eq = round(nominal_gdp / y_eq, 2)
-        inflation_gap = round(((p_eq - 100.0) / 100.0) * 100, 2)
-        output_gap = round(((y_eq - potential_output) / potential_output) * 100, 2)
+        # Investment at current rate r
+        planned_investment = i0 - (inv_sensitivity * interest_rate)
+        
+        # Autonomous spending excluding rate-sensitive investment
+        autonomous_base = c0 - (mpc * t0) + i0 + gov_spending
+        
+        # Equilibrium Output Y*
+        y_eq = multiplier * (autonomous_base - (inv_sensitivity * interest_rate))
+        y_eq = round(max(400.0, min(2400.0, y_eq)), 2)
+
+        # Disposable Income, Consumption, and Saving
+        taxes = t0 + (tax_rate * y_eq)
+        yd = y_eq - taxes
+        consumption = c0 + (mpc * yd)
+        private_saving = yd - consumption
+        public_saving = taxes - gov_spending
+        national_saving = private_saving + public_saving
+
+        target_y_min = 1200.0
+        target_y_max = 1450.0
 
         st.markdown("---")
-        st.markdown("#### 🎯 Policy Target: The 'Goldilocks' Balance")
+        st.markdown("#### 🎯 Policy Target: Sustainable Potential GDP")
         st.caption(
-            "Calibrate $M$ and manage velocity so that **Price Index ($P$) is between 100 and 110** "
-            "and **Real Output ($Y$) is at or above Potential Output (140.0)** without overheating."
+            f"Tune fiscal policy ($G$) and borrowing rates ($r$) to reach equilibrium output "
+            f"between **{target_y_min:.0f}** and **{target_y_max:.0f}** with positive investment."
         )
 
-        if st.button("Evaluate Stabilization Policy"):
-            if 100.0 <= p_eq <= 110.0 and y_eq >= 140.0:
+        if st.button("Evaluate Goods Market Equilibrium"):
+            if target_y_min <= y_eq <= target_y_max and planned_investment > 0:
                 st.session_state.sim_points = 50
                 st.session_state.sim_completed = True
-                st.success("✅ Target met! Price stability maintained at full employment potential. Awarded: 50 / 50 Pts.")
+                st.success("✅ Equilibrium achieved within target output range! Awarded: 50 / 50 Pts.")
             else:
                 st.session_state.sim_points = 25
                 st.session_state.sim_completed = True
-                st.warning("⚠️ Stagflationary or overheating divergence detected. Policy levers need fine-tuning. Awarded: 25 / 50 Pts.")
+                st.warning("⚠️ Market equilibrium is outside target output range or investment is depressed. Awarded: 25 / 50 Pts.")
             st.rerun()
 
     with col2:
-        st.subheader("📊 Output-Inflation Clearance")
+        st.subheader("📊 Goods Market Clearance")
 
         m1, m2, m3 = st.columns(3)
         with m1:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Price Level (P)</div>
-                <div class="metric-val">{p_eq:.2f}</div>
+                <div class="metric-title">Equilibrium Output (Y*)</div>
+                <div class="metric-val">{y_eq:.1f}</div>
             </div>
             """, unsafe_allow_html=True)
         with m2:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Real GDP (Y)</div>
-                <div class="metric-val" style="color: #10B981;">{y_eq:.1f}</div>
+                <div class="metric-title">Planned Investment (I)</div>
+                <div class="metric-val" style="color: #10B981;">{planned_investment:.1f}</div>
             </div>
             """, unsafe_allow_html=True)
         with m3:
             st.markdown(f"""
             <div class="metric-panel">
-                <div class="metric-title">Nominal GDP (M·V)</div>
-                <div class="metric-val" style="color: #F87171;">₹{nominal_gdp:.0f}</div>
+                <div class="metric-title">Keynesian Multiplier (k)</div>
+                <div class="metric-val" style="color: #F59E0B;">{multiplier:.2f}</div>
             </div>
             """, unsafe_allow_html=True)
 
-        # Plot AD, SRAS, and LRAS curves
-        y_range = np.linspace(100.0, 180.0, 40)
-        ad_curve = nominal_gdp / y_range
-        sras_curve = 100.0 + 0.6 * (y_range - potential_output) + supply_shock
+        # Plotting the IS Curve across varying interest rates
+        r_range = np.linspace(1.0, 14.0, 30)
+        y_is_curve = multiplier * (autonomous_base - (inv_sensitivity * r_range))
 
         chart_df = pd.DataFrame({
-            "Real Output (Y)": np.round(y_range, 1),
-            "Aggregate Demand (AD)": np.round(ad_curve, 2),
-            "Short-Run Aggregate Supply (SRAS)": np.round(sras_curve, 2)
-        }).set_index("Real Output (Y)")
+            "Real Interest Rate (r %)": np.round(r_range, 1),
+            "IS Curve (Goods Market Equilibrium Output Y)": np.round(y_is_curve, 1)
+        }).set_index("Real Interest Rate (r %)")
 
         st.line_chart(chart_df)
-        st.caption(f"📍 Equilibrium: Price Level P* = {p_eq:.2f} | Real Output Y* = {y_eq:.1f} | Output Gap = {output_gap:+.2f}%")
+        st.caption(
+            f"📍 Current Equilibrium: r = {interest_rate:.1f}% | Y* = {y_eq:.1f} | "
+            f"National Saving (S) = Planned Investment (I) = {planned_investment:.1f}"
+        )
 
 # =====================================================================
 # MODULE 2: MCQ ASSESSMENT (50 POINTS)
 # =====================================================================
-elif module == "📝 Module 2: Macro Mastery Assessment (50 Pts)":
-    st.markdown("### 📝 Concepts in Velocity, Price Levels, AD, and AS")
-    st.markdown("Test your understanding of the monetary transmission mechanism and aggregate equilibrium (10 points each).")
+elif module == "📝 Module 2: IS Curve Mastery Assessment (50 Pts)":
+    st.markdown("### 📝 Concepts in Saving, Investment, and the IS Schedule")
+    st.markdown("Assess your understanding of goods market equilibrium and multiplier dynamics (10 points each).")
 
-    with st.form("macro_ad_as_quiz"):
-        st.markdown("#### 1. The Quantity Theory of Money")
+    with st.form("goods_market_quiz"):
+        st.markdown("#### 1. Goods Market Clearance Identity")
         q1 = st.radio(
-            "According to the Equation of Exchange ($M \\cdot V = P \\cdot Y$), if real output ($Y$) and velocity ($V$) are constant in the long run, a 7% increase in the money supply ($M$) directly leads to:",
+            "In an open economy with government, what is the fundamental accounting condition for goods market equilibrium (the IS relation)?",
             [
-                "A) A 7% increase in the price level (P).",
-                "B) A 7% decrease in the interest rate with zero inflation.",
-                "C) A 14% increase in real production capacity.",
-                "D) A permanent decline in velocity."
+                "A) S + T + M = I + G + X (Total Leakages = Total Injections)",
+                "B) Money Supply = Money Demand",
+                "C) Government Spending = Tax Receipts (Balanced Budget)",
+                "D) Private Saving = Autonomous Consumption"
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 2. Determinants of Velocity")
+        st.markdown("#### 2. The Negative Slope of the IS Curve")
         q2 = st.radio(
-            "How does rapid adoption of digital payment infrastructure (like UPI in India) typically influence the transaction velocity of money ($V$)?",
+            "Why does the IS curve slope downward in (Y, r) space?",
             [
-                "A) It drives velocity to zero because physical cash is unused.",
-                "B) It tends to increase velocity by lowering transaction friction and clearing balances faster.",
-                "C) It has no relationship with money movement.",
-                "D) It decreases velocity because households hoard more bank deposits."
+                "A) A higher price level reduces the real purchasing power of cash balances.",
+                "B) A higher interest rate increases the cost of borrowing, lowering planned investment and aggregate demand.",
+                "C) Higher output raises liquidity preference, pushing up loan rates.",
+                "D) Higher savings automatically reduce long-term capital productivity."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 3. Aggregate Demand Downward Slope")
+        st.markdown("#### 3. Shifts in the IS Curve")
         q3 = st.radio(
-            "Why does the Aggregate Demand (AD) curve slope downward with respect to the price level?",
+            "Which of the following actions causes the IS curve to shift to the right?",
             [
-                "A) Higher prices cause firms to supply higher volumes of manufactured goods.",
-                "B) The wealth effect, interest rate effect, and net export effect reduce real expenditures as prices rise.",
-                "C) Central banks always cut rates when prices increase.",
-                "D) Consumer preferences shift exclusively to luxury goods."
+                "A) A reduction in government purchases (G).",
+                "B) An increase in autonomous taxes (T0).",
+                "C) An increase in business investor confidence that raises autonomous investment (I0).",
+                "D) A contractionary monetary policy implemented by the central bank."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 4. Supply Shocks and Stagflation")
+        st.markdown("#### 4. The Paradox of Thrift")
         q4 = st.radio(
-            "If crude oil prices sharply escalate (a negative/adverse aggregate supply shock), what is the short-run effect on the AD–AS framework?",
+            "According to Keynesian theory, if all households attempt to increase autonomous saving without an increase in investment demand:",
             [
-                "A) The SRAS curve shifts left/upward, causing higher price levels and lower real output (stagflation).",
-                "B) The AD curve shifts right, lowering unemployment without price changes.",
-                "C) Both real output and the price level fall simultaneously.",
-                "D) Potential output (LRAS) expands immediately."
+                "A) National output expands due to an abundance of loanable funds.",
+                "B) Aggregate expenditure drops, reducing equilibrium income so total realized savings remains unchanged or declines.",
+                "C) The IS curve shifts outward to the right.",
+                "D) Capital investment surges unconditionally."
             ], index=None
         )
 
         st.markdown("---")
-        st.markdown("#### 5. Long-Run Classical Aggregate Supply")
+        st.markdown("#### 5. Steepness and Slope Sensitivity")
         q5 = st.radio(
-            "Why is the Long-Run Aggregate Supply (LRAS) curve represented as a vertical line at potential GDP ($Y^*$)?",
+            "What condition makes the IS curve relatively flatter (more interest-elastic)?",
             [
-                "A) In the long run, wages and prices are fully flexible, meaning real output is dictated by technology, capital, and labor, not the price level.",
-                "B) Governments set fixed price caps on all final retail products.",
-                "C) Central banks prevent nominal wages from adjusting.",
-                "D) Money supply cannot grow faster than the population rate."
+                "A) Investment demand is highly sensitive to the real interest rate (large d) and the multiplier is large.",
+                "B) Investment is completely insensitive to interest rates (d = 0).",
+                "C) The marginal propensity to consume is close to zero.",
+                "D) The tax rate is 100%."
             ], index=None
         )
 
@@ -297,11 +313,11 @@ elif module == "📝 Module 2: Macro Mastery Assessment (50 Pts)":
 
         if submit_quiz:
             correct_keys = {
-                "q1": "A) A 7% increase in the price level (P).",
-                "q2": "B) It tends to increase velocity by lowering transaction friction and clearing balances faster.",
-                "q3": "B) The wealth effect, interest rate effect, and net export effect reduce real expenditures as prices rise.",
-                "q4": "A) The SRAS curve shifts left/upward, causing higher price levels and lower real output (stagflation).",
-                "q5": "A) In the long run, wages and prices are fully flexible, meaning real output is dictated by technology, capital, and labor, not the price level."
+                "q1": "A) S + T + M = I + G + X (Total Leakages = Total Injections)",
+                "q2": "B) A higher interest rate increases the cost of borrowing, lowering planned investment and aggregate demand.",
+                "q3": "C) An increase in business investor confidence that raises autonomous investment (I0).",
+                "q4": "B) Aggregate expenditure drops, reducing equilibrium income so total realized savings remains unchanged or declines.",
+                "q5": "A) Investment demand is highly sensitive to the real interest rate (large d) and the multiplier is large."
             }
 
             records = {
@@ -323,15 +339,15 @@ elif module == "📝 Module 2: Macro Mastery Assessment (50 Pts)":
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("❌ **Q1 Review:** Under classical neutrality ($M \\cdot V = P \\cdot Y$), with $V$ and $Y$ fixed, money growth maps 1:1 to price level growth.")
+            st.error("❌ **Q1 Review:** Goods market equilibrium requires leakages ($S + T + M$) to equal injections ($I + G + X$).")
         if not rec.get("q2", False):
-            st.error("❌ **Q2 Review:** Financial technologies reduce cash drag and transaction settlement times, boosting the velocity of circulation.")
+            st.error("❌ **Q2 Review:** Higher interest rates raise the cost of financing capital projects, curtailing investment and aggregate income.")
         if not rec.get("q3", False):
-            st.error("❌ **Q3 Review:** The AD curve slopes downward due to the Pigou wealth effect, Keynesian interest rate effect, and Mundell-Fleming exchange rate/net export effect.")
+            st.error("❌ **Q3 Review:** Positive shifts in autonomous spending ($C_0, I_0, G$) shift the IS curve rightward by $\\Delta A \\times \\text{multiplier}$.")
         if not rec.get("q4", False):
-            st.error("❌ **Q4 Review:** Adverse cost-push shocks shift the SRAS curve leftward/upward, reducing output and driving up prices (stagflation).")
+            st.error("❌ **Q4 Review:** The Paradox of Thrift shows an autonomous push to save lowers consumption demand, reducing output until saving balances lower investment.")
         if not rec.get("q5", False):
-            st.error("❌ **Q5 Review:** LRAS is vertical because nominal price changes do not alter real production capabilities when factor markets clear.")
+            st.error("❌ **Q5 Review:** The slope of the IS curve is $-\\frac{1 - c(1-t)}{d}$. High sensitivity $d$ and high multiplier make the curve flatter.")
 
 # =====================================================================
 # FOOTER
@@ -339,8 +355,8 @@ elif module == "📝 Module 2: Macro Mastery Assessment (50 Pts)":
 st.markdown("---")
 f1, f2, f3 = st.columns(3)
 with f1:
-    st.caption("🇮🇳 Indian Macroeconomic Education Module")
+    st.caption("🏛️ Macroeconomic Analysis Portal")
 with f2:
-    st.caption("⚡ Velocity, Inflation & AD-AS Mechanics")
+    st.caption("⚡ Goods Market Clearing & IS Schedule Dynamics")
 with f3:
     st.caption(f"⏰ System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
