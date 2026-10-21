@@ -1,20 +1,21 @@
-import streamlit as st
-import pandas as pd
-import numpy as np
 from datetime import datetime
+import numpy as np
+import pandas as pd
+import streamlit as st
 
 # =====================================================================
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Macro Lab: Goods Market Equilibrium & The IS Curve",
-    page_icon="🏛️",
+    page_title="Macro Lab: Money Market Equilibrium & The LM Curve",
+    page_icon="🪙",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="expanded",
 )
 
-# Custom Styling (Dark Slate & Amber Theme)
-st.markdown("""
+# Custom Styling (Dark Slate & Amber / Emerald Theme)
+st.markdown(
+    """
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     * { font-family: 'Plus Jakarta Sans', sans-serif; }
@@ -25,7 +26,7 @@ st.markdown("""
     }
     
     .score-banner {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(14, 165, 233, 0.15) 100%);
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
         border: 1px solid rgba(251, 191, 36, 0.3);
         border-radius: 12px;
         padding: 1.25rem;
@@ -62,292 +63,408 @@ st.markdown("""
         border-radius: 8px !important;
     }
 </style>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # =====================================================================
 # SESSION STATE ENGINE
 # =====================================================================
-if "sim_points" not in st.session_state:
-    st.session_state.sim_points = 0
-if "sim_completed" not in st.session_state:
-    st.session_state.sim_completed = False
-if "quiz_score" not in st.session_state:
-    st.session_state.quiz_score = 0
-if "quiz_submitted" not in st.session_state:
-    st.session_state.quiz_submitted = False
-if "eval_records" not in st.session_state:
-    st.session_state.eval_records = {}
+if "lm_sim_points" not in st.session_state:
+  st.session_state.lm_sim_points = 0
+if "lm_sim_completed" not in st.session_state:
+  st.session_state.lm_sim_completed = False
+if "lm_quiz_score" not in st.session_state:
+  st.session_state.lm_quiz_score = 0
+if "lm_quiz_submitted" not in st.session_state:
+  st.session_state.lm_quiz_submitted = False
+if "lm_eval_records" not in st.session_state:
+  st.session_state.lm_eval_records = {}
 
-total_final_score = st.session_state.sim_points + st.session_state.quiz_score
+total_final_score = (
+    st.session_state.lm_sim_points + st.session_state.lm_quiz_score
+)
 
 # =====================================================================
 # SIDEBAR NAVIGATION
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 🏛️ Goods Market Portal")
-    module = st.radio(
-        "Select Module:",
-        [
-            "📈 Module 1: Saving, Investment & IS Simulator (50 Pts)",
-            "📝 Module 2: IS Curve Mastery Assessment (50 Pts)"
-        ]
-    )
-    st.markdown("---")
-    st.markdown("### 🏆 Combined Scoreboard")
-    st.markdown(f"**Simulation Lab:** {st.session_state.sim_points} / 50")
-    st.markdown(f"**Assessment:** {st.session_state.quiz_score} / 50")
-    st.markdown(f"### **Total Mastery:** {total_final_score} / 100")
-    if total_final_score == 100:
-        st.success("🌟 Perfect Goods Market Mastery!")
+  st.markdown("## 🪙 Money Market Portal")
+  module = st.radio(
+      "Select Module:",
+      [
+          "📈 Module 1: Money Demand, Supply & LM Simulator (50 Pts)",
+          "📝 Module 2: LM Curve Mastery Assessment (50 Pts)",
+      ],
+  )
+  st.markdown("---")
+  st.markdown("### 🏆 Combined Scoreboard")
+  st.markdown(f"**Simulation Lab:** {st.session_state.lm_sim_points} / 50")
+  st.markdown(f"**Assessment:** {st.session_state.lm_quiz_score} / 50")
+  st.markdown(f"### **Total Mastery:** {total_final_score} / 100")
+  if total_final_score == 100:
+    st.success("🌟 Perfect Money Market Mastery!")
 
 # =====================================================================
 # GLOBAL SCORE BANNER
 # =====================================================================
-st.markdown(f"""
+st.markdown(
+    f"""
 <div class="score-banner">
-    <h2 style="color: #FBBF24; margin: 0;">Goods Market & IS Equilibrium Tracker: {total_final_score} / 100</h2>
+    <h2 style="color: #FBBF24; margin: 0;">Money Market & LM Equilibrium Tracker: {total_final_score} / 100</h2>
     <p style="color: #94A3B8; margin: 0.25rem 0 0 0;">
-        Simulation Lab: <b>{st.session_state.sim_points}/50 Pts</b> | Conceptual MCQs: <b>{st.session_state.quiz_score}/50 Pts</b>
+        Simulation Lab: <b>{st.session_state.lm_sim_points}/50 Pts</b> | Conceptual MCQs: <b>{st.session_state.lm_quiz_score}/50 Pts</b>
     </p>
 </div>
-""", unsafe_allow_html=True)
+""",
+    unsafe_allow_html=True,
+)
 
 # =====================================================================
 # MODULE 1: SIMULATION LAB (50 POINTS)
 # =====================================================================
-if module == "📈 Module 1: Saving, Investment & IS Simulator (50 Pts)":
-    st.markdown("### 📈 Goods Market Clearing: Saving = Investment & The IS Curve")
-    st.markdown("""
-    Explore the equilibrium where **Total Leakages equal Total Injections** ($S + T = I + G$).
+if module == "📈 Module 1: Money Demand, Supply & LM Simulator (50 Pts)":
+  st.markdown("### 📈 Money Market Clearing: Liquidity Preference & The LM Curve")
+  st.markdown(r"""
+    The money market clears when real money supply equals real money demand:
+    $$\frac{M}{P} = L(Y, r) = k \cdot Y - h \cdot r$$
     
-    The goods market clears along the **IS curve**, given by:
-    $$Y = \\frac{1}{1 - c(1 - t)} \\cdot \\left[ c_0 - c \\cdot T_0 + I_0 - d \\cdot r + G \\right]$$
+    Solving for the nominal/real interest rate gives the **LM Curve**:
+    $$r = \frac{k}{h} \cdot Y - \frac{1}{h} \left(\frac{M}{P}\right)$$
     """)
 
-    col1, col2 = st.columns([1, 1.3], gap="medium")
+  col1, col2 = st.columns([1, 1.3], gap="medium")
 
-    with col1:
-        st.subheader("🛠️ Behavioral & Policy Levers")
+  with col1:
+    st.subheader("🛠️ Monetary & Liquidity Levers")
 
-        mpc = st.slider(
-            "1. Marginal Propensity to Consume (c):",
-            min_value=0.50, max_value=0.90, value=0.75, step=0.05,
-            help="Fraction of disposable income consumed. Determines the multiplier k = 1 / [1 - c(1 - t)]."
+    m_nominal = st.slider(
+        "1. Nominal Money Supply (M):",
+        min_value=400.0,
+        max_value=1600.0,
+        value=900.0,
+        step=50.0,
+        help="Monetary base controlled by the central bank via open market operations.",
+    )
+
+    p_level = st.slider(
+        "2. Aggregate Price Level (P):",
+        min_value=1.0,
+        max_value=3.0,
+        value=1.5,
+        step=0.1,
+        help="Price level determining the purchasing power of money balances.",
+    )
+
+    y_income = st.slider(
+        "3. Real Output / Aggregate Income (Y):",
+        min_value=1000.0,
+        max_value=2500.0,
+        value=1600.0,
+        step=50.0,
+        help="National income driving transactions and precautionary money demand.",
+    )
+
+    h_sensitivity = st.slider(
+        "4. Speculative Interest Sensitivity (h):",
+        min_value=20.0,
+        max_value=100.0,
+        value=50.0,
+        step=5.0,
+        help="Responsiveness of money demand to interest rates (speculative/portfolio demand).",
+    )
+
+    # Fixed structural parameters
+    k_sensitivity = 0.50  # Transaction money demand sensitivity to income
+
+    # Calculations
+    real_money_supply = m_nominal / p_level
+    transaction_demand = k_sensitivity * y_income
+
+    # Equilibrium interest rate on the LM curve: r* = (k*Y - M/P) / h
+    r_eq = (transaction_demand - real_money_supply) / h_sensitivity
+
+    # LM Curve Slope: dr/dY = k/h
+    lm_slope = k_sensitivity / h_sensitivity
+
+    target_r_min = 3.0
+    target_r_max = 6.0
+
+    st.markdown("---")
+    st.markdown("#### 🎯 Central Bank Target Rate Window")
+    st.caption(
+        f"Calibrate monetary policy ($M$) relative to price level ($P$) and output ($Y$) "
+        f"to achieve an equilibrium clearing rate ($r^*$) between **{target_r_min:.1f}%** and **{target_r_max:.1f}%**."
+    )
+
+    if st.button("Evaluate Money Market Equilibrium"):
+      if target_r_min <= r_eq <= target_r_max:
+        st.session_state.lm_sim_points = 50
+        st.session_state.lm_sim_completed = True
+        st.success(
+            f"✅ Target interest rate band met at r = {r_eq:.2f}%! Awarded: 50"
+            " / 50 Pts."
         )
-
-        interest_rate = st.slider(
-            "2. Real Interest Rate (r %):",
-            min_value=1.0, max_value=12.0, value=5.0, step=0.5,
-            help="Cost of borrowing. Higher rates decrease interest-sensitive investment spending."
+      else:
+        st.session_state.lm_sim_points = 25
+        st.session_state.lm_sim_completed = True
+        st.warning(
+            f"⚠️ Rate {r_eq:.2f}% is outside the {target_r_min:.1f}% - {target_r_max:.1f}% stability band. Awarded: 25 / 50 Pts."
         )
+      st.rerun()
 
-        gov_spending = st.slider(
-            "3. Government Purchases (G):",
-            min_value=100.0, max_value=500.0, value=250.0, step=25.0,
-            help="Autonomous fiscal injection that shifts the IS curve rightward."
-        )
+  with col2:
+    st.subheader("📊 Liquidity Market Metrics & LM Trajectory")
 
-        inv_sensitivity = st.slider(
-            "4. Investment Sensitivity to Interest Rate (d):",
-            min_value=10.0, max_value=60.0, value=30.0, step=5.0,
-            help="Responsiveness of capital expenditure to changes in borrowing rates."
-        )
-
-        # Behavioral & policy parameters
-        c0 = 120.0       # Autonomous consumption
-        tax_rate = 0.20  # Flat income tax (t = 20%)
-        t0 = 20.0        # Lump-sum tax
-        i0 = 300.0       # Autonomous investment confidence
-
-        # Multiplier & IS Engine
-        multiplier = 1.0 / (1.0 - mpc * (1.0 - tax_rate))
-        
-        # Investment at current rate r
-        planned_investment = i0 - (inv_sensitivity * interest_rate)
-        
-        # Autonomous spending excluding rate-sensitive investment
-        autonomous_base = c0 - (mpc * t0) + i0 + gov_spending
-        
-        # Equilibrium Output Y*
-        y_eq = multiplier * (autonomous_base - (inv_sensitivity * interest_rate))
-        y_eq = round(max(400.0, min(2400.0, y_eq)), 2)
-
-        # Disposable Income, Consumption, and Saving
-        taxes = t0 + (tax_rate * y_eq)
-        yd = y_eq - taxes
-        consumption = c0 + (mpc * yd)
-        private_saving = yd - consumption
-        public_saving = taxes - gov_spending
-        national_saving = private_saving + public_saving
-
-        target_y_min = 1200.0
-        target_y_max = 1450.0
-
-        st.markdown("---")
-        st.markdown("#### 🎯 Policy Target: Sustainable Potential GDP")
-        st.caption(
-            f"Tune fiscal policy ($G$) and borrowing rates ($r$) to reach equilibrium output "
-            f"between **{target_y_min:.0f}** and **{target_y_max:.0f}** with positive investment."
-        )
-
-        if st.button("Evaluate Goods Market Equilibrium"):
-            if target_y_min <= y_eq <= target_y_max and planned_investment > 0:
-                st.session_state.sim_points = 50
-                st.session_state.sim_completed = True
-                st.success("✅ Equilibrium achieved within target output range! Awarded: 50 / 50 Pts.")
-            else:
-                st.session_state.sim_points = 25
-                st.session_state.sim_completed = True
-                st.warning("⚠️ Market equilibrium is outside target output range or investment is depressed. Awarded: 25 / 50 Pts.")
-            st.rerun()
-
-    with col2:
-        st.subheader("📊 Goods Market Clearance")
-
-        m1, m2, m3 = st.columns(3)
-        with m1:
-            st.markdown(f"""
+    m1, m2, m3 = st.columns(3)
+    with m1:
+      st.markdown(
+          f"""
             <div class="metric-panel">
-                <div class="metric-title">Equilibrium Output (Y*)</div>
-                <div class="metric-val">{y_eq:.1f}</div>
+                <div class="metric-title">Real Money Stock (M/P)</div>
+                <div class="metric-val">{real_money_supply:.1f}</div>
             </div>
-            """, unsafe_allow_html=True)
-        with m2:
-            st.markdown(f"""
+            """,
+          unsafe_allow_html=True,
+      )
+    with m2:
+      st.markdown(
+          f"""
             <div class="metric-panel">
-                <div class="metric-title">Planned Investment (I)</div>
-                <div class="metric-val" style="color: #10B981;">{planned_investment:.1f}</div>
+                <div class="metric-title">Equilibrium Rate (r*)</div>
+                <div class="metric-val" style="color: {'#10B981' if target_r_min <= r_eq <= target_r_max else '#F87171'};">{r_eq:.2f}%</div>
             </div>
-            """, unsafe_allow_html=True)
-        with m3:
-            st.markdown(f"""
+            """,
+          unsafe_allow_html=True,
+      )
+    with m3:
+      st.markdown(
+          f"""
             <div class="metric-panel">
-                <div class="metric-title">Keynesian Multiplier (k)</div>
-                <div class="metric-val" style="color: #F59E0B;">{multiplier:.2f}</div>
+                <div class="metric-title">LM Slope (k / h)</div>
+                <div class="metric-val" style="color: #F59E0B;">{lm_slope:.3f}</div>
             </div>
-            """, unsafe_allow_html=True)
+            """,
+          unsafe_allow_html=True,
+      )
 
-        # Plotting the IS Curve across varying interest rates
-        r_range = np.linspace(1.0, 14.0, 30)
-        y_is_curve = multiplier * (autonomous_base - (inv_sensitivity * r_range))
+    # Plotting the LM Curve: r as a function of Y across income levels
+    y_range = np.linspace(800.0, 2600.0, 30)
+    r_lm_curve = (k_sensitivity * y_range - real_money_supply) / h_sensitivity
 
-        chart_df = pd.DataFrame({
-            "Real Interest Rate (r %)": np.round(r_range, 1),
-            "IS Curve (Goods Market Equilibrium Output Y)": np.round(y_is_curve, 1)
-        }).set_index("Real Interest Rate (r %)")
+    chart_df = pd.DataFrame({
+        "Output / Income (Y)": np.round(y_range, 0),
+        "LM Curve: Market Clearing Interest Rate (r %)": np.round(
+            r_lm_curve, 2
+        ),
+    }).set_index("Output / Income (Y)")
 
-        st.line_chart(chart_df)
-        st.caption(
-            f"📍 Current Equilibrium: r = {interest_rate:.1f}% | Y* = {y_eq:.1f} | "
-            f"National Saving (S) = Planned Investment (I) = {planned_investment:.1f}"
-        )
+    st.line_chart(chart_df)
+    st.caption(
+        f"📍 Current Equilibrium Point on LM: Y = {y_income:.0f} | r* = {r_eq:.2f}% | "
+        f"Transaction Demand = {transaction_demand:.1f} | Speculative Demand = {(h_sensitivity * r_eq):.1f}"
+    )
 
 # =====================================================================
 # MODULE 2: MCQ ASSESSMENT (50 POINTS)
 # =====================================================================
-elif module == "📝 Module 2: IS Curve Mastery Assessment (50 Pts)":
-    st.markdown("### 📝 Concepts in Saving, Investment, and the IS Schedule")
-    st.markdown("Assess your understanding of goods market equilibrium and multiplier dynamics (10 points each).")
+elif module == "📝 Module 2: LM Curve Mastery Assessment (50 Pts)":
+  st.markdown("### 📝 Concepts in Money Demand, Money Supply & The LM Schedule")
+  st.markdown(
+      "Assess your understanding of liquidity preference, central banking, and"
+      " LM slopes (10 points each)."
+  )
 
-    with st.form("goods_market_quiz"):
-        st.markdown("#### 1. Goods Market Clearance Identity")
-        q1 = st.radio(
-            "In an open economy with government, what is the fundamental accounting condition for goods market equilibrium (the IS relation)?",
-            [
-                "A) S + T + M = I + G + X (Total Leakages = Total Injections)",
-                "B) Money Supply = Money Demand",
-                "C) Government Spending = Tax Receipts (Balanced Budget)",
-                "D) Private Saving = Autonomous Consumption"
-            ], index=None
-        )
+  with st.form("money_market_quiz"):
+    st.markdown("#### 1. Components of Keynesian Money Demand")
+    q1 = st.radio(
+        "According to Keynes' Liquidity Preference Theory, real money demand"
+        " depends directly on:",
+        [
+            (
+                "A) Income (positively for transactions/precaution) and interest"
+                " rates (negatively for speculative demand)."
+            ),
+            (
+                "B) The real interest rate positively and government spending"
+                " negatively."
+            ),
+            "C) Solely on the gold reserves maintained by the central bank.",
+            "D) Income negatively and the marginal propensity to save positively.",
+        ],
+        index=None,
+    )
 
-        st.markdown("---")
-        st.markdown("#### 2. The Negative Slope of the IS Curve")
-        q2 = st.radio(
-            "Why does the IS curve slope downward in (Y, r) space?",
-            [
-                "A) A higher price level reduces the real purchasing power of cash balances.",
-                "B) A higher interest rate increases the cost of borrowing, lowering planned investment and aggregate demand.",
-                "C) Higher output raises liquidity preference, pushing up loan rates.",
-                "D) Higher savings automatically reduce long-term capital productivity."
-            ], index=None
-        )
+    st.markdown("---")
+    st.markdown("#### 2. The Upward Slope of the LM Curve")
+    q2 = st.radio(
+        "Why does the LM schedule exhibit an upward (positive) slope in (Y, r)"
+        " space?",
+        [
+            (
+                "A) Lower output increases consumer borrowing, causing interest"
+                " rates to climb."
+            ),
+            (
+                "B) Higher output increases transaction demand for money; with a"
+                " fixed real money supply, interest rates must rise to choke off"
+                " speculative demand and restore equilibrium."
+            ),
+            (
+                "C) Higher interest rates force commercial banks to reduce"
+                " credit creation."
+            ),
+            (
+                "D) Higher output lowers the price level, reducing nominal"
+                " balances."
+            ),
+        ],
+        index=None,
+    )
 
-        st.markdown("---")
-        st.markdown("#### 3. Shifts in the IS Curve")
-        q3 = st.radio(
-            "Which of the following actions causes the IS curve to shift to the right?",
-            [
-                "A) A reduction in government purchases (G).",
-                "B) An increase in autonomous taxes (T0).",
-                "C) An increase in business investor confidence that raises autonomous investment (I0).",
-                "D) A contractionary monetary policy implemented by the central bank."
-            ], index=None
-        )
+    st.markdown("---")
+    st.markdown("#### 3. Shifting the LM Schedule")
+    q3 = st.radio(
+        "Which event shifts the LM curve downward and to the right?",
+        [
+            (
+                "A) An increase in the price level (P) while nominal money"
+                " remains fixed."
+            ),
+            (
+                "B) An open market purchase of bonds by the central bank"
+                " (expansionary monetary policy)."
+            ),
+            "C) An increase in autonomous government expenditure (G).",
+            "D) An increase in transaction demand sensitivity (k).",
+        ],
+        index=None,
+    )
 
-        st.markdown("---")
-        st.markdown("#### 4. The Paradox of Thrift")
-        q4 = st.radio(
-            "According to Keynesian theory, if all households attempt to increase autonomous saving without an increase in investment demand:",
-            [
-                "A) National output expands due to an abundance of loanable funds.",
-                "B) Aggregate expenditure drops, reducing equilibrium income so total realized savings remains unchanged or declines.",
-                "C) The IS curve shifts outward to the right.",
-                "D) Capital investment surges unconditionally."
-            ], index=None
-        )
+    st.markdown("---")
+    st.markdown("#### 4. The Liquidity Trap")
+    q4 = st.radio(
+        "In a liquidity trap, what happens to the money demand interest"
+        " sensitivity (h) and the LM curve?",
+        [
+            (
+                "A) Sensitivity h becomes zero (d = 0), rendering the LM curve"
+                " completely vertical (Classical case)."
+            ),
+            (
+                "B) Sensitivity h approaches infinity, making the LM curve"
+                " horizontal; monetary expansion cannot lower interest rates"
+                " further."
+            ),
+            (
+                "C) The LM curve shifts continuously to the left without bound."
+            ),
+            "D) Money velocity expands toward infinity.",
+        ],
+        index=None,
+    )
 
-        st.markdown("---")
-        st.markdown("#### 5. Steepness and Slope Sensitivity")
-        q5 = st.radio(
-            "What condition makes the IS curve relatively flatter (more interest-elastic)?",
-            [
-                "A) Investment demand is highly sensitive to the real interest rate (large d) and the multiplier is large.",
-                "B) Investment is completely insensitive to interest rates (d = 0).",
-                "C) The marginal propensity to consume is close to zero.",
-                "D) The tax rate is 100%."
-            ], index=None
-        )
+    st.markdown("---")
+    st.markdown("#### 5. Slope Determinants of the LM Curve")
+    q5 = st.radio(
+        "Holding all else constant, the LM curve becomes steeper when:",
+        [
+            (
+                "A) Money demand is highly sensitive to the interest rate (large"
+                " h)."
+            ),
+            (
+                "B) The income responsiveness of money demand (k) is high and"
+                " interest sensitivity (h) is low."
+            ),
+            "C) The money multiplier drops to zero.",
+            "D) Government taxes increase sharply.",
+        ],
+        index=None,
+    )
 
-        submit_quiz = st.form_submit_button("Submit Assessment & Calculate Final Score")
+    submit_quiz = st.form_submit_button(
+        "Submit Assessment & Calculate Final Score"
+    )
 
-        if submit_quiz:
-            correct_keys = {
-                "q1": "A) S + T + M = I + G + X (Total Leakages = Total Injections)",
-                "q2": "B) A higher interest rate increases the cost of borrowing, lowering planned investment and aggregate demand.",
-                "q3": "C) An increase in business investor confidence that raises autonomous investment (I0).",
-                "q4": "B) Aggregate expenditure drops, reducing equilibrium income so total realized savings remains unchanged or declines.",
-                "q5": "A) Investment demand is highly sensitive to the real interest rate (large d) and the multiplier is large."
-            }
+    if submit_quiz:
+      correct_keys = {
+          "q1": (
+              "A) Income (positively for transactions/precaution) and interest"
+              " rates (negatively for speculative demand)."
+          ),
+          "q2": (
+              "B) Higher output increases transaction demand for money; with a"
+              " fixed real money supply, interest rates must rise to choke off"
+              " speculative demand and restore equilibrium."
+          ),
+          "q3": (
+              "B) An open market purchase of bonds by the central bank"
+              " (expansionary monetary policy)."
+          ),
+          "q4": (
+              "B) Sensitivity h approaches infinity, making the LM curve"
+              " horizontal; monetary expansion cannot lower interest rates"
+              " further."
+          ),
+          "q5": (
+              "B) The income responsiveness of money demand (k) is high and"
+              " interest sensitivity (h) is low."
+          ),
+      }
 
-            records = {
-                "q1": (q1 == correct_keys["q1"]),
-                "q2": (q2 == correct_keys["q2"]),
-                "q3": (q3 == correct_keys["q3"]),
-                "q4": (q4 == correct_keys["q4"]),
-                "q5": (q5 == correct_keys["q5"])
-            }
+      records = {
+          "q1": (q1 == correct_keys["q1"]),
+          "q2": (q2 == correct_keys["q2"]),
+          "q3": (q3 == correct_keys["q3"]),
+          "q4": (q4 == correct_keys["q4"]),
+          "q5": (q5 == correct_keys["q5"]),
+      }
 
-            st.session_state.quiz_score = sum(records.values()) * 10
-            st.session_state.quiz_submitted = True
-            st.session_state.eval_records = records
-            st.rerun()
+      st.session_state.lm_quiz_score = sum(records.values()) * 10
+      st.session_state.lm_quiz_submitted = True
+      st.session_state.lm_eval_records = records
+      st.rerun()
 
-    if st.session_state.quiz_submitted:
-        st.markdown("---")
-        st.markdown(f"### Assessment Score: **{st.session_state.quiz_score} / 50 Points**")
+  if st.session_state.lm_quiz_submitted:
+    st.markdown("---")
+    st.markdown(
+        f"### Assessment Score: **{st.session_state.lm_quiz_score} / 50"
+        " Points**"
+    )
 
-        rec = st.session_state.eval_records
-        if not rec.get("q1", False):
-            st.error("❌ **Q1 Review:** Goods market equilibrium requires leakages ($S + T + M$) to equal injections ($I + G + X$).")
-        if not rec.get("q2", False):
-            st.error("❌ **Q2 Review:** Higher interest rates raise the cost of financing capital projects, curtailing investment and aggregate income.")
-        if not rec.get("q3", False):
-            st.error("❌ **Q3 Review:** Positive shifts in autonomous spending ($C_0, I_0, G$) shift the IS curve rightward by $\\Delta A \\times \\text{multiplier}$.")
-        if not rec.get("q4", False):
-            st.error("❌ **Q4 Review:** The Paradox of Thrift shows an autonomous push to save lowers consumption demand, reducing output until saving balances lower investment.")
-        if not rec.get("q5", False):
-            st.error("❌ **Q5 Review:** The slope of the IS curve is $-\\frac{1 - c(1-t)}{d}$. High sensitivity $d$ and high multiplier make the curve flatter.")
+    rec = st.session_state.lm_eval_records
+    if not rec.get("q1", False):
+      st.error(
+          "❌ **Q1 Review:** Money demand $M^d/P = kY - hr$. Transactions and"
+          " precautionary needs grow with $Y$, while speculative demand drops as"
+          " $r$ rises (higher opportunity cost of holding cash)."
+      )
+    if not rec.get("q2", False):
+      st.error(
+          "❌ **Q2 Review:** When $Y$ expands, households demand more cash for"
+          " transactions. With $M/P$ constant, bond sales push bond prices down"
+          " and interest rates up until money demand re-equilibrates with"
+          " supply."
+      )
+    if not rec.get("q3", False):
+      st.error(
+          "❌ **Q3 Review:** Open market purchases increase nominal balances"
+          " $M$, raising real supply $M/P$. This shifts the LM curve downward"
+          " and rightward, reducing $r$ for any given $Y$."
+      )
+    if not rec.get("q4", False):
+      st.error(
+          "❌ **Q4 Review:** In a Keynesian Liquidity Trap, interest rates are"
+          " so low that money and bonds become near-perfect substitutes ($h"
+          r" \to \infty$), making the LM curve completely horizontal."
+      )
+    if not rec.get("q5", False):
+      st.error(
+          "❌ **Q5 Review:** The slope of the LM curve is $\\frac{\\Delta"
+          r" r}{\\Delta Y} = \frac{k}{h}$. A larger income sensitivity ($k$)"
+          " or a lower interest sensitivity ($h$) makes the curve steeper."
+      )
 
 # =====================================================================
 # FOOTER
@@ -355,8 +472,8 @@ elif module == "📝 Module 2: IS Curve Mastery Assessment (50 Pts)":
 st.markdown("---")
 f1, f2, f3 = st.columns(3)
 with f1:
-    st.caption("🏛️ Macroeconomic Analysis Portal")
+  st.caption("🪙 Macroeconomic Analysis Portal")
 with f2:
-    st.caption("⚡ Goods Market Clearing & IS Schedule Dynamics")
+  st.caption("⚡ Money Market Clearing & LM Schedule Dynamics")
 with f3:
-    st.caption(f"⏰ System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+  st.caption(f"⏰ System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
