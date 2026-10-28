@@ -7,8 +7,8 @@ import streamlit as st
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Financial Markets Lab: Primary & Secondary Markets",
-    page_icon="🏛️",
+    page_title="Macroeconomic Lab: Money Market & LM Curve",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -137,12 +137,12 @@ total_final_score = st.session_state.market_points + st.session_state.quiz_score
 # SIDEBAR NAVIGATION
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 🏛️ Financial Markets Lab")
+    st.markdown("## 📈 Macroeconomic Lab")
     module = st.radio(
         "Select Learning Module:",
         [
-            "🏢 Module 1: Primary & Secondary Markets",
-            "📝 Module 2: Financial Markets Assessment",
+            "🏛️ Module 1: Money Market & LM Curve Mechanics",
+            "📝 Module 2: Monetary Theory Assessment",
         ],
     )
     st.markdown("---")
@@ -152,7 +152,7 @@ with st.sidebar:
     st.markdown(f"### **Aggregate Score:** {total_final_score} / 100")
 
     if total_final_score == 100:
-        st.success("🌟 Market Specialist Status Achieved!")
+        st.success("🌟 Monetary Macro Specialist Status Achieved!")
 
 # =====================================================================
 # GLOBAL SCORE BANNER
@@ -160,7 +160,7 @@ with st.sidebar:
 st.markdown(
     f"""
 <div class="score-banner">
-    <h2 style="color: #FBBF24; margin: 0; font-weight: 800;">Financial Markets Learning Suite: {total_final_score} / 100</h2>
+    <h2 style="color: #FBBF24; margin: 0; font-weight: 800;">Liquidity Preference & LM Suite: {total_final_score} / 100</h2>
     <p style="color: #E2E8F0; margin: 0.35rem 0 0 0; font-size: 1rem;">
         Simulation Lab: <b>{st.session_state.market_points}/50 Pts</b> | Conceptual Assessment: <b>{st.session_state.quiz_score}/50 Pts</b>
     </p>
@@ -170,60 +170,60 @@ st.markdown(
 )
 
 # =====================================================================
-# MODULE 1: FINANCIAL MARKETS, PRIMARY & SECONDARY
+# MODULE 1: MONEY DEMAND, MONEY SUPPLY & THE LM CURVE
 # =====================================================================
-if module == "🏢 Module 1: Primary & Secondary Markets":
-    st.markdown("### 🏢 Financial Markets Architecture: Capital Allocation & Liquidity")
+if module == "🏛️ Module 1: Money Market & LM Curve Mechanics":
+    st.markdown("### 🏛️ Money Market Equilibrium: Keynesian Liquidity Preference to the LM Curve")
     st.markdown(
-        "Financial markets channel surplus capital from savers to deficit entities "
-        "(corporations, public bodies) for capital formation."
+        "The money market equilibrates the demand for real money balances with the real money supply set by the central bank. "
+        "The **LM (Liquidity-Money) curve** charts all combinations of national income ($Y$) and interest rates ($r$) where the money market clears."
     )
 
-    tab_tax, tab_deep = st.tabs(["🏛️ Institutional Overview", "🔬 Primary vs. Secondary Deep Dive"])
+    tab_overview, tab_deep = st.tabs(["📚 Core Framework", "🔬 Microfoundations & Transmission"])
 
-    with tab_tax:
+    with tab_overview:
         st.markdown(
             """
-| Dimension | Money Market | Capital Market |
-| :--- | :--- | :--- |
-| **Maturity Profile** | Short-term (under 1 Year) | Long-term (over 1 Year or Perpetual) |
-| **Primary Instruments** | Treasury Bills, Commercial Paper, Repos, CDs | Common Equities, Corporate Debt, Sovereign Bonds |
-| **Primary Function** | Managing working capital & institutional liquidity | Funding real assets, long-term capex, expansion |
-| **Risk / Return** | Low default risk, low yields, price stability | Higher duration & equity risk, higher return |
+| Component | Analytical Form | Primary Determinants | Behavioral Rationale |
+| :--- | :--- | :--- | :--- |
+| **Real Money Demand ($L$)** | $L(Y, r) = kY - hr$ | Output ($Y$), Nominal Interest Rate ($r$) | Transactions & precautionary demand scale with income; speculative demand declines with interest rates (opportunity cost). |
+| **Real Money Supply ($M/P$)** | $\\bar{M} / \\bar{P}$ | Nominal Money Stock ($M$), Price Level ($P$) | Exogenously set by the central bank and institutional reserve architecture in the short run. |
+| **Equilibrium Condition** | $\\bar{M}/\\bar{P} = kY - hr$ | Asset market clearing | Interest rates adjust continuously to eliminate excess cash or bond demand. |
+| **LM Equation** | $r = \\frac{k}{h}Y - \\frac{1}{h}\\left(\\frac{M}{P}\\right)$ | Slope $= k/h$, Shift $= -\\frac{1}{h}\\Delta(M/P)$ | Higher income raises transaction demand, requiring higher interest rates to choke off speculative balances and restore equilibrium. |
             """
         )
 
     with tab_deep:
-        col_p, col_s = st.columns(2, gap="medium")
-        with col_p:
+        col_md, col_ms = st.columns(2, gap="medium")
+        with col_md:
             st.markdown(
                 """
 <div class="concept-card">
-    <h4 style="color: #38BDF8; margin: 0 0 0.5rem 0;">1. Primary Market (Capital Creation)</h4>
+    <h4 style="color: #38BDF8; margin: 0 0 0.5rem 0;">1. Keynesian Motives for Holding Money</h4>
     <p style="font-size: 0.9rem;">
-        Where newly minted securities are issued. Capital flows <b>directly from investors to the issuer</b>.
+        Money yields liquidity services rather than financial returns. The demand for real balances balances transaction needs against opportunity cost.
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li><b>Mechanisms:</b> Initial Public Offerings (IPOs), Rights Offerings, Private Placements.</li>
-        <li><b>Key Intermediaries:</b> Investment banks, underwriting syndicates, bookrunners.</li>
-        <li><b>Economic Role:</b> Increases aggregate real investment and physical capital stock.</li>
+        <li><b>Transactions Motive:</b> Cash held for day-to-day payments; scales positively with real output ($kY$).</li>
+        <li><b>Precautionary Motive:</b> Safety margin against unexpected expenditures; scales with real output.</li>
+        <li><b>Speculative Motive:</b> Inverse sensitivity to rate of return on alternative assets (bonds). Governed by $-hr$.</li>
     </ul>
 </div>
                 """,
                 unsafe_allow_html=True,
             )
-        with col_s:
+        with col_ms:
             st.markdown(
                 """
 <div class="concept-card">
-    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Secondary Market (Liquidity & Discovery)</h4>
+    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Policy Shocks & Curve Shifts</h4>
     <p style="font-size: 0.9rem;">
-        Where existing securities are traded <b>between market participants</b>. The issuing firm receives zero capital.
+        The position and slope of the LM curve determine monetary policy potency:
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li><b>Mechanisms:</b> Central Limit Order Books (NYSE, NASDAQ), Over-the-Counter (OTC) networks.</li>
-        <li><b>Key Intermediaries:</b> Market makers, broker-dealers, clearinghouses.</li>
-        <li><b>Economic Role:</b> Continuous pricing, immediate exit liquidity, reducing cost of capital.</li>
+        <li><b>Expansionary Policy:</b> Central bank raises $M$ $\\rightarrow$ Excess liquidity drops $r$ at any given $Y$ $\\rightarrow$ <b>LM shifts right/down</b>.</li>
+        <li><b>Price Surges ($P\\uparrow$):</b> Erodes real money balances $(M/P)\\downarrow$ $\\rightarrow$ <b>LM shifts left/up</b>.</li>
+        <li><b>Liquidity Trap ($h \\to \\infty$):</b> Absolute elasticity at zero lower bound $\\rightarrow$ Flat LM curve; monetary policy cannot lower rates further.</li>
     </ul>
 </div>
                 """,
@@ -231,196 +231,217 @@ if module == "🏢 Module 1: Primary & Secondary Markets":
             )
 
     st.markdown("---")
-    st.subheader("🛠️ Interactive Labs: Primary Dilution & Secondary Market Order Book")
+    st.subheader("🛠️ Interactive Labs: Money Market Clearing & LM Derivation")
 
     lab_mode = st.radio(
         "Choose Lab Component:",
         [
-            "1. Primary Market: IPO Pricing, Capital Raised & Dilution",
-            "2. Secondary Market: Bid-Ask Spread & Liquidity Depth",
+            "1. Money Market Equilibrium: Rate Determination & Policy Shock",
+            "2. LM Curve Constructor: Income Variation & Monetary Shift",
         ],
         horizontal=True,
     )
 
-    if lab_mode == "1. Primary Market: IPO Pricing, Capital Raised & Dilution":
-        c_ipo1, c_ipo2 = st.columns([1, 1.2], gap="large")
+    if lab_mode == "1. Money Market Equilibrium: Rate Determination & Policy Shock":
+        c_sim1, c_sim2 = st.columns([1, 1.2], gap="large")
 
-        with c_ipo1:
-            st.markdown("#### Primary IPO Configuration")
-            pre_shares = st.slider("Existing Pre-IPO Shares (Millions):", 10.0, 100.0, 50.0, 5.0)
-            shares_issued = st.slider("New Shares to Issue (Millions):", 5.0, 50.0, 15.0, 1.0)
-            offer_price = st.slider("Offer Price per Share (USD):", 10.0, 100.0, 40.0, 2.0)
-            underwriting_fee_pct = st.slider("Underwriting Spread / Discount (%):", 1.0, 10.0, 5.0, 0.5)
+        with c_sim1:
+            st.markdown("#### Money Market Calibration")
+            nominal_m = st.slider("Nominal Money Supply ($M$ in Billions):", 200.0, 1200.0, 600.0, 50.0)
+            price_p = st.slider("Price Level Index ($P$):", 0.5, 3.0, 1.0, 0.1)
+            real_income_y = st.slider("Real Aggregate Income ($Y$):", 1000.0, 4000.0, 2000.0, 100.0)
+            k_param = st.slider("Transaction Sensitivity ($k$):", 0.1, 0.6, 0.35, 0.05)
+            h_param = st.slider("Interest Rate Sensitivity ($h$):", 20.0, 150.0, 60.0, 5.0)
 
-            gross_proceeds = shares_issued * offer_price
-            fees = gross_proceeds * (underwriting_fee_pct / 100.0)
-            net_proceeds = gross_proceeds - fees
-            post_shares = pre_shares + shares_issued
-            dilution_pct = (shares_issued / post_shares) * 100.0
-            post_money_mkt_cap = post_shares * offer_price
+            # Mathematical derivations
+            real_ms = nominal_m / price_p
+            # Equilibrium: real_ms = k*Y - h*r  =>  h*r = k*Y - real_ms  => r = (k*Y - real_ms)/h
+            eq_rate = (k_param * real_income_y - real_ms) / h_param
+            eq_rate_clamped = max(eq_rate, 0.0)
 
             st.markdown("---")
-            st.markdown("#### Capital Allocation Objective")
-            st.caption("Structure an issuance that raises at least **500M USD Net Capital** while keeping founder dilution **under 25%**.")
+            st.markdown("#### Stabilization Challenge")
+            st.caption(
+                "Adjust policy variables ($M$ or assume a targeted $Y$) to hit an **Equilibrium Policy Interest Rate between 3.0% and 5.0%** with a **Real Money Stock of at least 500 Billion**."
+            )
 
-            if st.button("Submit IPO Capital Plan"):
-                if net_proceeds >= 500.0 and dilution_pct <= 25.0:
+            if st.button("Evaluate Equilibrium Target"):
+                if 3.0 <= eq_rate <= 5.0 and real_ms >= 500.0:
                     st.session_state.market_points = 50
-                    st.success(f"Target reached! Net proceeds: {net_proceeds:.1f}M USD, Dilution: {dilution_pct:.1f}% (Awarded: 50/50 Pts)")
+                    st.success(f"Equilibrium achieved! Target rate: {eq_rate:.2f}%, Real M/P: {real_ms:.1f}B (Awarded: 50/50 Pts)")
                 else:
                     st.session_state.market_points = 25
-                    st.warning(f"Target criteria missed: Net proceeds {net_proceeds:.1f}M USD (Target: 500M+ USD) or Dilution {dilution_pct:.1f}% (Target: 25% or less). (Awarded: 25/50 Pts)")
+                    st.warning(
+                        f"Target missed: Equilibrium Rate is {eq_rate:.2f}% (Target: 3.0-5.0%) or Real Supply is {real_ms:.1f}B (Target: 500B+). (Awarded: 25/50 Pts)"
+                    )
                 st.rerun()
 
-        with c_ipo2:
-            st.markdown("#### Offering Economics & Ownership Breakdown")
-            p_m1, p_m2, p_m3 = st.columns(3)
-            with p_m1:
+        with c_sim2:
+            st.markdown("#### Money Market State & Allocations")
+            m1, m2, m3 = st.columns(3)
+            with m1:
                 st.markdown(
                     f"""
                     <div class="metric-panel">
-                        <div class="metric-title">Net Capital Raised</div>
-                        <div class="metric-val" style="color: {'#10B981' if net_proceeds >= 500 else '#38BDF8'} !important;">{net_proceeds:.1f}M USD</div>
+                        <div class="metric-title">Real Money Supply (M/P)</div>
+                        <div class="metric-val" style="color: {'#10B981' if real_ms >= 500 else '#38BDF8'} !important;">{real_ms:.1f}B</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
-            with p_m2:
+            with m2:
+                rate_color = "#10B981" if 3.0 <= eq_rate <= 5.0 else ("#F87171" if eq_rate < 0 else "#FBBF24")
                 st.markdown(
                     f"""
                     <div class="metric-panel">
-                        <div class="metric-title">Founder Dilution</div>
-                        <div class="metric-val" style="color: {'#10B981' if dilution_pct <= 25 else '#F87171'} !important;">{dilution_pct:.1f}%</div>
+                        <div class="metric-title">Equilibrium Interest Rate</div>
+                        <div class="metric-val" style="color: {rate_color} !important;">{eq_rate:.2f}%</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
-            with p_m3:
+            with m3:
+                transaction_share = (k_param * real_income_y)
                 st.markdown(
                     f"""
                     <div class="metric-panel">
-                        <div class="metric-title">Post-Money Cap</div>
-                        <div class="metric-val" style="color: #FBBF24 !important;">{post_money_mkt_cap:.1f}M USD</div>
+                        <div class="metric-title">Transaction Balances (k·Y)</div>
+                        <div class="metric-val" style="color: #38BDF8 !important;">{transaction_share:.1f}B</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
 
-            cap_df = pd.DataFrame(
+            # Generate Money Demand Curve across an interest rate spectrum
+            rate_domain = np.linspace(0.5, 12.0, 50)
+            demand_values = (k_param * real_income_y) - (h_param * rate_domain)
+
+            chart_data = pd.DataFrame(
                 {
-                    "Stakeholder": ["Original Shareholders", "New Public Investors"],
-                    "Ownership Percentage": [100.0 - dilution_pct, dilution_pct],
+                    "Interest Rate (%)": rate_domain,
+                    "Real Money Demand (L)": demand_values,
+                    "Real Money Supply (M/P)": np.full_like(rate_domain, real_ms),
                 }
-            ).set_index("Stakeholder")
-            st.bar_chart(cap_df)
-            st.caption(f"Gross Proceeds: {gross_proceeds:.1f}M USD | Underwriting Fees: {fees:.2f}M USD")
+            ).set_index("Interest Rate (%)")
+
+            st.line_chart(chart_data)
+            st.caption(
+                f"Equilibrium clearing point: r* = {eq_rate:.2f}%. Notice that if r < r*, there is excess demand for money, driving bond sales and pushing yields back up."
+            )
 
     else:
-        c_sec1, c_sec2 = st.columns([1, 1.2], gap="large")
+        c_lm1, c_lm2 = st.columns([1, 1.2], gap="large")
 
-        with c_sec1:
-            st.markdown("#### Order Book Microstructure")
-            mid_price = st.slider("Benchmark Price (USD):", 50.0, 200.0, 100.0, 5.0)
-            spread_bps = st.slider("Bid-Ask Half-Spread (Basis Points):", 5, 100, 20, 5)
-            depth_multiplier = st.slider("Market Depth Index:", 1.0, 5.0, 2.5, 0.5)
+        with c_lm1:
+            st.markdown("#### LM Parameterization")
+            nominal_m_lm = st.slider("Monetary Base ($M$):", 200.0, 1000.0, 500.0, 50.0, key="lm_m")
+            p_lm = st.slider("Price Level ($P$):", 0.8, 2.0, 1.0, 0.1, key="lm_p")
+            k_lm = st.slider("Transaction Coefficient ($k$):", 0.1, 0.5, 0.25, 0.05, key="lm_k")
+            h_lm = st.slider("Speculative Sensitivity ($h$):", 20.0, 100.0, 50.0, 5.0, key="lm_h")
 
-            half_spread_dollars = mid_price * (spread_bps / 10000.0)
-            bid = mid_price - half_spread_dollars
-            ask = mid_price + half_spread_dollars
+            real_balance = nominal_m_lm / p_lm
+            lm_slope = k_lm / h_lm
+            lm_intercept = -real_balance / h_lm
 
             st.markdown(
                 f"""
-                - **Top-of-Book Bid:** {bid:.2f} USD *(Buyers willing to pay)*
-                - **Top-of-Book Ask:** {ask:.2f} USD *(Sellers willing to accept)*
-                - **Total Quoted Spread:** {(ask - bid):.3f} USD ({(spread_bps * 2)} bps)
+                - **LM Slope ($k/h$):** `{lm_slope:.4f}`
+                - **Horizontal Shift Factor:** `${real_balance:.1f}B$` real balances
+                - **Equation:** $r = {lm_slope:.4f} \\cdot Y - {abs(lm_intercept):.2f}$
                 """
             )
-            st.caption("A tight bid-ask spread signals high liquidity, reducing transaction frictions for investors.")
-
-        with c_sec2:
-            st.markdown("#### Secondary Market Liquidity Depth")
-            price_offsets = np.array([-3, -2, -1, 1, 2, 3]) * half_spread_dollars * 1.5
-            prices = mid_price + price_offsets
-            sizes = np.array([800, 500, 200, 250, 450, 900]) * depth_multiplier
-
-            depth_df = pd.DataFrame(
-                {
-                    "Order Side": ["Bid (Buy)", "Bid (Buy)", "Bid (Buy)", "Ask (Sell)", "Ask (Sell)", "Ask (Sell)"],
-                    "Price Level (USD)": np.round(prices, 2),
-                    "Shares Depth": np.round(sizes, 0),
-                }
+            st.caption(
+                "A steeper LM curve reflects high sensitivity to income (k) or low sensitivity to interest rates (h), making monetary policy more influential over rates."
             )
-            st.dataframe(depth_df, use_container_width=True)
-            st.caption("Notice: Trades in the secondary market redistribute shares among investors without directly funding corporate operations.")
+
+        with c_lm2:
+            st.markdown("#### The LM Curve in (Y, r) Space")
+            y_domain = np.linspace(1000.0, 4000.0, 50)
+            r_lm_baseline = (k_lm * y_domain - real_balance) / h_lm
+            # Show a monetary expansion comparison (+20% Money Supply)
+            r_lm_expanded = (k_lm * y_domain - (real_balance * 1.25)) / h_lm
+
+            lm_chart_df = pd.DataFrame(
+                {
+                    "Aggregate Income (Y)": np.round(y_domain, 0),
+                    "Baseline LM [r (%)]": np.round(r_lm_baseline, 2),
+                    "Expanded Money Supply (+25%) [r (%)]": np.round(r_lm_expanded, 2),
+                }
+            ).set_index("Aggregate Income (Y)")
+
+            st.line_chart(lm_chart_df)
+            st.caption(
+                "Notice: An increase in the money supply shifts the LM curve downwards/rightwards, reducing the interest rate associated with every level of income."
+            )
 
 # =====================================================================
-# MODULE 2: ASSESSMENT (FORMERLY MODULE 4)
+# MODULE 2: ASSESSMENT
 # =====================================================================
-elif module == "📝 Module 2: Financial Markets Assessment":
-    st.markdown("### 📝 Financial Markets Knowledge Evaluation")
-    st.markdown("Test your structural understanding of primary vs. secondary capital markets (10 points each).")
+elif module == "📝 Module 2: Monetary Theory Assessment":
+    st.markdown("### 📝 Money Market & LM Curve Knowledge Evaluation")
+    st.markdown("Test your structural understanding of money demand, supply mechanics, and LM equilibrium shifts (10 points each).")
 
-    with st.form("market_structure_quiz"):
-        st.markdown("#### 1. Primary vs. Secondary Market Mechanism")
+    with st.form("monetary_theory_quiz"):
+        st.markdown("#### 1. Speculative Demand for Money")
         q1 = st.radio(
-            "When an investor purchases shares of a publicly listed company on an open exchange like NASDAQ:",
+            "According to Keynesian liquidity preference, why does money demand decrease when interest rates rise?",
             [
-                "A) The company receives direct equity capital to build factories.",
-                "B) The transaction is in the secondary market; ownership transfers without funding the firm directly.",
-                "C) Total outstanding shares in the company automatically increase.",
-                "D) The primary market clears the trade via an underwriting syndicate.",
+                "A) The opportunity cost of holding non-interest-bearing cash balances increases, prompting shifts into bonds.",
+                "B) Higher interest rates mechanically shrink the physical currency stock printed by the treasury.",
+                "C) Households experience an immediate drop in aggregate disposable income.",
+                "D) Commercial banks are legally prohibited from extending credit during high-rate regimes.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 2. Capital Market vs. Money Market Classification")
+        st.markdown("#### 2. Slope of the LM Curve")
         q2 = st.radio(
-            "Which of the following is strictly a Money Market instrument?",
+            "Under standard LM formulation ($r = \\frac{k}{h}Y - \\frac{M/P}{h}$), what makes the LM curve steeper?",
             [
-                "A) 30-Year Sovereign Treasury Bond",
-                "B) Common Stock",
-                "C) 90-Day Commercial Paper",
-                "D) Corporate Debenture",
+                "A) An increase in interest rate sensitivity ($h$) or decrease in income sensitivity ($k$).",
+                "B) A high income sensitivity of money demand ($k$) and a low interest responsiveness ($h$).",
+                "C) A simultaneous doubling of the nominal money stock ($M$) and price index ($P$).",
+                "D) The economy entering a classical liquidity trap where interest elasticity approaches infinity.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 3. Interconnection Between Primary and Secondary Markets")
+        st.markdown("#### 3. Real Balances and Price Level Shocks")
         q3 = st.radio(
-            "Why is a liquid secondary market essential for an issuer's primary market offerings?",
+            "If the aggregate price level ($P$) increases while nominal money supply ($M$) remains fixed:",
             [
-                "A) It completely eliminates the issuer's credit risk.",
-                "B) Investors accept lower yields in the primary market because they can easily liquidate holdings later.",
-                "C) It prevents prices from fluctuating in the primary market.",
-                "D) It turns equity securities into guaranteed short-term deposits.",
+                "A) Real money supply increases, shifting the LM curve down and right.",
+                "B) The LM curve remains unaffected because nominal balances are unchanged.",
+                "C) Real money balances ($M/P$) decline, shifting the LM curve upward and leftward.",
+                "D) Interest rates fall for any given level of real national income.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 4. Primary Market Issuance Mechanics")
+        st.markdown("#### 4. The Liquidity Trap Dynamic")
         q4 = st.radio(
-            "What is the primary role of an investment bank acting as an underwriter in an IPO?",
+            "What characterizes the LM curve within a Keynesian Liquidity Trap?",
             [
-                "A) Guaranteeing post-IPO secondary market stock performance for 10 years.",
-                "B) Assisting the firm in pricing, regulatory filings, and absorbing or placing the new issue.",
-                "C) Managing day-to-day corporate treasury operations post-listing.",
-                "D) Regulating exchange bid-ask quotes on open trading venues.",
+                "A) It becomes vertical because money demand is completely unresponsive to output changes.",
+                "B) It becomes completely horizontal at the nominal zero lower bound as speculative demand becomes infinitely interest-elastic.",
+                "C) It shifts violently to the left whenever the central bank conducts open market purchases.",
+                "D) The LM slope becomes infinite ($k/h \\to \\infty$).",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 5. Secondary Market Liquidity Signals")
+        st.markdown("#### 5. Open Market Operations Transmission")
         q5 = st.radio(
-            "A security market characterized by an extremely narrow bid-ask spread and heavy order book depth indicates:",
+            "When the Central Bank conducts an open market purchase of government securities:",
             [
-                "A) High liquidity, low transaction costs, and rapid price discovery.",
-                "B) Significant liquidity risk and elevated cost of capital.",
-                "C) A total absence of institutional market makers.",
-                "D) The complete collapse of secondary market volume.",
+                "A) It absorbs commercial bank reserves, lowering bank deposits and raising money market rates.",
+                "B) It expands bank reserves and nominal money supply ($M$), shifting the LM curve to the right.",
+                "C) The real transaction demand parameter ($k$) immediately resets to zero.",
+                "D) The yield on bonds rises immediately to eliminate money market excess liquidity.",
             ],
             index=None,
         )
@@ -429,11 +450,11 @@ elif module == "📝 Module 2: Financial Markets Assessment":
 
         if submit_quiz:
             correct_keys = {
-                "q1": "B) The transaction is in the secondary market; ownership transfers without funding the firm directly.",
-                "q2": "C) 90-Day Commercial Paper",
-                "q3": "B) Investors accept lower yields in the primary market because they can easily liquidate holdings later.",
-                "q4": "B) Assisting the firm in pricing, regulatory filings, and absorbing or placing the new issue.",
-                "q5": "A) High liquidity, low transaction costs, and rapid price discovery.",
+                "q1": "A) The opportunity cost of holding non-interest-bearing cash balances increases, prompting shifts into bonds.",
+                "q2": "B) A high income sensitivity of money demand ($k$) and a low interest responsiveness ($h$).",
+                "q3": "C) Real money balances ($M/P$) decline, shifting the LM curve upward and leftward.",
+                "q4": "B) It becomes completely horizontal at the nominal zero lower bound as speculative demand becomes infinitely interest-elastic.",
+                "q5": "B) It expands bank reserves and nominal money supply ($M$), shifting the LM curve to the right.",
             }
 
             records = {
@@ -455,15 +476,15 @@ elif module == "📝 Module 2: Financial Markets Assessment":
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("Q1 Review: Secondary market transactions occur strictly between investors; no new funds flow to the underlying company.")
+            st.error("Q1 Review: Interest is the opportunity cost of holding cash. When $r$ rises, holding zero-interest money becomes costlier, decreasing cash demand in favor of bonds.")
         if not rec.get("q2", False):
-            st.error("Q2 Review: Commercial paper is a short-term, unsecured debt instrument maturing in 270 days or less, making it a money market instrument.")
+            st.error("Q2 Review: Slope equals $k/h$. A larger $k$ (large transaction demand per unit of $Y$) or smaller $h$ (weak rate responsiveness) steepens the LM curve.")
         if not rec.get("q3", False):
-            st.error("Q3 Review: Liquidity in the secondary market reduces the liquidity risk premium demanded by primary buyers, reducing the issuer's cost of capital.")
+            st.error("Q3 Review: Higher $P$ reduces real balances $M/P$. At any income level, less real cash is available, requiring higher interest rates to balance the market (LM shifts left/up).")
         if not rec.get("q4", False):
-            st.error("Q4 Review: Underwriters conduct due diligence, value the firm, structure the offering, and syndicate shares to primary investors.")
+            st.error("Q4 Review: In a liquidity trap, investors are indifferent between bonds and cash ($h \\to \\infty$). The LM curve flattens completely horizontally at low rates.")
         if not rec.get("q5", False):
-            st.error("Q5 Review: Narrow spreads and deep order books reflect robust liquidity and active market participation.")
+            st.error("Q5 Review: Central bank bond purchases inject high-powered money into the banking sector, expanding $M$ and shifting LM rightward.")
 
 # =====================================================================
 # FOOTER
@@ -471,8 +492,8 @@ elif module == "📝 Module 2: Financial Markets Assessment":
 st.markdown("---")
 f1, f2, f3 = st.columns(3)
 with f1:
-    st.caption("Financial Architecture Lab")
+    st.caption("Macroeconomic Architecture Lab")
 with f2:
-    st.caption("Primary Allocation & Secondary Liquidity Dynamics")
+    st.caption("Liquidity Preference & LM Equilibrium Dynamics")
 with f3:
     st.caption(f"System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
