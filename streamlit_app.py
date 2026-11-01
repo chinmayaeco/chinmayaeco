@@ -7,8 +7,8 @@ import streamlit as st
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Macroeconomic Lab: Money Market & LM Curve",
-    page_icon="📈",
+    page_title="Financial Asset Valuation: Bonds, DDM & CAPM",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -122,8 +122,8 @@ st.markdown(
 # =====================================================================
 # SESSION STATE ENGINE
 # =====================================================================
-if "market_points" not in st.session_state:
-    st.session_state.market_points = 0
+if "lab_points" not in st.session_state:
+    st.session_state.lab_points = 0
 if "quiz_score" not in st.session_state:
     st.session_state.quiz_score = 0
 if "quiz_submitted" not in st.session_state:
@@ -131,28 +131,28 @@ if "quiz_submitted" not in st.session_state:
 if "eval_records" not in st.session_state:
     st.session_state.eval_records = {}
 
-total_final_score = st.session_state.market_points + st.session_state.quiz_score
+total_final_score = st.session_state.lab_points + st.session_state.quiz_score
 
 # =====================================================================
 # SIDEBAR NAVIGATION
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 📈 Macroeconomic Lab")
+    st.markdown("## 📊 Asset Valuation Lab")
     module = st.radio(
         "Select Learning Module:",
         [
-            "🏛️ Module 1: Money Market & LM Curve Mechanics",
-            "📝 Module 2: Monetary Theory Assessment",
+            "🏛️ Module 1: Fixed Income, DDM & CAPM Analytics",
+            "📝 Module 2: Valuation Theory Assessment",
         ],
     )
     st.markdown("---")
     st.markdown("### 🏆 Performance Tracker")
-    st.markdown(f"**Interactive Lab:** {st.session_state.market_points} / 50")
+    st.markdown(f"**Interactive Lab:** {st.session_state.lab_points} / 50")
     st.markdown(f"**Assessment:** {st.session_state.quiz_score} / 50")
     st.markdown(f"### **Aggregate Score:** {total_final_score} / 100")
 
     if total_final_score == 100:
-        st.success("🌟 Monetary Macro Specialist Status Achieved!")
+        st.success("🌟 Certified Valuation & Asset Pricing Specialist!")
 
 # =====================================================================
 # GLOBAL SCORE BANNER
@@ -160,9 +160,9 @@ with st.sidebar:
 st.markdown(
     f"""
 <div class="score-banner">
-    <h2 style="color: #FBBF24; margin: 0; font-weight: 800;">Liquidity Preference & LM Suite: {total_final_score} / 100</h2>
+    <h2 style="color: #FBBF24; margin: 0; font-weight: 800;">Asset Pricing & Valuation Suite: {total_final_score} / 100</h2>
     <p style="color: #E2E8F0; margin: 0.35rem 0 0 0; font-size: 1rem;">
-        Simulation Lab: <b>{st.session_state.market_points}/50 Pts</b> | Conceptual Assessment: <b>{st.session_state.quiz_score}/50 Pts</b>
+        Simulation Lab: <b>{st.session_state.lab_points}/50 Pts</b> | Conceptual Assessment: <b>{st.session_state.quiz_score}/50 Pts</b>
     </p>
 </div>
 """,
@@ -170,60 +170,59 @@ st.markdown(
 )
 
 # =====================================================================
-# MODULE 1: MONEY DEMAND, MONEY SUPPLY & THE LM CURVE
+# MODULE 1: VALUATION SIMULATION LAB
 # =====================================================================
-if module == "🏛️ Module 1: Money Market & LM Curve Mechanics":
-    st.markdown("### 🏛️ Money Market Equilibrium: Keynesian Liquidity Preference to the LM Curve")
+if module == "🏛️ Module 1: Fixed Income, DDM & CAPM Analytics":
+    st.markdown("### 🏛️ Intrinsic Valuation: Bond Pricing, Equity DDM, and CAPM Hurdle Rates")
     st.markdown(
-        "The money market equilibrates the demand for real money balances with the real money supply set by the central bank. "
-        "The **LM (Liquidity-Money) curve** charts all combinations of national income ($Y$) and interest rates ($r$) where the money market clears."
+        "Asset valuation discounts expected future cash flows using an appropriate risk-adjusted rate. "
+        "The **Capital Asset Pricing Model (CAPM)** formalizes systematic risk to establish required equity returns ($r_e$), "
+        "which subsequently parameterize discounted cash flow structures like the **Gordon Growth Model (DDM)**."
     )
 
-    tab_overview, tab_deep = st.tabs(["📚 Core Framework", "🔬 Microfoundations & Transmission"])
+    tab_overview, tab_deep = st.tabs(["📚 Core Framework", "🔬 Mathematical Foundations"])
 
     with tab_overview:
         st.markdown(
             """
-| Component | Analytical Form | Primary Determinants | Behavioral Rationale |
+| Model | Closed-Form Expression | Core Variables | Underlying Economic Principle |
 | :--- | :--- | :--- | :--- |
-| **Real Money Demand ($L$)** | $L(Y, r) = kY - hr$ | Output ($Y$), Nominal Interest Rate ($r$) | Transactions & precautionary demand scale with income; speculative demand declines with interest rates (opportunity cost). |
-| **Real Money Supply ($M/P$)** | $\\bar{M} / \\bar{P}$ | Nominal Money Stock ($M$), Price Level ($P$) | Exogenously set by the central bank and institutional reserve architecture in the short run. |
-| **Equilibrium Condition** | $\\bar{M}/\\bar{P} = kY - hr$ | Asset market clearing | Interest rates adjust continuously to eliminate excess cash or bond demand. |
-| **LM Equation** | $r = \\frac{k}{h}Y - \\frac{1}{h}\\left(\\frac{M}{P}\\right)$ | Slope $= k/h$, Shift $= -\\frac{1}{h}\\Delta(M/P)$ | Higher income raises transaction demand, requiring higher interest rates to choke off speculative balances and restore equilibrium. |
+| **Bond Pricing** | $P_0 = \\sum_{t=1}^n \\frac{C}{(1+y)^t} + \\frac{M}{(1+y)^n}$ | Coupon ($C$), Face Value ($M$), YTM ($y$), Maturity ($n$) | Present value of deterministic contractual cash flows; inverse convex price-yield relationship. |
+| **CAPM Cost of Equity** | $\\mathbb{E}[R_i] = R_f + \\beta_i \\left(\\mathbb{E}[R_m] - R_f\\right)$ | Risk-Free Rate ($R_f$), Beta ($\\beta$), Market Premium ($ERP$) | Only non-diversifiable systematic risk receives compensation in equilibrium. |
+| **Gordon Growth DDM** | $P_0 = \\frac{D_1}{r_e - g} = \\frac{D_0 (1+g)}{r_e - g}$ | Expected Dividend ($D_1$), Discount Rate ($r_e$), Growth ($g$) | Infinite-horizon stream of perpetual dividends expanding at a steady long-term rate ($r_e > g$). |
+| **Multi-Stage DDM** | $P_0 = \\sum_{t=1}^T \\frac{D_t}{(1+r_e)^t} + \\frac{P_T}{(1+r_e)^T}$ | High Growth ($g_s$), Stable Growth ($g_n$), Horizon ($T$) | Accommodates competitive life-cycle decay from supernormal expansion into steady state. |
             """
         )
 
     with tab_deep:
-        col_md, col_ms = st.columns(2, gap="medium")
-        with col_md:
+        col_m1, col_m2 = st.columns(2, gap="medium")
+        with col_m1:
             st.markdown(
                 """
 <div class="concept-card">
-    <h4 style="color: #38BDF8; margin: 0 0 0.5rem 0;">1. Keynesian Motives for Holding Money</h4>
+    <h4 style="color: #38BDF8; margin: 0 0 0.5rem 0;">1. Duration & Convexity Mechanics</h4>
     <p style="font-size: 0.9rem;">
-        Money yields liquidity services rather than financial returns. The demand for real balances balances transaction needs against opportunity cost.
+        Bonds trade at a premium when the coupon rate exceeds yield-to-maturity (YTM) and at a discount when YTM exceeds the coupon.
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li><b>Transactions Motive:</b> Cash held for day-to-day payments; scales positively with real output ($kY$).</li>
-        <li><b>Precautionary Motive:</b> Safety margin against unexpected expenditures; scales with real output.</li>
-        <li><b>Speculative Motive:</b> Inverse sensitivity to rate of return on alternative assets (bonds). Governed by $-hr$.</li>
+        <li><b>Modified Duration ($D^*$):</b> Measures the percentage price sensitivity relative to shifts in yield: $D^* = -\\frac{1}{P} \\frac{dP}{dy}$.</li>
+        <li><b>Convexity:</b> Accounts for the curvature of the price-yield function, cushioning losses during rising rates and enhancing gains when yields decline.</li>
     </ul>
 </div>
                 """,
                 unsafe_allow_html=True,
             )
-        with col_ms:
+        with col_m2:
             st.markdown(
                 """
 <div class="concept-card">
-    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Policy Shocks & Curve Shifts</h4>
+    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. The Security Market Line (SML) & DDM Convergence</h4>
     <p style="font-size: 0.9rem;">
-        The position and slope of the LM curve determine monetary policy potency:
+        CAPM maps systematic covariance ($\\beta = \\frac{\\text{Cov}(R_i, R_m)}{\\sigma_m^2}$) onto the Security Market Line:
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li><b>Expansionary Policy:</b> Central bank raises $M$ $\\rightarrow$ Excess liquidity drops $r$ at any given $Y$ $\\rightarrow$ <b>LM shifts right/down</b>.</li>
-        <li><b>Price Surges ($P\\uparrow$):</b> Erodes real money balances $(M/P)\\downarrow$ $\\rightarrow$ <b>LM shifts left/up</b>.</li>
-        <li><b>Liquidity Trap ($h \\to \\infty$):</b> Absolute elasticity at zero lower bound $\\rightarrow$ Flat LM curve; monetary policy cannot lower rates further.</li>
+        <li><b>Alpha Generation ($\\alpha$):</b> Stocks plotted above the SML are underpriced; those below are overpriced.</li>
+        <li><b>Terminal Rate Constraint:</b> In the Gordon model, $g$ must strictly stay below the economy's nominal GDP growth and hurdle rate $r_e$. If $g \\ge r_e$, the model destabilizes mathematically.</li>
     </ul>
 </div>
                 """,
@@ -231,217 +230,250 @@ if module == "🏛️ Module 1: Money Market & LM Curve Mechanics":
             )
 
     st.markdown("---")
-    st.subheader("🛠️ Interactive Labs: Money Market Clearing & LM Derivation")
+    st.subheader("🛠️ Interactive Labs: Asset Pricing & Sensitivity Engines")
 
     lab_mode = st.radio(
         "Choose Lab Component:",
         [
-            "1. Money Market Equilibrium: Rate Determination & Policy Shock",
-            "2. LM Curve Constructor: Income Variation & Monetary Shift",
+            "1. Bond Pricing Engine: Yield Curve & Sensitivity Dynamics",
+            "2. Integrated Equity Lab: CAPM Hurdle & Gordon Growth Valuation",
         ],
         horizontal=True,
     )
 
-    if lab_mode == "1. Money Market Equilibrium: Rate Determination & Policy Shock":
-        c_sim1, c_sim2 = st.columns([1, 1.2], gap="large")
+    if lab_mode == "1. Bond Pricing Engine: Yield Curve & Sensitivity Dynamics":
+        c_bond1, c_bond2 = st.columns([1, 1.2], gap="large")
 
-        with c_sim1:
-            st.markdown("#### Money Market Calibration")
-            nominal_m = st.slider("Nominal Money Supply ($M$ in Billions):", 200.0, 1200.0, 600.0, 50.0)
-            price_p = st.slider("Price Level Index ($P$):", 0.5, 3.0, 1.0, 0.1)
-            real_income_y = st.slider("Real Aggregate Income ($Y$):", 1000.0, 4000.0, 2000.0, 100.0)
-            k_param = st.slider("Transaction Sensitivity ($k$):", 0.1, 0.6, 0.35, 0.05)
-            h_param = st.slider("Interest Rate Sensitivity ($h$):", 20.0, 150.0, 60.0, 5.0)
+        with c_bond1:
+            st.markdown("#### Bond Specification")
+            face_val = st.slider("Face Value ($M$ in $):", 500.0, 5000.0, 1000.0, 100.0)
+            coupon_rate = st.slider("Annual Coupon Rate (%):", 0.0, 15.0, 6.0, 0.25) / 100.0
+            years_to_mat = st.slider("Years to Maturity ($n$):", 1, 30, 10, 1)
+            ytm = st.slider("Yield to Maturity (YTM %):", 0.5, 18.0, 5.0, 0.25) / 100.0
 
-            # Mathematical derivations
-            real_ms = nominal_m / price_p
-            # Equilibrium: real_ms = k*Y - h*r  =>  h*r = k*Y - real_ms  => r = (k*Y - real_ms)/h
-            eq_rate = (k_param * real_income_y - real_ms) / h_param
-            eq_rate_clamped = max(eq_rate, 0.0)
+            annual_coupon = face_val * coupon_rate
+            periods = np.arange(1, years_to_mat + 1)
+            discount_factors = (1.0 + ytm) ** periods
+            pv_coupons = np.sum(annual_coupon / discount_factors)
+            pv_face = face_val / ((1.0 + ytm) ** years_to_mat)
+            bond_price = pv_coupons + pv_face
+
+            # Macaulay Duration & Modified Duration
+            pv_cf = (annual_coupon / discount_factors)
+            pv_cf[-1] += pv_face
+            mac_duration = np.sum(periods * pv_cf) / bond_price
+            mod_duration = mac_duration / (1.0 + ytm)
 
             st.markdown("---")
-            st.markdown("#### Stabilization Challenge")
+            st.markdown("#### Target Pricing Challenge")
             st.caption(
-                "Adjust policy variables ($M$ or assume a targeted $Y$) to hit an **Equilibrium Policy Interest Rate between 3.0% and 5.0%** with a **Real Money Stock of at least 500 Billion**."
+                "Adjust terms to construct a **Discount Bond priced between $800 and $900** with a **Modified Duration of at least 6.5 years**."
             )
 
-            if st.button("Evaluate Equilibrium Target"):
-                if 3.0 <= eq_rate <= 5.0 and real_ms >= 500.0:
-                    st.session_state.market_points = 50
-                    st.success(f"Equilibrium achieved! Target rate: {eq_rate:.2f}%, Real M/P: {real_ms:.1f}B (Awarded: 50/50 Pts)")
+            if st.button("Evaluate Bond Constraints"):
+                if 800.0 <= bond_price <= 900.0 and mod_duration >= 6.5:
+                    st.session_state.lab_points = 50
+                    st.success(f"Target matched! Price: ${bond_price:.2f}, Mod Duration: {mod_duration:.2f} yrs (Awarded: 50/50 Pts)")
                 else:
-                    st.session_state.market_points = 25
+                    st.session_state.lab_points = 25
                     st.warning(
-                        f"Target missed: Equilibrium Rate is {eq_rate:.2f}% (Target: 3.0-5.0%) or Real Supply is {real_ms:.1f}B (Target: 500B+). (Awarded: 25/50 Pts)"
+                        f"Target missed: Bond Price is ${bond_price:.2f} (Target: $800-$900) or Mod Duration is {mod_duration:.2f} yrs (Target: 6.5+ yrs). (Awarded: 25/50 Pts)"
                     )
                 st.rerun()
 
-        with c_sim2:
-            st.markdown("#### Money Market State & Allocations")
+        with c_bond2:
+            st.markdown("#### Valuation & Sensitivity Metrics")
             m1, m2, m3 = st.columns(3)
             with m1:
+                p_status = "PAR" if abs(bond_price - face_val) < 0.5 else ("PREMIUM" if bond_price > face_val else "DISCOUNT")
                 st.markdown(
                     f"""
                     <div class="metric-panel">
-                        <div class="metric-title">Real Money Supply (M/P)</div>
-                        <div class="metric-val" style="color: {'#10B981' if real_ms >= 500 else '#38BDF8'} !important;">{real_ms:.1f}B</div>
+                        <div class="metric-title">Price ({p_status})</div>
+                        <div class="metric-val" style="color: {'#10B981' if 800 <= bond_price <= 900 else '#38BDF8'} !important;">${bond_price:.2f}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
             with m2:
-                rate_color = "#10B981" if 3.0 <= eq_rate <= 5.0 else ("#F87171" if eq_rate < 0 else "#FBBF24")
                 st.markdown(
                     f"""
                     <div class="metric-panel">
-                        <div class="metric-title">Equilibrium Interest Rate</div>
-                        <div class="metric-val" style="color: {rate_color} !important;">{eq_rate:.2f}%</div>
+                        <div class="metric-title">Modified Duration</div>
+                        <div class="metric-val" style="color: {'#10B981' if mod_duration >= 6.5 else '#FBBF24'} !important;">{mod_duration:.2f} yrs</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
             with m3:
-                transaction_share = (k_param * real_income_y)
+                dollar_duration = (mod_duration * bond_price) / 100.0
                 st.markdown(
                     f"""
                     <div class="metric-panel">
-                        <div class="metric-title">Transaction Balances (k·Y)</div>
-                        <div class="metric-val" style="color: #38BDF8 !important;">{transaction_share:.1f}B</div>
+                        <div class="metric-title">DV01 (1bp Shift)</div>
+                        <div class="metric-val" style="color: #38BDF8 !important;">${dollar_duration / 100.0:.3f}</div>
                     </div>
                     """,
                     unsafe_allow_html=True,
                 )
 
-            # Generate Money Demand Curve across an interest rate spectrum
-            rate_domain = np.linspace(0.5, 12.0, 50)
-            demand_values = (k_param * real_income_y) - (h_param * rate_domain)
+            # Convex Price-Yield Curve
+            ytm_domain = np.linspace(0.01, 0.18, 50)
+            price_curve = [
+                np.sum((face_val * coupon_rate) / ((1.0 + y) ** periods)) + (face_val / ((1.0 + y) ** years_to_mat))
+                for y in ytm_domain
+            ]
 
             chart_data = pd.DataFrame(
                 {
-                    "Interest Rate (%)": rate_domain,
-                    "Real Money Demand (L)": demand_values,
-                    "Real Money Supply (M/P)": np.full_like(rate_domain, real_ms),
+                    "Yield to Maturity (%)": np.round(ytm_domain * 100, 2),
+                    "Theoretical Bond Price ($)": np.round(price_curve, 2),
                 }
-            ).set_index("Interest Rate (%)")
+            ).set_index("Yield to Maturity (%)")
 
             st.line_chart(chart_data)
             st.caption(
-                f"Equilibrium clearing point: r* = {eq_rate:.2f}%. Notice that if r < r*, there is excess demand for money, driving bond sales and pushing yields back up."
+                f"Current Market Position: Yield = {ytm*100:.2f}%, Price = ${bond_price:.2f}. "
+                "Notice the upward curvature (convexity), demonstrating that prices gain more when rates drop than they lose when rates rise by equal magnitude."
             )
 
     else:
-        c_lm1, c_lm2 = st.columns([1, 1.2], gap="large")
+        c_eq1, c_eq2 = st.columns([1, 1.2], gap="large")
 
-        with c_lm1:
-            st.markdown("#### LM Parameterization")
-            nominal_m_lm = st.slider("Monetary Base ($M$):", 200.0, 1000.0, 500.0, 50.0, key="lm_m")
-            p_lm = st.slider("Price Level ($P$):", 0.8, 2.0, 1.0, 0.1, key="lm_p")
-            k_lm = st.slider("Transaction Coefficient ($k$):", 0.1, 0.5, 0.25, 0.05, key="lm_k")
-            h_lm = st.slider("Speculative Sensitivity ($h$):", 20.0, 100.0, 50.0, 5.0, key="lm_h")
+        with c_eq1:
+            st.markdown("#### CAPM Parameters")
+            rf_rate = st.slider("Risk-Free Rate ($R_f$ %):", 1.0, 7.0, 4.0, 0.25) / 100.0
+            beta_val = st.slider("Equity Systematic Risk (Beta $\\beta$):", 0.2, 2.5, 1.15, 0.05)
+            market_risk_prem = st.slider("Market Risk Premium ($E[R_m] - R_f$ %):", 3.0, 10.0, 5.5, 0.25) / 100.0
 
-            real_balance = nominal_m_lm / p_lm
-            lm_slope = k_lm / h_lm
-            lm_intercept = -real_balance / h_lm
+            # Hurdle rate via CAPM
+            cost_of_equity = rf_rate + (beta_val * market_risk_prem)
 
-            st.markdown(
-                f"""
-                - **LM Slope ($k/h$):** `{lm_slope:.4f}`
-                - **Horizontal Shift Factor:** `${real_balance:.1f}B$` real balances
-                - **Equation:** $r = {lm_slope:.4f} \\cdot Y - {abs(lm_intercept):.2f}$
-                """
-            )
+            st.markdown("#### Dividend Growth (DDM) Setup")
+            last_div = st.slider("Current Annual Dividend ($D_0$ in $):", 0.5, 20.0, 3.50, 0.25)
+            div_growth = st.slider("Constant Dividend Growth ($g$ %):", 0.5, 12.0, 3.5, 0.25) / 100.0
+
+            st.markdown("---")
+            if div_growth >= cost_of_equity:
+                st.error("Constraint Violation: $g \\ge r_e$. The Gordon Growth model diverges when dividend growth equals or exceeds the cost of equity.")
+                fair_stock_price = np.nan
+            else:
+                next_div = last_div * (1.0 + div_growth)
+                fair_stock_price = next_div / (cost_of_equity - div_growth)
+                st.markdown(
+                    f"""
+                    - **CAPM Hurdle Rate ($r_e$):** `{cost_of_equity*100:.2f}%`
+                    - **Expected Next Dividend ($D_1$):** `${next_div:.2f}$`
+                    - **Intrinsic Target Price:** `${fair_stock_price:.2f}$`
+                    """
+                )
+
             st.caption(
-                "A steeper LM curve reflects high sensitivity to income (k) or low sensitivity to interest rates (h), making monetary policy more influential over rates."
+                "According to CAPM, high-beta equities demand a higher cost of equity, which penalizes the discounted present value of expected cash flows."
             )
 
-        with c_lm2:
-            st.markdown("#### The LM Curve in (Y, r) Space")
-            y_domain = np.linspace(1000.0, 4000.0, 50)
-            r_lm_baseline = (k_lm * y_domain - real_balance) / h_lm
-            # Show a monetary expansion comparison (+20% Money Supply)
-            r_lm_expanded = (k_lm * y_domain - (real_balance * 1.25)) / h_lm
+        with c_eq2:
+            st.markdown("#### Security Market Line (SML) & Risk Positioning")
+            beta_domain = np.linspace(0.0, 2.5, 50)
+            sml_returns = (rf_rate + (beta_domain * market_risk_prem)) * 100
 
-            lm_chart_df = pd.DataFrame(
+            sml_chart_df = pd.DataFrame(
                 {
-                    "Aggregate Income (Y)": np.round(y_domain, 0),
-                    "Baseline LM [r (%)]": np.round(r_lm_baseline, 2),
-                    "Expanded Money Supply (+25%) [r (%)]": np.round(r_lm_expanded, 2),
+                    "Systematic Beta": np.round(beta_domain, 2),
+                    "Expected Return / Hurdle Rate (%)": np.round(sml_returns, 2),
                 }
-            ).set_index("Aggregate Income (Y)")
+            ).set_index("Systematic Beta")
 
-            st.line_chart(lm_chart_df)
+            st.line_chart(sml_chart_df)
             st.caption(
-                "Notice: An increase in the money supply shifts the LM curve downwards/rightwards, reducing the interest rate associated with every level of income."
+                f"Asset Placement: At $\\beta = {beta_val:.2f}$, the expected equity return is {cost_of_equity*100:.2f}%. "
+                "Any investment yielding below this threshold destroys shareholder value relative to systematic market risk."
+            )
+
+            st.markdown("#### Dividend Growth vs. Fair Value Horizon")
+            valid_g = np.linspace(0.01, min(cost_of_equity - 0.005, 0.10), 30)
+            val_curve = [(last_div * (1.0 + g)) / (cost_of_equity - g) for g in valid_g]
+
+            ddm_chart_df = pd.DataFrame(
+                {
+                    "Growth Rate (%)": np.round(valid_g * 100, 2),
+                    "Implied Intrinsic Stock Value ($)": np.round(val_curve, 2),
+                }
+            ).set_index("Growth Rate (%)")
+
+            st.line_chart(ddm_chart_df)
+            st.caption(
+                "As the perpetual growth rate approaches the required rate of return, intrinsic valuation exhibits asymptotic sensitivity."
             )
 
 # =====================================================================
-# MODULE 2: ASSESSMENT
+# MODULE 2: VALUATION & PRICING ASSESSMENT
 # =====================================================================
-elif module == "📝 Module 2: Monetary Theory Assessment":
-    st.markdown("### 📝 Money Market & LM Curve Knowledge Evaluation")
-    st.markdown("Test your structural understanding of money demand, supply mechanics, and LM equilibrium shifts (10 points each).")
+elif module == "📝 Module 2: Valuation Theory Assessment":
+    st.markdown("### 📝 Asset Pricing, Fixed Income & Equity Assessment")
+    st.markdown("Test your mastery of bond analytics, duration dynamics, Gordon growth constraints, and CAPM mechanics (10 points each).")
 
-    with st.form("monetary_theory_quiz"):
-        st.markdown("#### 1. Speculative Demand for Money")
+    with st.form("valuation_theory_quiz"):
+        st.markdown("#### 1. Price-Yield Relationship and Convexity")
         q1 = st.radio(
-            "According to Keynesian liquidity preference, why does money demand decrease when interest rates rise?",
+            "Due to the convexity of conventional fixed-rate coupon bonds, when market yields shift by equal increments:",
             [
-                "A) The opportunity cost of holding non-interest-bearing cash balances increases, prompting shifts into bonds.",
-                "B) Higher interest rates mechanically shrink the physical currency stock printed by the treasury.",
-                "C) Households experience an immediate drop in aggregate disposable income.",
-                "D) Commercial banks are legally prohibited from extending credit during high-rate regimes.",
+                "A) Price appreciation resulting from a 100 bp rate decrease exceeds price depreciation from a 100 bp rate increase.",
+                "B) Price depreciation resulting from a 100 bp rate decrease exceeds price appreciation from a 100 bp rate increase.",
+                "C) The modified duration shifts linearly, leaving percentage price changes perfectly symmetric.",
+                "D) Bond prices only alter if the coupon rate itself adjusts dynamically with market yields.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 2. Slope of the LM Curve")
+        st.markdown("#### 2. Modified Duration Interpretation")
         q2 = st.radio(
-            "Under standard LM formulation ($r = \\frac{k}{h}Y - \\frac{M/P}{h}$), what makes the LM curve steeper?",
+            "If an investment-grade corporate bond possesses a Modified Duration of 7.2 years and market yields fall by 50 basis points (0.50%):",
             [
-                "A) An increase in interest rate sensitivity ($h$) or decrease in income sensitivity ($k$).",
-                "B) A high income sensitivity of money demand ($k$) and a low interest responsiveness ($h$).",
-                "C) A simultaneous doubling of the nominal money stock ($M$) and price index ($P$).",
-                "D) The economy entering a classical liquidity trap where interest elasticity approaches infinity.",
+                "A) The bond's price will fall by approximately 7.20%.",
+                "B) The bond's price will rise by approximately 3.60%.",
+                "C) The bond's annual coupon distribution expands by 3.60%.",
+                "D) The maturity of the bond contracts by exactly 0.50 years.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 3. Real Balances and Price Level Shocks")
+        st.markdown("#### 3. Capital Asset Pricing Model (CAPM) Assumptions")
         q3 = st.radio(
-            "If the aggregate price level ($P$) increases while nominal money supply ($M$) remains fixed:",
+            "According to the CAPM framework, why does the market portfolio only compensate investors for systematic risk (Beta) and not unsystematic risk?",
             [
-                "A) Real money supply increases, shifting the LM curve down and right.",
-                "B) The LM curve remains unaffected because nominal balances are unchanged.",
-                "C) Real money balances ($M/P$) decline, shifting the LM curve upward and leftward.",
-                "D) Interest rates fall for any given level of real national income.",
+                "A) Unsystematic risk is unquantifiable by institutional investors.",
+                "B) Regulators mandate that all equities maintain identical idiosyncratic risk profiles.",
+                "C) Unsystematic risk can be eliminated costlessly through proper portfolio diversification.",
+                "D) High beta assets are legally guaranteed higher cash dividends.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 4. The Liquidity Trap Dynamic")
+        st.markdown("#### 4. Gordon Growth Model Mathematical Limits")
         q4 = st.radio(
-            "What characterizes the LM curve within a Keynesian Liquidity Trap?",
+            "What happens analytically within the constant dividend growth model ($P_0 = \\frac{D_1}{r_e - g}$) if perpetual growth ($g$) equals the discount rate ($r_e$)?",
             [
-                "A) It becomes vertical because money demand is completely unresponsive to output changes.",
-                "B) It becomes completely horizontal at the nominal zero lower bound as speculative demand becomes infinitely interest-elastic.",
-                "C) It shifts violently to the left whenever the central bank conducts open market purchases.",
-                "D) The LM slope becomes infinite ($k/h \\to \\infty$).",
+                "A) The equity price approaches zero because future cash flows are rendered worthless.",
+                "B) The formula becomes mathematically undefined (division by zero), implying infinite valuation as growth matches capital cost.",
+                "C) The valuation defaults to the current book value of shareholders' equity.",
+                "D) The cost of equity resets to the risk-free rate of return.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 5. Open Market Operations Transmission")
+        st.markdown("#### 5. Security Market Line (SML) Disequilibrium")
         q5 = st.radio(
-            "When the Central Bank conducts an open market purchase of government securities:",
+            "An analyst calculates that a stock with $\\beta = 1.2$ offers an expected return of 14%, while CAPM projects a required return of 11%. How should this asset be classified?",
             [
-                "A) It absorbs commercial bank reserves, lowering bank deposits and raising money market rates.",
-                "B) It expands bank reserves and nominal money supply ($M$), shifting the LM curve to the right.",
-                "C) The real transaction demand parameter ($k$) immediately resets to zero.",
-                "D) The yield on bonds rises immediately to eliminate money market excess liquidity.",
+                "A) Overpriced with negative alpha ($\\alpha = -3\\%$); it plots below the SML.",
+                "B) Underpriced with positive alpha ($\\alpha = +3\\%$); it plots above the SML.",
+                "C) In equilibrium; beta compensates for the difference via arbitrage.",
+                "D) Distressed; because its hurdle rate is lower than the expected return.",
             ],
             index=None,
         )
@@ -450,11 +482,11 @@ elif module == "📝 Module 2: Monetary Theory Assessment":
 
         if submit_quiz:
             correct_keys = {
-                "q1": "A) The opportunity cost of holding non-interest-bearing cash balances increases, prompting shifts into bonds.",
-                "q2": "B) A high income sensitivity of money demand ($k$) and a low interest responsiveness ($h$).",
-                "q3": "C) Real money balances ($M/P$) decline, shifting the LM curve upward and leftward.",
-                "q4": "B) It becomes completely horizontal at the nominal zero lower bound as speculative demand becomes infinitely interest-elastic.",
-                "q5": "B) It expands bank reserves and nominal money supply ($M$), shifting the LM curve to the right.",
+                "q1": "A) Price appreciation resulting from a 100 bp rate decrease exceeds price depreciation from a 100 bp rate increase.",
+                "q2": "B) The bond's price will rise by approximately 3.60%.",
+                "q3": "C) Unsystematic risk can be eliminated costlessly through proper portfolio diversification.",
+                "q4": "B) The formula becomes mathematically undefined (division by zero), implying infinite valuation as growth matches capital cost.",
+                "q5": "B) Underpriced with positive alpha ($\\alpha = +3\\%$); it plots above the SML.",
             }
 
             records = {
@@ -476,15 +508,15 @@ elif module == "📝 Module 2: Monetary Theory Assessment":
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("Q1 Review: Interest is the opportunity cost of holding cash. When $r$ rises, holding zero-interest money becomes costlier, decreasing cash demand in favor of bonds.")
+            st.error("Q1 Review: Convexity creates an asymmetric return profile: bond prices gain more when market yields decline than they lose when yields rise by an equal amount.")
         if not rec.get("q2", False):
-            st.error("Q2 Review: Slope equals $k/h$. A larger $k$ (large transaction demand per unit of $Y$) or smaller $h$ (weak rate responsiveness) steepens the LM curve.")
+            st.error("Q2 Review: $\\Delta P/P \\approx -D^* \\times \\Delta y = -7.2 \\times (-0.0050) = +0.036$ or $+3.60\\%$. Falling yields boost bond prices.")
         if not rec.get("q3", False):
-            st.error("Q3 Review: Higher $P$ reduces real balances $M/P$. At any income level, less real cash is available, requiring higher interest rates to balance the market (LM shifts left/up).")
+            st.error("Q3 Review: Investors can diversify idiosyncratic firm-specific risks across large portfolios. Therefore, the market only prices non-diversifiable systematic risk (Beta).")
         if not rec.get("q4", False):
-            st.error("Q4 Review: In a liquidity trap, investors are indifferent between bonds and cash ($h \\to \\infty$). The LM curve flattens completely horizontally at low rates.")
+            st.error("Q4 Review: If $g \\ge r_e$, the denominator becomes zero or negative, breaking the convergence of the infinite geometric series of discounted dividends.")
         if not rec.get("q5", False):
-            st.error("Q5 Review: Central bank bond purchases inject high-powered money into the banking sector, expanding $M$ and shifting LM rightward.")
+            st.error("Q5 Review: When expected return exceeds required return ($14\\% > 11\\%$, $\\alpha = +3\\%$), the stock trades at an attractive discount (underpriced) and plots above the SML.")
 
 # =====================================================================
 # FOOTER
@@ -492,8 +524,8 @@ elif module == "📝 Module 2: Monetary Theory Assessment":
 st.markdown("---")
 f1, f2, f3 = st.columns(3)
 with f1:
-    st.caption("Macroeconomic Architecture Lab")
+    st.caption("Quantitative Asset Valuation Suite")
 with f2:
-    st.caption("Liquidity Preference & LM Equilibrium Dynamics")
+    st.caption("Fixed Income, DDM & CAPM Capital Markets Analytics")
 with f3:
     st.caption(f"System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
