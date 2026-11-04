@@ -7,8 +7,8 @@ import streamlit as st
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Currency Movements & Net Exports (NX)",
-    page_icon="📈",
+    page_title="Money Creation & Monetary Aggregates",
+    page_icon="🏦",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -93,8 +93,8 @@ st.markdown(
 # =====================================================================
 # SESSION STATE ENGINE
 # =====================================================================
-if "nx_points" not in st.session_state:
-    st.session_state.nx_points = 0
+if "sim_points" not in st.session_state:
+    st.session_state.sim_points = 0
 if "quiz_score" not in st.session_state:
     st.session_state.quiz_score = 0
 if "quiz_submitted" not in st.session_state:
@@ -102,23 +102,23 @@ if "quiz_submitted" not in st.session_state:
 if "eval_records" not in st.session_state:
     st.session_state.eval_records = {}
 
-total_score = st.session_state.nx_points + st.session_state.quiz_score
+total_score = st.session_state.sim_points + st.session_state.quiz_score
 
 # =====================================================================
 # SIDEBAR
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 📊 FX & Net Exports Suite")
+    st.markdown("## 🏛️ Central Banking & Liquidity Suite")
     nav_mode = st.radio(
         "Select Section:",
         [
-            "🔬 Simulation: Appreciation vs. Depreciation",
-            "📝 Assessment: FX & Trade Theory",
+            "🔬 Simulation: Deposit Multiplier & Expansion",
+            "📝 Assessment: Monetary Theory & Aggregates",
         ],
     )
     st.markdown("---")
     st.markdown("### 🏆 Performance Tracker")
-    st.markdown(f"**Interactive Lab:** {st.session_state.nx_points} / 50")
+    st.markdown(f"**Interactive Lab:** {st.session_state.sim_points} / 50")
     st.markdown(f"**Theory Assessment:** {st.session_state.quiz_score} / 50")
     st.markdown(f"### **Aggregate Score:** {total_score} / 100")
 
@@ -129,9 +129,9 @@ st.markdown(
     f"""
 <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(14, 165, 233, 0.2) 100%);
             border: 1px solid rgba(16, 185, 129, 0.45); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; text-align: center;">
-    <h2 style="color: #34D399; margin: 0; font-weight: 800;">Currency Valuation & Net Exports Engine: {total_score} / 100</h2>
+    <h2 style="color: #34D399; margin: 0; font-weight: 800;">Money Creation & Liquidity Expansion Engine: {total_score} / 100</h2>
     <p style="color: #E2E8F0; margin: 0.35rem 0 0 0; font-size: 1rem;">
-        Simulation Lab: <b>{st.session_state.nx_points}/50 Pts</b> | Conceptual Assessment: <b>{st.session_state.quiz_score}/50 Pts</b>
+        Simulation Lab: <b>{st.session_state.sim_points}/50 Pts</b> | Conceptual Assessment: <b>{st.session_state.quiz_score}/50 Pts</b>
     </p>
 </div>
 """,
@@ -141,23 +141,24 @@ st.markdown(
 # =====================================================================
 # SECTION 1: SIMULATION LAB
 # =====================================================================
-if nav_mode == "🔬 Simulation: Appreciation vs. Depreciation":
-    st.markdown("### 🌐 Currency Fluctuations & Net Exports: $NX = X - M$")
+if nav_mode == "🔬 Simulation: Deposit Multiplier & Expansion":
+    st.markdown("### 🏦 Fractional Reserve Banking & Money Multipliers")
     st.markdown(
-        "An **appreciation** makes domestic goods more expensive abroad and foreign imports cheaper domestically, "
-        "tending to lower Net Exports ($NX$). A **depreciation** creates the inverse incentive, but real-world "
-        "outcomes depend on price elasticities of demand ($|\\epsilon_x| + |\\epsilon_m|$) and time-horizon contract stickiness."
+        "When commercial banks receive new cash reserves, they retain required regulatory reserves and lend out "
+        "the remainder. Real-world credit expansion is attenuated by **excess reserve holdings** ($e$) and **currency "
+        "drain into public circulation** ($c$)."
     )
 
-    tab_model, tab_math = st.tabs(["📚 Core Framework", "🔬 Mathematical Relations"])
+    tab_model, tab_math = st.tabs(["📚 Aggregates Hierarchy", "🔬 Multiplier Mechanics"])
 
     with tab_model:
         st.markdown(
             """
-| Movement | Relative Export Price | Relative Import Price | Quantity Effect | Value Effect on Net Exports ($NX$) |
-| :--- | :--- | :--- | :--- | :--- |
-| **Appreciation** ($\\%\\Delta E < 0$) | More expensive abroad | Cheaper domestically | $X \\downarrow, M \\uparrow$ | Deteriorates $NX$ when demand is elastic. |
-| **Depreciation** ($\\%\\Delta E > 0$) | Cheaper abroad | More expensive domestically | $X \\uparrow, M \\downarrow$ | Improves $NX$ in the long run if Marshall-Lerner ($|\\epsilon_x| + |\\epsilon_m| > 1$) holds. |
+| Aggregate | Core Components | Degree of Liquidity | Economic Role |
+| :--- | :--- | :--- | :--- |
+| **Monetary Base ($M_0$ / $B$)** | Physical Currency in Circulation ($C$) + Bank Reserves ($R$) | Direct central bank liability | Foundation for broad money creation |
+| **Narrow Money ($M_1$)** | Physical Currency ($C$) + Demand/Checking Deposits ($D$) | Ultra-high (immediate medium of exchange) | Transactional balances and consumer payments |
+| **Broad Money ($M_2$)** | $M_1$ + Savings Deposits + Retail Money Market Funds + Small CDs | Moderate to high | Transactional liquidity plus close near-monies |
             """
         )
 
@@ -167,15 +168,14 @@ if nav_mode == "🔬 Simulation: Appreciation vs. Depreciation":
             st.markdown(
                 """
 <div class="concept-card">
-    <h4 style="color: #34D399; margin: 0 0 0.5rem 0;">1. Net Export Formula with Elasticities</h4>
+    <h4 style="color: #34D399; margin: 0 0 0.5rem 0;">1. Simple Theoretical Multiplier</h4>
     <p style="font-size: 0.88rem; color: #E2E8F0;">
-        Let $E$ denote the nominal exchange rate (units of domestic currency per foreign currency, so an increase is a depreciation):
+        Assumes zero currency drain ($c = 0$) and zero excess reserve preference ($e = 0$):
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li>$X = X_0 \\cdot \\left(1 + |\\epsilon_x| \\cdot \\%\\Delta E\\right)$</li>
-        <li>$M_{qty} = M_0 \\cdot \\left(1 - |\\epsilon_m| \\cdot \\%\\Delta E\\right)$</li>
-        <li>$M_{val} = M_{qty} \\cdot \\left(1 + \\%\\Delta E\\right)$</li>
-        <li>$NX = X - M_{val}$</li>
+        <li>$m_{simple} = \\frac{1}{rr}$</li>
+        <li>$\\Delta D_{max} = \\frac{\\Delta R}{rr}$</li>
+        <li>Where $rr$ is the central bank's statutory Reserve Requirement Ratio.</li>
     </ul>
 </div>
                 """,
@@ -185,13 +185,14 @@ if nav_mode == "🔬 Simulation: Appreciation vs. Depreciation":
             st.markdown(
                 """
 <div class="concept-card" style="border-left-color: #FBBF24;">
-    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Marshall-Lerner Criterion</h4>
+    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Realistic Money Multiplier ($m$)</h4>
     <p style="font-size: 0.88rem; color: #E2E8F0;">
-        Starting from balanced trade ($X = M$):
+        Incorporating Currency Drain ($c = C/D$) and Excess Reserves ($e = ER/D$):
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li>$\\frac{d(NX)}{dE} > 0 \\iff |\\epsilon_x| + |\\epsilon_m| > 1$</li>
-        <li>If $|\\epsilon_x| + |\\epsilon_m| < 1$, depreciation paradoxically <b>worsens</b> $NX$ because volume changes fail to offset higher per-unit import expenditures.</li>
+        <li>$m = \\frac{1 + c}{rr + e + c}$</li>
+        <li>$M_1 = m \\cdot M_0 = m \\cdot (C + R)$</li>
+        <li>$\\lim_{(c+e) \\to \\infty} m = 1$ (eliminates credit amplification)</li>
     </ul>
 </div>
                 """,
@@ -199,66 +200,53 @@ if nav_mode == "🔬 Simulation: Appreciation vs. Depreciation":
             )
 
     st.markdown("---")
-    st.subheader("🛠️ Interactive Sensitivity & Scenario Engine")
+    st.subheader("🛠️ Interactive Reserve Injection & Multiplier Lab")
 
     col_in, col_out = st.columns([1, 1.2], gap="large")
 
     with col_in:
-        st.markdown("#### Scenario Controls")
-        fx_shock_type = st.radio(
-            "Select Currency Shock Direction:",
-            ["Domestic Currency Depreciation", "Domestic Currency Appreciation"],
-            horizontal=True,
-        )
-        pct_magnitude = st.slider("Shock Magnitude (%):", 1.0, 40.0, 15.0, 1.0) / 100.0
+        st.markdown("#### Policy & Behavioral Controls")
+        delta_reserves = st.slider("Central Bank Open Market Purchase ($\\Delta R$, $B):", 5.0, 100.0, 20.0, 5.0)
+        req_ratio = st.slider("Required Reserve Ratio ($rr$):", 0.02, 0.30, 0.10, 0.01)
+        curr_ratio = st.slider("Currency Drain Ratio ($c = C/D$):", 0.0, 0.50, 0.15, 0.01)
+        excess_ratio = st.slider("Excess Reserve Holding ($e = ER/D$):", 0.0, 0.40, 0.05, 0.01)
 
-        # Sign convention: positive delta_e = depreciation, negative = appreciation
-        delta_e = pct_magnitude if fx_shock_type == "Domestic Currency Depreciation" else -pct_magnitude
+        # Multiplier Calculations
+        simple_mult = 1.0 / req_ratio
+        realistic_mult = (1.0 + curr_ratio) / (req_ratio + excess_ratio + curr_ratio)
 
-        st.markdown("#### Trade Parameters")
-        base_x = st.slider("Baseline Exports ($B):", 50.0, 500.0, 200.0, 10.0)
-        base_m = st.slider("Baseline Imports ($B):", 50.0, 500.0, 200.0, 10.0)
-        elas_x = st.slider("Export Price Elasticity ($|\\epsilon_x|$):", 0.05, 2.0, 0.75, 0.05)
-        elas_m = st.slider("Import Price Elasticity ($|\\epsilon_m|$):", 0.05, 2.0, 0.65, 0.05)
-
-        base_nx = base_x - base_m
-        ml_condition = (elas_x + elas_m) > 1.0
-
-        # Post-shock values
-        post_x = base_x * (1.0 + elas_x * delta_e)
-        post_m_vol = base_m * (1.0 - elas_m * delta_e)
-        post_m_val = post_m_vol * (1.0 + delta_e)
-        post_nx = post_x - post_m_val
-        delta_nx = post_nx - base_nx
+        delta_m1_simple = delta_reserves * simple_mult
+        delta_m1_real = delta_reserves * realistic_mult
+        leakage_loss = delta_m1_simple - delta_m1_real
 
         st.markdown("---")
         st.markdown("#### Target Exercise")
         st.caption(
-            "Configure a scenario where currency depreciation generates a **net improvement in trade ($\\Delta NX \\ge \\$10\\text{B}$)** "
-            "with **Marshall-Lerner condition satisfied**."
+            "Target an effective broad money expansion of **$\\Delta M_1 \\ge \\$75\\text{B}$** "
+            "while maintaining an effective multiplier **$m \\ge 3.0$**."
         )
 
-        if st.button("Evaluate Net Export Target"):
-            if delta_e > 0 and ml_condition and delta_nx >= 10.0:
-                st.session_state.nx_points = 50
-                st.success(f"Target achieved! $\\Delta NX = +\\${delta_nx:.2f}B$ with $\\Sigma \\epsilon = {elas_x + elas_m:.2f}$. (Awarded: 50/50 Pts)")
+        if st.button("Evaluate Expansion Target"):
+            if delta_m1_real >= 75.0 and realistic_mult >= 3.0:
+                st.session_state.sim_points = 50
+                st.success(f"Target achieved! $\\Delta M_1 = \\${delta_m1_real:.2f}B$ with $m = {realistic_mult:.2f}$. (Awarded: 50/50 Pts)")
             else:
-                st.session_state.nx_points = 20
+                st.session_state.sim_points = 20
                 st.warning(
-                    f"Target missed: Requires Depreciation (current: {fx_shock_type}), ML > 1.0 (current: {elas_x + elas_m:.2f}), "
-                    f"and $\\Delta NX \\ge \\$10B$ (current: ${delta_nx:.2f}B). (Awarded: 20/50 Pts)"
+                    f"Target missed: Requires $\\Delta M_1 \\ge \\$75B$ (current: ${delta_m1_real:.2f}B) "
+                    f"and $m \\ge 3.0$ (current: {realistic_mult:.2f}). (Awarded: 20/50 Pts)"
                 )
             st.rerun()
 
     with col_out:
-        st.markdown("#### Impact Analysis")
+        st.markdown("#### Money Supply Impact")
         m1, m2, m3 = st.columns(3)
         with m1:
             st.markdown(
                 f"""
                 <div class="metric-panel">
-                    <div class="metric-title">New Exports ($X$)</div>
-                    <div class="metric-val">${post_x:.1f}B</div>
+                    <div class="metric-title">Effective Multiplier ($m$)</div>
+                    <div class="metric-val">{realistic_mult:.2f}x</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
@@ -267,118 +255,112 @@ if nav_mode == "🔬 Simulation: Appreciation vs. Depreciation":
             st.markdown(
                 f"""
                 <div class="metric-panel">
-                    <div class="metric-title">New Imports ($M$)</div>
-                    <div class="metric-val">${post_m_val:.1f}B</div>
+                    <div class="metric-title">Realistic Expansion ($\\Delta M_1$)</div>
+                    <div class="metric-val">${delta_m1_real:.1f}B</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
         with m3:
-            nx_color = "#10B981" if delta_nx >= 0 else "#EF4444"
             st.markdown(
                 f"""
                 <div class="metric-panel">
-                    <div class="metric-title">Change in NX ($\\Delta NX$)</div>
-                    <div class="metric-val" style="color: {nx_color} !important;">
-                        {'+' if delta_nx > 0 else ''}{delta_nx:.1f}B
-                    </div>
+                    <div class="metric-title">Leakage Penalty</div>
+                    <div class="metric-val" style="color: #EF4444 !important;">-${leakage_loss:.1f}B</div>
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-        # Sensitivity curve: FX Shift vs NX across a range (-30% to +30%)
-        fx_range = np.linspace(-0.30, 0.30, 41)
-        sim_nx = []
-        for shift in fx_range:
-            sim_x = base_x * (1.0 + elas_x * shift)
-            sim_m = (base_m * (1.0 - elas_m * shift)) * (1.0 + shift)
-            sim_nx.append(sim_x - sim_m)
+        # Iterative credit expansion rounds
+        rounds = np.arange(1, 11)
+        retention_ratio = (1.0 - req_ratio - excess_ratio) / (1.0 + curr_ratio)
+        retention_ratio = max(0.0, retention_ratio)
+        round_lending = [delta_reserves * (retention_ratio ** (r - 1)) for r in rounds]
+        cumulative_m1 = np.cumsum(round_lending)
 
         chart_df = pd.DataFrame(
             {
-                "Currency Movement (% Shift)": np.round(fx_range * 100, 1),
-                "Implied Net Exports ($B)": np.round(sim_nx, 2),
-                "Baseline NX ($B)": base_nx,
+                "Expansion Round": rounds,
+                "New Loans Disbursed ($B)": np.round(round_lending, 2),
+                "Cumulative Money Created ($B)": np.round(cumulative_m1, 2),
             }
-        ).set_index("Currency Movement (% Shift)")
+        ).set_index("Expansion Round")
 
         st.line_chart(chart_df)
         st.caption(
-            "Negative axis represents currency appreciation (stronger domestic currency); "
-            "positive axis represents depreciation (weaker domestic currency). "
-            f"Slope is {'positive' if ml_condition else 'negative'} because $|\\epsilon_x| + |\\epsilon_m| = {elas_x + elas_m:.2f} "
-            f"({'Marshall-Lerner satisfied' if ml_condition else 'Marshall-Lerner violated'})."
+            f"Lending rounds converge asymptotically. Theoretical maximum simple ceiling: **${delta_m1_simple:.1f}B**; "
+            f"Attenuated realistic equilibrium: **${delta_m1_real:.1f}B**."
         )
 
 # =====================================================================
 # SECTION 2: ASSESSMENT
 # =====================================================================
-elif nav_mode == "📝 Assessment: FX & Trade Theory":
-    st.markdown("### 📝 Currency Valuation & Net Exports Assessment")
-    st.markdown("Test your understanding of currency appreciation, depreciation, exchange rate pass-through, and trade balances (10 points each).")
+elif nav_mode == "📝 Assessment: Monetary Theory & Aggregates":
+    st.markdown("### 📝 Monetary Economics & Multiplier Assessment")
+    st.markdown("Test your understanding of monetary aggregates, fractional reserves, leakages, and open market operations (10 points each).")
 
-    with st.form("trade_assessment_form"):
-        st.markdown("#### 1. Mechanism of Currency Appreciation")
+    with st.form("money_assessment_form"):
+        st.markdown("#### 1. Composition of Monetary Aggregates")
         q1 = st.radio(
-            "When a nation's currency appreciates significantly, holding all else constant:",
+            "Which of the following items is included in Broad Money ($M_2$) but excluded from Narrow Money ($M_1$)?",
             [
-                "A) Foreign goods become more expensive for domestic buyers, reducing total imports.",
-                "B) Domestic export prices in foreign currency rise, reducing export demand abroad, while imports become cheaper.",
-                "C) Net exports unconditionally expand across both the short run and long run.",
-                "D) The country's physical export volumes expand to meet higher foreign demand.",
+                "A) Physical paper banknotes and coins held by the non-bank public.",
+                "B) Commercial bank vault cash.",
+                "C) Retail savings deposits and non-institutional money market funds.",
+                "D) Demand and checking deposits at commercial depository institutions.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 2. The Marshall-Lerner Rule")
+        st.markdown("#### 2. Central Bank Balance Sheet Mechanics")
         q2 = st.radio(
-            "If the sum of price elasticities of demand for exports and imports equals 0.65 ($|\\epsilon_x| + |\\epsilon_m| = 0.65$), a currency depreciation will:",
+            "When a central bank carries out an Open Market Purchase of sovereign bonds from commercial banks:",
             [
-                "A) Improve the trade balance by expanding export revenue above import expenditure.",
-                "B) Leave the trade balance unchanged because supply equals demand in equilibrium.",
-                "C) Deteriorate the trade balance because volume adjustments fail to compensate for more expensive imports.",
-                "D) Force domestic inflation to instantly drop to zero.",
+                "A) Commercial bank reserves expand at the central bank, increasing the Monetary Base ($M_0$).",
+                "B) The required reserve ratio automatically climbs to absorb liquidity.",
+                "C) The money multiplier immediately drops to zero.",
+                "D) Commercial banks are legally prohibited from extending further credit.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 3. Real Exchange Rate Formulation")
+        st.markdown("#### 3. Mathematical Impact of Cash Drain")
         q3 = st.radio(
-            "The Real Exchange Rate ($q = E \\cdot \\frac{P^*}{P}$) tracks relative international prices. If domestic price inflation ($P$) outpaces foreign inflation ($P^*$) while the nominal rate ($E$) stays flat:",
+            "If the non-bank public suddenly prefers to hold a larger fraction of their money as physical cash (an increase in $c = C/D$):",
             [
-                "A) The real exchange rate appreciates, eroding domestic export price competitiveness.",
-                "B) The real exchange rate depreciates, increasing international market share.",
-                "C) Domestic exporters gain an automatic price advantage over foreign competitors.",
-                "D) Net exports increase systematically.",
+                "A) Commercial banks gain additional reserves to lend.",
+                "B) The realistic money multiplier decreases because reserves leak from the credit creation cycle.",
+                "C) The simple deposit multiplier formula ($1/rr$) increases proportionately.",
+                "D) Total demand deposits expand exponentially.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 4. The J-Curve Dynamic")
+        st.markdown("#### 4. Excess Reserves and the Liquidity Trap")
         q4 = st.radio(
-            "In the initial months following an unexpected currency depreciation, net exports frequently drop before improving because:",
+            "During severe financial distress, commercial banks frequently accumulate substantial excess reserves ($e \\uparrow$). Holding all else constant, this leads to:",
             [
-                "A) Foreign buyers cancel contracts immediately due to currency regulations.",
-                "B) Trade contracts are fixed in the short term; import prices in domestic currency spike before volumes can substitute.",
-                "C) Domestic firms voluntarily stop producing export products.",
-                "D) Central banks prohibit capital flows until the trade balance resets.",
+                "A) Hyperinflation caused by uncontrolled credit acceleration.",
+                "B) A breakdown in credit transmission where additions to $M_0$ fail to stimulate $M_1$ and $M_2$.",
+                "C) An automatic increase in the velocity of money ($V$).",
+                "D) An immediate legal default of the fractional reserve framework.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 5. Macroeconomic Aggregate Demand Link")
+        st.markdown("#### 5. Simple Multiplier Arithmetic")
         q5 = st.radio(
-            "In the national income accounting identity ($Y = C + I + G + NX$), a sustained increase in Net Exports ($NX$) from a successful depreciation directly:",
+            "Assuming no currency drain and zero excess reserves, if the statutory required reserve ratio ($rr$) is set at 5% (0.05), an initial reserve injection of $10 million yields a maximum theoretical deposit expansion of:",
             [
-                "A) Reduces aggregate domestic output ($Y$).",
-                "B) Increases Aggregate Demand and puts upward pressure on domestic output and the price level.",
-                "C) Guarantees an immediate reduction in total government tax revenue.",
-                "D) Eliminates the national debt without any monetary intervention.",
+                "A) $50 million.",
+                "B) $100 million.",
+                "C) $200 million.",
+                "D) $500 million.",
             ],
             index=None,
         )
@@ -387,11 +369,11 @@ elif nav_mode == "📝 Assessment: FX & Trade Theory":
 
         if submit_btn:
             correct_answers = {
-                "q1": "B) Domestic export prices in foreign currency rise, reducing export demand abroad, while imports become cheaper.",
-                "q2": "C) Deteriorate the trade balance because volume adjustments fail to compensate for more expensive imports.",
-                "q3": "A) The real exchange rate appreciates, eroding domestic export price competitiveness.",
-                "q4": "B) Trade contracts are fixed in the short term; import prices in domestic currency spike before volumes can substitute.",
-                "q5": "B) Increases Aggregate Demand and puts upward pressure on domestic output and the price level.",
+                "q1": "C) Retail savings deposits and non-institutional money market funds.",
+                "q2": "A) Commercial bank reserves expand at the central bank, increasing the Monetary Base ($M_0$).",
+                "q3": "B) The realistic money multiplier decreases because reserves leak from the credit creation cycle.",
+                "q4": "B) A breakdown in credit transmission where additions to $M_0$ fail to stimulate $M_1$ and $M_2$.",
+                "q5": "C) $200 million.",
             }
 
             results = {
@@ -413,15 +395,15 @@ elif nav_mode == "📝 Assessment: FX & Trade Theory":
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("Q1 Review: Appreciation strengthens domestic purchasing power abroad (cheaper imports), but makes domestic exports less attractive to foreign consumers.")
+            st.error("Q1 Review: $M_1$ tracks immediate media of exchange (currency + checking deposits). Savings accounts and small-denomination time deposits enter at the $M_2$ boundary.")
         if not rec.get("q2", False):
-            st.error("Q2 Review: When $|\\epsilon_x| + |\\epsilon_m| < 1$, the volume shift is too weak to offset the valuation loss from higher import costs, worsening the trade balance.")
+            st.error("Q2 Review: Central bank open-market asset purchases credit commercial bank reserve accounts, expanding base money ($M_0$).")
         if not rec.get("q3", False):
-            st.error("Q3 Review: When domestic inflation exceeds trading partners under a constant nominal rate, domestic goods become relatively more expensive (real appreciation).")
+            st.error("Q3 Review: Cash drain removes high-powered reserves from commercial vaults/central balances, cutting off subsequent rounds of re-lending.")
         if not rec.get("q4", False):
-            st.error("Q4 Review: The J-Curve reflects short-run contract stickiness: import costs increase in local currency immediately, whereas volume adjustments take several quarters.")
+            st.error("Q4 Review: If banks hoard excess reserves rather than disbursing new credit, the money multiplier contracts, decoupling monetary base growth from broad money.")
         if not rec.get("q5", False):
-            st.error("Q5 Review: Because $NX$ is an additive component of aggregate output, an improvement in $NX$ raises aggregate demand ($AD$), expanding output and potentially inducing demand-pull inflation.")
+            st.error("Q5 Review: Theoretical expansion equals $\\Delta D = \\Delta R \\times (1/rr) = \\$10\\text{M} \\times (1 / 0.05) = \\$10\\text{M} \\times 20 = \\$200\\text{M}$.")
 
 # =====================================================================
 # FOOTER
@@ -429,8 +411,8 @@ elif nav_mode == "📝 Assessment: FX & Trade Theory":
 st.markdown("---")
 f1, f2, f3 = st.columns(3)
 with f1:
-    st.caption("International Trade & Macro Valuation Engine")
+    st.caption("Monetary Economics & Banking Policy Engine")
 with f2:
-    st.caption("Net Exports, Marshall-Lerner & Exchange Rate Sensitivity")
+    st.caption("Deposit Multiplication, Reserve Ratios & Liquidity Tiers")
 with f3:
     st.caption(f"System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
