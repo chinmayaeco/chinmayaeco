@@ -7,8 +7,8 @@ import streamlit as st
 # PAGE CONFIGURATION
 # =====================================================================
 st.set_page_config(
-    page_title="Money Creation & Monetary Aggregates",
-    page_icon="🏦",
+    page_title="Open Economy Macro: Exchange Rates & Mundell-Fleming",
+    page_icon="🌐",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -108,12 +108,12 @@ total_score = st.session_state.sim_points + st.session_state.quiz_score
 # SIDEBAR
 # =====================================================================
 with st.sidebar:
-    st.markdown("## 🏛️ Central Banking & Liquidity Suite")
+    st.markdown("## 🌐 International Macro & FX Suite")
     nav_mode = st.radio(
         "Select Section:",
         [
-            "🔬 Simulation: Deposit Multiplier & Expansion",
-            "📝 Assessment: Monetary Theory & Aggregates",
+            "🔬 Simulation: Mundell-Fleming Lab",
+            "📝 Assessment: Open Economy Policy & LM*",
         ],
     )
     st.markdown("---")
@@ -129,7 +129,7 @@ st.markdown(
     f"""
 <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(14, 165, 233, 0.2) 100%);
             border: 1px solid rgba(16, 185, 129, 0.45); border-radius: 12px; padding: 1.2rem; margin-bottom: 1.5rem; text-align: center;">
-    <h2 style="color: #34D399; margin: 0; font-weight: 800;">Money Creation & Liquidity Expansion Engine: {total_score} / 100</h2>
+    <h2 style="color: #34D399; margin: 0; font-weight: 800;">Mundell-Fleming & Open Economy Equilibrium: {total_score} / 100</h2>
     <p style="color: #E2E8F0; margin: 0.35rem 0 0 0; font-size: 1rem;">
         Simulation Lab: <b>{st.session_state.sim_points}/50 Pts</b> | Conceptual Assessment: <b>{st.session_state.quiz_score}/50 Pts</b>
     </p>
@@ -141,24 +141,23 @@ st.markdown(
 # =====================================================================
 # SECTION 1: SIMULATION LAB
 # =====================================================================
-if nav_mode == "🔬 Simulation: Deposit Multiplier & Expansion":
-    st.markdown("### 🏦 Fractional Reserve Banking & Money Multipliers")
+if nav_mode == "🔬 Simulation: Mundell-Fleming Lab":
+    st.markdown("### ⚖️ Mundell-Fleming Dynamics with Perfect Capital Mobility")
     st.markdown(
-        "When commercial banks receive new cash reserves, they retain required regulatory reserves and lend out "
-        "the remainder. Real-world credit expansion is attenuated by **excess reserve holdings** ($e$) and **currency "
-        "drain into public circulation** ($c$)."
+        "In a small open economy with perfect capital mobility, domestic interest rates are pinned to world rates ($r = r^*$). "
+        "In $(Y, e)$ space, the money market equilibrium condition ($M/P = L(r^*, Y)$) yields a **vertical $LM^*$ curve**, "
+        "rendering output determined exclusively by the money supply under floating rates."
     )
 
-    tab_model, tab_math = st.tabs(["📚 Aggregates Hierarchy", "🔬 Multiplier Mechanics"])
+    tab_model, tab_math = st.tabs(["📚 Regime Comparison", "🔬 Open Economy Multipliers"])
 
     with tab_model:
         st.markdown(
             """
-| Aggregate | Core Components | Degree of Liquidity | Economic Role |
-| :--- | :--- | :--- | :--- |
-| **Monetary Base ($M_0$ / $B$)** | Physical Currency in Circulation ($C$) + Bank Reserves ($R$) | Direct central bank liability | Foundation for broad money creation |
-| **Narrow Money ($M_1$)** | Physical Currency ($C$) + Demand/Checking Deposits ($D$) | Ultra-high (immediate medium of exchange) | Transactional balances and consumer payments |
-| **Broad Money ($M_2$)** | $M_1$ + Savings Deposits + Retail Money Market Funds + Small CDs | Moderate to high | Transactional liquidity plus close near-monies |
+| Regime | Policy Levers | Monetary Policy Impact | Fiscal Policy Impact | Trade Policy Restrictions |
+| :--- | :--- | :--- | :--- | :--- |
+| **Flexible Rates** | Independent $M$; Exchange rate $e$ floats | **Completely Potent**: Shifts $LM^*$; changes $Y$ via currency depreciation/appreciation. | **Completely Impotent**: Crowded out 100% through exchange rate appreciation ($NX \\downarrow$). | **Impotent on Output**: Currency appreciates, canceling out the tariff/import protection. |
+| **Fixed Rates** | $e = \\bar{e}$; Central bank pegs via FX reserves | **Completely Impotent**: Endogenous money supply ($M$) must defend parity; loss of monetary autonomy. | **Maximum Potency**: Fiscal shift triggers reserve inflows, expanding $M$ and shifting $LM^*$ right. | **Expansive**: Increases net exports, forcing central bank to inject reserves to maintain $\\bar{e}$. |
             """
         )
 
@@ -168,14 +167,14 @@ if nav_mode == "🔬 Simulation: Deposit Multiplier & Expansion":
             st.markdown(
                 """
 <div class="concept-card">
-    <h4 style="color: #34D399; margin: 0 0 0.5rem 0;">1. Simple Theoretical Multiplier</h4>
+    <h4 style="color: #34D399; margin: 0 0 0.5rem 0;">1. The Vertical LM* Equation</h4>
     <p style="font-size: 0.88rem; color: #E2E8F0;">
-        Assumes zero currency drain ($c = 0$) and zero excess reserve preference ($e = 0$):
+        Equilibrium in the domestic money market under $r = r^*$:
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li>$m_{simple} = \\frac{1}{rr}$</li>
-        <li>$\\Delta D_{max} = \\frac{\\Delta R}{rr}$</li>
-        <li>Where $rr$ is the central bank's statutory Reserve Requirement Ratio.</li>
+        <li>$\\frac{M}{P} = L(r^*, Y) = kY - h r^*$</li>
+        <li>$Y = \\frac{1}{k}\\left(\\frac{M}{P} + h r^*\\right)$</li>
+        <li>Notice the nominal/real exchange rate ($e$) does <b>not</b> appear in this equation: $LM^*$ is perfectly vertical in $(Y, e)$ space.</li>
     </ul>
 </div>
                 """,
@@ -185,182 +184,204 @@ if nav_mode == "🔬 Simulation: Deposit Multiplier & Expansion":
             st.markdown(
                 """
 <div class="concept-card" style="border-left-color: #FBBF24;">
-    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Realistic Money Multiplier ($m$)</h4>
+    <h4 style="color: #FBBF24; margin: 0 0 0.5rem 0;">2. Downward-Sloping IS* Equation</h4>
     <p style="font-size: 0.88rem; color: #E2E8F0;">
-        Incorporating Currency Drain ($c = C/D$) and Excess Reserves ($e = ER/D$):
+        Goods market equilibrium where net exports depend inversely on the exchange rate:
     </p>
     <ul style="font-size: 0.85rem; color: #CBD5E1;">
-        <li>$m = \\frac{1 + c}{rr + e + c}$</li>
-        <li>$M_1 = m \\cdot M_0 = m \\cdot (C + R)$</li>
-        <li>$\\lim_{(c+e) \\to \\infty} m = 1$ (eliminates credit amplification)</li>
+        <li>$Y = C(Y - T) + I(r^*) + G + NX(e)$</li>
+        <li>$NX(e) = NX_0 - q \\cdot e$</li>
+        <li>Higher $e$ (appreciation) makes domestic goods more expensive, reducing net exports and aggregate output.</li>
     </ul>
 </div>
                 """,
                 unsafe_allow_html=True,
             )
 
-    st.markdown("---")
-    st.subheader("🛠️ Interactive Reserve Injection & Multiplier Lab")
-
-    col_in, col_out = st.columns([1, 1.2], gap="large")
-
-    with col_in:
-        st.markdown("#### Policy & Behavioral Controls")
-        delta_reserves = st.slider("Central Bank Open Market Purchase ($\\Delta R$, $B):", 5.0, 100.0, 20.0, 5.0)
-        req_ratio = st.slider("Required Reserve Ratio ($rr$):", 0.02, 0.30, 0.10, 0.01)
-        curr_ratio = st.slider("Currency Drain Ratio ($c = C/D$):", 0.0, 0.50, 0.15, 0.01)
-        excess_ratio = st.slider("Excess Reserve Holding ($e = ER/D$):", 0.0, 0.40, 0.05, 0.01)
-
-        # Multiplier Calculations
-        simple_mult = 1.0 / req_ratio
-        realistic_mult = (1.0 + curr_ratio) / (req_ratio + excess_ratio + curr_ratio)
-
-        delta_m1_simple = delta_reserves * simple_mult
-        delta_m1_real = delta_reserves * realistic_mult
-        leakage_loss = delta_m1_simple - delta_m1_real
-
         st.markdown("---")
-        st.markdown("#### Target Exercise")
-        st.caption(
-            "Target an effective broad money expansion of **$\\Delta M_1 \\ge \\$75\\text{B}$** "
-            "while maintaining an effective multiplier **$m \\ge 3.0$**."
-        )
+        st.subheader("🛠️ Policy Shock & Regime Simulator")
 
-        if st.button("Evaluate Expansion Target"):
-            if delta_m1_real >= 75.0 and realistic_mult >= 3.0:
-                st.session_state.sim_points = 50
-                st.success(f"Target achieved! $\\Delta M_1 = \\${delta_m1_real:.2f}B$ with $m = {realistic_mult:.2f}$. (Awarded: 50/50 Pts)")
+        col_in, col_out = st.columns([1, 1.2], gap="large")
+
+        with col_in:
+            st.markdown("#### Regime & Exogenous Parameters")
+            regime = st.selectbox("Exchange Rate Regime:", ["Flexible Exchange Rate", "Fixed Exchange Rate"])
+            r_star = st.slider("World Interest Rate ($r^*$ in %):", 1.0, 10.0, 4.0, 0.5) / 100.0
+            gov_spending = st.slider("Fiscal Policy: Government Spending ($G$):", 50.0, 300.0, 150.0, 10.0)
+            money_supply = st.slider("Monetary Policy: Money Supply ($M$):", 100.0, 500.0, 250.0, 10.0)
+            target_fixed_e = 100.0  # Baseline peg parity
+
+            # Structural model coefficients
+            P = 1.0
+            k = 0.5   # Money demand income sensitivity
+            h = 250.0 # Money demand interest sensitivity
+            c_mpc = 0.6
+            tax = 100.0
+            I_base = 120.0
+            q_nx = 1.5
+            nx_base = 180.0
+
+            # Structural Equations
+            # LM*: M/P = kY - h*r* => Y_lm = (M/P + h*r*) / k
+            # IS*: Y = c_mpc*(Y - T) + I_base - 100*r* + G + nx_base - q_nx*e
+            # (1 - c_mpc)*Y = -c_mpc*tax + I_base - 100*r* + G + nx_base - q_nx*e
+            A = -c_mpc * tax + I_base - 100.0 * r_star + gov_spending + nx_base
+
+            if regime == "Flexible Exchange Rate":
+                # LM* determines output directly
+                eq_Y = (money_supply / P + h * r_star) / k
+                # IS* clears exchange rate
+                eq_e = (A - (1.0 - c_mpc) * eq_Y) / q_nx
+                effective_M = money_supply
             else:
-                st.session_state.sim_points = 20
-                st.warning(
-                    f"Target missed: Requires $\\Delta M_1 \\ge \\$75B$ (current: ${delta_m1_real:.2f}B) "
-                    f"and $m \\ge 3.0$ (current: {realistic_mult:.2f}). (Awarded: 20/50 Pts)"
+                # Fixed rate pins e = target_fixed_e, IS* determines output
+                eq_e = target_fixed_e
+                eq_Y = (A - q_nx * eq_e) / (1.0 - c_mpc)
+                # Central bank money supply must adjust endogenously to validate LM*
+                effective_M = (k * eq_Y - h * r_star) * P
+
+            eq_nx = nx_base - q_nx * eq_e
+
+            st.markdown("---")
+            st.markdown("#### Policy Target Challenge")
+            st.caption(
+                "Achieve a target output **$Y \\ge 650$** while avoiding severe currency depreciation "
+                "(maintain **$e \\ge 85.0$**) under your chosen regime."
+            )
+
+            if st.button("Evaluate Policy Target"):
+                if eq_Y >= 650.0 and eq_e >= 85.0:
+                    st.session_state.sim_points = 50
+                    st.success(f"Target achieved! $Y = {eq_Y:.1f}$, $e = {eq_e:.1f}$. (Awarded: 50/50 Pts)")
+                else:
+                    st.session_state.sim_points = 20
+                    st.warning(
+                        f"Target missed: Requires $Y \\ge 650$ (current: {eq_Y:.1f}) and $e \\ge 85.0$ (current: {eq_e:.1f}). "
+                        f"(Awarded: 20/50 Pts)"
+                    )
+                st.rerun()
+
+        with col_out:
+            st.markdown("#### Open Economy Equilibrium State")
+            m1, m2, m3 = st.columns(3)
+            with m1:
+                st.markdown(
+                    f"""
+                    <div class="metric-panel">
+                        <div class="metric-title">Equilibrium Output ($Y$)</div>
+                        <div class="metric-val">{eq_Y:.1f}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
                 )
-            st.rerun()
+            with m2:
+                st.markdown(
+                    f"""
+                    <div class="metric-panel">
+                        <div class="metric-title">Exchange Rate ($e$)</div>
+                        <div class="metric-val">{eq_e:.1f}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
+            with m3:
+                st.markdown(
+                    f"""
+                    <div class="metric-panel">
+                        <div class="metric-title">Endogenous Reserves/Money ($M$)</div>
+                        <div class="metric-val" style="color: #38BDF8 !important;">{effective_M:.1f}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
-    with col_out:
-        st.markdown("#### Money Supply Impact")
-        m1, m2, m3 = st.columns(3)
-        with m1:
-            st.markdown(
-                f"""
-                <div class="metric-panel">
-                    <div class="metric-title">Effective Multiplier ($m$)</div>
-                    <div class="metric-val">{realistic_mult:.2f}x</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
+            # Chart IS*-LM* Curve Representation in (Y, e) space
+            e_vals = np.linspace(50.0, 150.0, 30)
+            y_is = (A - q_nx * e_vals) / (1.0 - c_mpc)
+            y_lm = np.full_like(e_vals, (effective_M / P + h * r_star) / k)
+
+            chart_df = pd.DataFrame(
+                {
+                    "Exchange Rate (e)": np.round(e_vals, 1),
+                    "IS* Curve (Goods Market)": np.round(y_is, 1),
+                    "Vertical LM* Curve (Money Market)": np.round(y_lm, 1),
+                }
+            ).set_index("Exchange Rate (e)")
+
+            st.line_chart(chart_df)
+            st.caption(
+                f"Equilibrium Net Exports: **${eq_nx:.1f}B**. Under floating rates, fiscal policy shifts IS* vertically along the vertical LM*, "
+                f"altering only $e$. Under fixed rates, the central bank adjusts money supply to **${effective_M:.1f}** to defend parity."
             )
-        with m2:
-            st.markdown(
-                f"""
-                <div class="metric-panel">
-                    <div class="metric-title">Realistic Expansion ($\\Delta M_1$)</div>
-                    <div class="metric-val">${delta_m1_real:.1f}B</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-        with m3:
-            st.markdown(
-                f"""
-                <div class="metric-panel">
-                    <div class="metric-title">Leakage Penalty</div>
-                    <div class="metric-val" style="color: #EF4444 !important;">-${leakage_loss:.1f}B</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-        # Iterative credit expansion rounds
-        rounds = np.arange(1, 11)
-        retention_ratio = (1.0 - req_ratio - excess_ratio) / (1.0 + curr_ratio)
-        retention_ratio = max(0.0, retention_ratio)
-        round_lending = [delta_reserves * (retention_ratio ** (r - 1)) for r in rounds]
-        cumulative_m1 = np.cumsum(round_lending)
-
-        chart_df = pd.DataFrame(
-            {
-                "Expansion Round": rounds,
-                "New Loans Disbursed ($B)": np.round(round_lending, 2),
-                "Cumulative Money Created ($B)": np.round(cumulative_m1, 2),
-            }
-        ).set_index("Expansion Round")
-
-        st.line_chart(chart_df)
-        st.caption(
-            f"Lending rounds converge asymptotically. Theoretical maximum simple ceiling: **${delta_m1_simple:.1f}B**; "
-            f"Attenuated realistic equilibrium: **${delta_m1_real:.1f}B**."
-        )
 
 # =====================================================================
 # SECTION 2: ASSESSMENT
 # =====================================================================
-elif nav_mode == "📝 Assessment: Monetary Theory & Aggregates":
-    st.markdown("### 📝 Monetary Economics & Multiplier Assessment")
-    st.markdown("Test your understanding of monetary aggregates, fractional reserves, leakages, and open market operations (10 points each).")
+elif nav_mode == "📝 Assessment: Open Economy Policy & LM*":
+    st.markdown("### 📝 Open Economy & Mundell-Fleming Theory Assessment")
+    st.markdown("Test your mastery of exchange rate systems, capital mobility, monetary autonomy, and the LM* curve (10 points each).")
 
-    with st.form("money_assessment_form"):
-        st.markdown("#### 1. Composition of Monetary Aggregates")
+    with st.form("open_econ_assessment_form"):
+        st.markdown("#### 1. Geometry of the LM* Curve")
         q1 = st.radio(
-            "Which of the following items is included in Broad Money ($M_2$) but excluded from Narrow Money ($M_1$)?",
+            "In the Mundell-Fleming model for a small open economy with perfect capital mobility, why is the $LM^*$ curve vertical in $(Y, e)$ space?",
             [
-                "A) Physical paper banknotes and coins held by the non-bank public.",
-                "B) Commercial bank vault cash.",
-                "C) Retail savings deposits and non-institutional money market funds.",
-                "D) Demand and checking deposits at commercial depository institutions.",
+                "A) The exchange rate directly determines central bank reserve ratios.",
+                "B) Domestic interest rates are pinned to $r^*$, meaning the money market equation $M/P = L(r^*, Y)$ determines $Y$ independently of $e$.",
+                "C) Net exports have infinite elasticity with respect to domestic prices.",
+                "D) Commercial banks refuse to lend foreign currency to domestic households.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 2. Central Bank Balance Sheet Mechanics")
+        st.markdown("#### 2. Fiscal Policy under Floating Rates")
         q2 = st.radio(
-            "When a central bank carries out an Open Market Purchase of sovereign bonds from commercial banks:",
+            "Under a flexible exchange rate regime, how does an expansionary fiscal policy shock ($\\Delta G > 0$) affect equilibrium aggregate income ($Y$)?",
             [
-                "A) Commercial bank reserves expand at the central bank, increasing the Monetary Base ($M_0$).",
-                "B) The required reserve ratio automatically climbs to absorb liquidity.",
-                "C) The money multiplier immediately drops to zero.",
-                "D) Commercial banks are legally prohibited from extending further credit.",
+                "A) Output expands via the Keynesian government spending multiplier.",
+                "B) Output falls sharply because the central bank contracts the base money supply.",
+                "C) Output is unchanged because complete currency appreciation crowds out net exports 100%.",
+                "D) The LM* curve shifts rightward to accommodate lower taxes.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 3. Mathematical Impact of Cash Drain")
+        st.markdown("#### 3. Monetary Policy under Fixed Rates")
         q3 = st.radio(
-            "If the non-bank public suddenly prefers to hold a larger fraction of their money as physical cash (an increase in $c = C/D$):",
+            "If a central bank maintains a credible fixed exchange rate peg and attempts an open market purchase of bonds to expand the money supply:",
             [
-                "A) Commercial banks gain additional reserves to lend.",
-                "B) The realistic money multiplier decreases because reserves leak from the credit creation cycle.",
-                "C) The simple deposit multiplier formula ($1/rr$) increases proportionately.",
-                "D) Total demand deposits expand exponentially.",
+                "A) Downward pressure on domestic interest rates triggers capital flight, forcing the central bank to sell foreign reserves, restoring $M$ to its original level.",
+                "B) Domestic output permanently expands as net exports rise.",
+                "C) The exchange rate instantly depreciates without central bank intervention.",
+                "D) World interest rates ($r^*$) adjust downward to match domestic rates.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 4. Excess Reserves and the Liquidity Trap")
+        st.markdown("#### 4. The Monetary Policy Trilemma")
         q4 = st.radio(
-            "During severe financial distress, commercial banks frequently accumulate substantial excess reserves ($e \\uparrow$). Holding all else constant, this leads to:",
+            "According to the Open Economy Trilemma (Impossible Trinity), a country cannot simultaneously maintain:",
             [
-                "A) Hyperinflation caused by uncontrolled credit acceleration.",
-                "B) A breakdown in credit transmission where additions to $M_0$ fail to stimulate $M_1$ and $M_2$.",
-                "C) An automatic increase in the velocity of money ($V$).",
-                "D) An immediate legal default of the fractional reserve framework.",
+                "A) A balanced budget, low unemployment, and price stability.",
+                "B) Free capital mobility, a fixed exchange rate, and an independent monetary policy.",
+                "C) High exports, a floating exchange rate, and a positive current account balance.",
+                "D) Fractional reserve banking, currency in circulation, and deposit insurance.",
             ],
             index=None,
         )
 
         st.markdown("---")
-        st.markdown("#### 5. Simple Multiplier Arithmetic")
+        st.markdown("#### 5. Import Restrictions / Tariffs under Floating Rates")
         q5 = st.radio(
-            "Assuming no currency drain and zero excess reserves, if the statutory required reserve ratio ($rr$) is set at 5% (0.05), an initial reserve injection of $10 million yields a maximum theoretical deposit expansion of:",
+            "Under flexible exchange rates and perfect capital mobility, introducing an import quota or tariff shifts the $IS^*$ curve right. The resulting equilibrium displays:",
             [
-                "A) $50 million.",
-                "B) $100 million.",
-                "C) $200 million.",
-                "D) $500 million.",
+                "A) Higher output ($Y$) and higher net exports ($NX$).",
+                "B) Higher output ($Y$) with an unchanged exchange rate ($e$).",
+                "C) Unchanged output ($Y$), an appreciated exchange rate ($e$), and unchanged total net exports ($NX$).",
+                "D) A downward shift in the vertical $LM^*$ curve.",
             ],
             index=None,
         )
@@ -369,11 +390,11 @@ elif nav_mode == "📝 Assessment: Monetary Theory & Aggregates":
 
         if submit_btn:
             correct_answers = {
-                "q1": "C) Retail savings deposits and non-institutional money market funds.",
-                "q2": "A) Commercial bank reserves expand at the central bank, increasing the Monetary Base ($M_0$).",
-                "q3": "B) The realistic money multiplier decreases because reserves leak from the credit creation cycle.",
-                "q4": "B) A breakdown in credit transmission where additions to $M_0$ fail to stimulate $M_1$ and $M_2$.",
-                "q5": "C) $200 million.",
+                "q1": "B) Domestic interest rates are pinned to $r^*$, meaning the money market equation $M/P = L(r^*, Y)$ determines $Y$ independently of $e$.",
+                "q2": "C) Output is unchanged because complete currency appreciation crowds out net exports 100%.",
+                "q3": "A) Downward pressure on domestic interest rates triggers capital flight, forcing the central bank to sell foreign reserves, restoring $M$ to its original level.",
+                "q4": "B) Free capital mobility, a fixed exchange rate, and an independent monetary policy.",
+                "q5": "C) Unchanged output ($Y$), an appreciated exchange rate ($e$), and unchanged total net exports ($NX$).",
             }
 
             results = {
@@ -395,15 +416,15 @@ elif nav_mode == "📝 Assessment: Monetary Theory & Aggregates":
 
         rec = st.session_state.eval_records
         if not rec.get("q1", False):
-            st.error("Q1 Review: $M_1$ tracks immediate media of exchange (currency + checking deposits). Savings accounts and small-denomination time deposits enter at the $M_2$ boundary.")
+            st.error("Q1 Review: Because $r = r^*$, money equilibrium $\\frac{M}{P} = L(r^*, Y)$ pins down $Y$ uniquely. Because $e$ does not enter money demand, $LM^*$ is strictly vertical.")
         if not rec.get("q2", False):
-            st.error("Q2 Review: Central bank open-market asset purchases credit commercial bank reserve accounts, expanding base money ($M_0$).")
+            st.error("Q2 Review: $\\Delta G > 0$ attempts to raise interest rates, attracting foreign capital inflows. The resulting currency appreciation cuts net exports until aggregate demand returns exactly to its starting point.")
         if not rec.get("q3", False):
-            st.error("Q3 Review: Cash drain removes high-powered reserves from commercial vaults/central balances, cutting off subsequent rounds of re-lending.")
+            st.error("Q3 Review: Monetary policy is completely impotent under fixed rates. Domestic liquidity expansion creates downward rate pressure, triggering capital outflow and drain of FX reserves until $M$ contracts back.")
         if not rec.get("q4", False):
-            st.error("Q4 Review: If banks hoard excess reserves rather than disbursing new credit, the money multiplier contracts, decoupling monetary base growth from broad money.")
+            st.error("Q4 Review: The Trilemma dictates that an open economy can pick at most two of: (1) Free capital mobility, (2) Fixed exchange rate, and (3) Independent domestic monetary policy.")
         if not rec.get("q5", False):
-            st.error("Q5 Review: Theoretical expansion equals $\\Delta D = \\Delta R \\times (1/rr) = \\$10\\text{M} \\times (1 / 0.05) = \\$10\\text{M} \\times 20 = \\$200\\text{M}$.")
+            st.error("Q5 Review: Tariffs shift $IS^*$ rightward, but because $LM^*$ is vertical, $Y$ cannot change. The exchange rate appreciates by enough to counteract the tariff, leaving aggregate $NX$ and $Y$ unchanged.")
 
 # =====================================================================
 # FOOTER
@@ -411,8 +432,8 @@ elif nav_mode == "📝 Assessment: Monetary Theory & Aggregates":
 st.markdown("---")
 f1, f2, f3 = st.columns(3)
 with f1:
-    st.caption("Monetary Economics & Banking Policy Engine")
+    st.caption("International Macroeconomics & Mundell-Fleming Engine")
 with f2:
-    st.caption("Deposit Multiplication, Reserve Ratios & Liquidity Tiers")
+    st.caption("Capital Mobility, Trilemma Mechanics & Vertical LM*")
 with f3:
     st.caption(f"System Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
